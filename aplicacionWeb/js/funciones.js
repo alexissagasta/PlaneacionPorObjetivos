@@ -1,4 +1,3 @@
-var jeje = $('#jeje');
 
 function agregarColapsable() {
   var coll = document.getElementsByClassName("collapsible");
@@ -145,9 +144,7 @@ function agregarObjetivo() {
         `;
   document.getElementById('ejemploObjetivo').appendChild(div);
 }
-jeje.click(function () {
-  console.log("Hola");
-})
+
 
 
 this.onload = agregarColapsable(), getData();

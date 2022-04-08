@@ -52,7 +52,7 @@ client.connect(async function (err, db) {
                 res.status(206).send({alerta: mensaje});
             } else {
 
-                res.status(200).send({mensaje: areasDeEnfoque});
+                res.status(200).send(areasDeEnfoque);
             }
         } catch (err) {
             next(err)
