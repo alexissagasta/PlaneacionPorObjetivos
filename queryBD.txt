@@ -1,0 +1,58 @@
+Empresa{
+mision: "sadasdasdad",
+vision: "sadasdasdsda",
+valores: "sadsadsadsad",
+areasDeEnfoque: [{
+	nombreAreaDeEnfoque: "mercadotecnia",
+	[{nombreObjetivo: "aumentar 50% las ventas", planesDeAccion:[{nombrePlanDeAccion: "contratar mercadólogo"}]}]
+},
+{
+	nombreAreaDeEnfoque: "mercadotecnia",
+	[{nombreObjetivo: "aumentar 50% las ventas", planesDeAccion:[{nombrePlanDeAccion: "contratar mercadólogo"}]}]
+},
+{
+	nombreAreaDeEnfoque: "mercadotecnia",
+	[{nombreObjetivo: "aumentar 50% las ventas", planesDeAccion:[{nombrePlanDeAccion: "contratar mercadólogo"}]}]
+}]
+}
+
+
+AreasDeEnfoque[{
+		id:"65411651asdasd",
+		nombre: ""},
+
+		{id:"65411651asdasd",
+		nombre: ""},
+
+		{id:"65411651asdasd",
+		nombre: ""}
+]
+
+Objetivos[{
+		id:"65411651asdasd",
+		nombre: ""},
+
+		{id:"65411651asdasd",
+		nombre: ""},
+
+		{id:"65411651asdasd",
+		nombre: ""}
+]
+
+PlanesDeAccion[{
+		id:"65411651asdasd",
+		nombre: "",
+		acciones: "",
+		recursos: "",
+		tiempo: "",
+		indicadores: "",
+		responsable: ""},
+		{
+		id:"65411651asdasd",
+		nombre: "",
+		acciones: "",
+		recursos: "",
+		tiempo: "",
+		indicadores: "",
+		responsable: ""}
+]
