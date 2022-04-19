@@ -1,5 +1,5 @@
 //index.js
-const ruteador = require("./ruteador.js");
+const ruteador = require("./ManejadorDeEventos/ruteadorAreasDeEnfoque.js");
 const express = require("express");
 var fs = require("fs");
 var morgan = require('morgan');

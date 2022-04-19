@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 //const inv = require('../Procesador de eventos/invernadero');
 //const lec = require('../Procesador de eventos/lectura');
-const gestionarAreasDeEnfoque = require("./gestionarAreasDeEnfoque.js");
+const gestionarAreasDeEnfoque = require("../ProcesadorDeEventos/gestionarAreasDeEnfoque.js");
 let gestorAreasDeEnfoque = new gestionarAreasDeEnfoque();
 
 const client = new MongoClient(uri, {
