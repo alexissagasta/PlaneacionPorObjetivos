@@ -64,6 +64,8 @@ function agregarAreadeEnfoque() {
   id = randomInt();
   idP = randomInt();
   idC = randomInt();
+  idObjetivo = randomInt();
+  idPlan = randomInt();
   const form = document.createElement('form');
   opcionesAreasDeEnfoque = [];
   for (let i = 0; i < nombresAreasEnfoque.length; i++) {
@@ -97,6 +99,52 @@ function agregarAreadeEnfoque() {
         `;
 
   document.getElementById('ejemploAreadeEnfoque').appendChild(div);
+
+  /*En este apartado inicia para agregar OBJETIVOS con el mismo botón */
+  const div2 = document.createElement('div');
+  div2.className = 'agregado';
+  div2.innerHTML = `
+        <button class="collapsible" id=`+ idObjetivo + ` onclick="hacerColapsable(this.id)">Objetivo</button>
+          <div class="content">
+            <p contenteditable="true">Aumentar en un 50% el porcentaje de recompra de los clientes
+          actuales, en los productos más vendidos de la librería durante el año 2022</p>
+          </div>
+        `;
+  document.getElementById('ejemploObjetivo').appendChild(div2);
+
+  /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
+
+  const div3 = document.createElement('div');
+  div3.className = 'agregado';
+  div3.innerHTML = `
+          <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
+          <div class="content">
+            <form>
+              <label for="encargados">Encargado:</label>
+              <select name="encargados" id="encargados">
+                <optgroup label="Encargados">
+                  <option value="luis">Luis</option>
+                  <option value="mario">Mario</option>
+                </optgroup>
+              </select>
+              <br><br>
+            </form>
+            <p contenteditable="false">Acciones:</p>
+            <p contenteditable="false">Contactar mercadologo</p>
+            <p contenteditable="false">Hacer listado de clientes frecuentes</p>
+            <p contenteditable="false">Clasificar libros mas vendidos</p>
+            <p contenteditable="false">Recursos:</p>
+            <p contenteditable="false">50,000 pesos</p>
+            <p contenteditable="false">3 empleados</p>
+            <p contenteditable="false">Tiempo:</p>
+            <p contenteditable="false">12 meses</p>
+            <p contenteditable="false">Indicadores:</p>
+            <p contenteditable="false">Porcentaje de ventas de libros del 2021</p>
+          </div>
+            
+            `
+
+            document.getElementById('ejemploPlanesAccion').appendChild(div3);
 }
 
 
@@ -132,17 +180,8 @@ function seleccionAreaEnfoque(idSelect, idP) {
 }
 
 function agregarObjetivo() {
-  id = randomInt();
-  const div = document.createElement('div');
-  div.className = 'agregado';
-  div.innerHTML = `
-        <button class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Objetivo</button>
-          <div class="content">
-            <p contenteditable="true">Aumentar en un 50% el porcentaje de recompra de los clientes
-          actuales, en los productos más vendidos de la librería durante el año 2022</p>
-          </div>
-        `;
-  document.getElementById('ejemploObjetivo').appendChild(div);
+
+
 }
 
 
