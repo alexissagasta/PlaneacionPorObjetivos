@@ -59,13 +59,32 @@ async function getData() {
   });
 }
 
+let cantPlanes;
+async function getConfig() {
+  //
+  var nombEmpresa = "todas";
+  const response = await fetch("/configuracion/"+nombEmpresa, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  })
+  const data = await response.json();
+
+  const lts = data;
+  cantPlanes = lts.cantPlanes;
+  
+}
+
 function agregarAreadeEnfoque() {
-  idSelect = randomInt();
-  id = randomInt();
-  idP = randomInt();
-  idC = randomInt();
-  idObjetivo = randomInt();
-  idPlan = randomInt();
+  numero = parseInt(cantPlanes, 10);
+  idSelect = "idSelect"+ cantPlanes;
+  id = "id"+ cantPlanes;
+  idP = "idP"+ cantPlanes;
+  idC = "idC"+ cantPlanes;
+  idObjetivo = "idObjetivo"+ cantPlanes;
+  idPlan = "idPlan"+ cantPlanes;
   const form = document.createElement('form');
   opcionesAreasDeEnfoque = [];
   for (let i = 0; i < nombresAreasEnfoque.length; i++) {
@@ -145,9 +164,32 @@ function agregarAreadeEnfoque() {
             `
 
             document.getElementById('ejemploPlanesAccion').appendChild(div3);
+
+            numero--;
+            updateCantPlanes(JSON.stringify(numero));
 }
 
+//Función que sirve para actualizar el numero de planes en la base de datos que se encuentra en ese momento
+function updateCantPlanes(numero){
 
+  cantPlanes = {
+    cantPlanes: numero
+  }
+  var nombEmpresa = "todas";
+  const response = await fetch("/configuracion/"+nombEmpresa, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+
+    body: JSON.stringify(cantPlanes)
+
+
+  });
+  return response.json()
+
+}
 async function agregarAreaDeEnfoque(idP) {
 
   yeah = document.getElementById(idP).textContent;
@@ -178,12 +220,6 @@ function seleccionAreaEnfoque(idSelect, idP) {
 
   yeah.style.maxHeight = 150 + "px";
 }
-
-function agregarObjetivo() {
-
-
-}
-
 
 
 this.onload = agregarColapsable(), getData();
