@@ -38,9 +38,10 @@ function getRandomInt(max) {
 }
 client.connect(async function (err, db) {
 
-    router.get("/configuracion/nombreEmpresa", async (req, res, next) => {
+    router.get("/configuracion/:nombreEmpresa", async (req, res, next) => {
         try {
             var nomEmpresa = req.params.nombreEmpresa;
+            console.log(nomEmpresa)
             //Busca en JSON
             let configuracion = await gestorConfig.listarConfiguracionPorEmpresa(db, nomEmpresa);
             if (configuracion.length === 0) {
@@ -69,6 +70,32 @@ client.connect(async function (err, db) {
 
             //Almacena en Json
             info = await gestorAreasDeEnfoque.registrarAreaDeEnfoque(db, areaDeEnfoque);
+
+            //Se verifica si se agrego el área
+            if (info === "Una area ya tiene esa id!") {
+                res.status(200).send({ alerta: info });
+            } else {
+
+                res.status(201).send({ mensaje: "area agregada!" });
+            }
+        } catch (err) {
+            next(err)
+        }
+    });
+
+    router.put("/configuracion/:nombreEmpresa", async (req, res, next) => {
+        try {
+            var nomEmpresa = req.params.nombreEmpresa;
+            const data = req.body;
+            console.log(data);
+
+            //Se asignan los valores a partir del body
+            cantPlanes = {
+                cantPlanes: data.cantPlanes
+              }
+
+            //Almacena en Json
+            info = await gestorConfig.modificarConfiguracion(db, nomEmpresa, cantPlanes.cantPlanes);
 
             //Se verifica si se agrego el área
             if (info === "Una area ya tiene esa id!") {

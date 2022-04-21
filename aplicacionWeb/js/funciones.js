@@ -63,7 +63,7 @@ let cantPlanes;
 async function getConfig() {
   //
   var nombEmpresa = "todas";
-  const response = await fetch("/configuracion/"+nombEmpresa, {
+  const response = await fetch("/configuracion/todas", {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -170,13 +170,13 @@ function agregarAreadeEnfoque() {
 }
 
 //Función que sirve para actualizar el numero de planes en la base de datos que se encuentra en ese momento
-function updateCantPlanes(numero){
+async function updateCantPlanes(numero){
 
   cantPlanes = {
     cantPlanes: numero
   }
   var nombEmpresa = "todas";
-  const response = await fetch("/configuracion/"+nombEmpresa, {
+  const response = await fetch("/configuracion/todas", {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'

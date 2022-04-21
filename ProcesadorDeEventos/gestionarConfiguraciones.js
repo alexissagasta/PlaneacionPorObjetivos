@@ -31,6 +31,25 @@ class gestionarConfiguraciones {
 
     }
 
+    modificarConfiguracion = async (db, nomEmpresa, cantPlanes) => {
+        try {
+            var dbo = db.db("PlanesPorObjetivos");
+            const res = await dbo.collection("configuraciones").updateOne({ empresa: nomEmpresa }, {
+                $set:
+                {
+                    "cantPlanes": cantPlanes
+                }
+            });
+            console.log("Una configuracion se modifico");
+            console.log({ configuracion: res });
+            return res;
+
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
 
     listarAreasDeEnfoque = async (db) => {
 
