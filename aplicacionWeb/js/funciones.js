@@ -1,4 +1,6 @@
 nombresAreasEnfoque = [];
+nombresObjetivos = [];
+
 let cantPlanes;
 
 function agregarColapsable() {
@@ -56,7 +58,9 @@ async function getData() {
   lts.forEach(lt => {
 
     const nombre = lt.nombre;
+    const objetivos = lt.objetivos
     nombresAreasEnfoque.push(nombre);
+    nombresObjetivos.push(objetivos);
 
   });
 }
@@ -77,7 +81,7 @@ async function getConfig() {
   console.log("plan actual: ")
   console.log(planActual)
   console.log("cantidad planes: ")
-  console.log(+planActual.cantPlanes)
+  console.log(planActual.cantPlanes)
 
   cantPlanes= planActual.cantPlanes;
 
@@ -90,9 +94,11 @@ async function agregarAreadeEnfoque() {
   await getConfig();
   console.log(cantPlanes)
   numero = parseInt(cantPlanes, 10);
-  idSelect = "idSelect"+ cantPlanes;
+  idSelectAreas = "idSelectAreas"+ cantPlanes;
+  idSelectObjetivos = "idSelectObjetivos"+ cantPlanes;
   id = "id"+ cantPlanes;
-  idP = "idP"+ cantPlanes;
+  idPAreaDeEnfoque = "idPAreaDeEnfoque"+ cantPlanes;
+  idPObjetivo = "idPObjetivo"+ cantPlanes;
   idC = "idC"+ cantPlanes;
   idObjetivo = "idObjetivo"+ cantPlanes;
   idPlan = "idPlan"+ cantPlanes;
@@ -105,13 +111,13 @@ async function agregarAreadeEnfoque() {
   form.innerHTML = `
         
           <label for="AreasDeEnfoque">Áreas De Enfoque:</label>
-          <select name="AreasDeEnfoque" id=`+ idSelect + `>
+          <select name="AreasDeEnfoque" id=`+ idSelectAreas + `>
             <optgroup label="AreasDeEnfoque">
               `+ opcionesAreasDeEnfoque + `
               
             </optgroup>
           </select>
-          <button onClick = seleccionAreaEnfoque(`+ idSelect + `,` + idP + `)> Seleccionar </button>
+          <button onClick = seleccionAreaEnfoque(`+ idSelectAreas + `,` + idPAreaDeEnfoque + `)> Seleccionar </button>
           <br><br>
   
           
@@ -123,14 +129,50 @@ async function agregarAreadeEnfoque() {
         
         <div class="content" style = "text-align:center" id=`+ idC + `>
           `+ form.innerHTML + `
-          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ idP + `> --- </p>
-          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ idP + `)> Agregar nuevo </button>
+          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ idPAreaDeEnfoque + `> --- </p>
+          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ idPAreaDeEnfoque + `)> Agregar nuevo </button>
           </div>
         `;
 
   document.getElementById('ejemploAreadeEnfoque').appendChild(div);
 
   /*En este apartado inicia para agregar OBJETIVOS con el mismo botón */
+  const form2 = document.createElement('form');
+  //opcionesAreasDeEnfoque = [];
+  opcionesObjetivos = [];
+  for (let i = 0; i < nombresObjetivos.length; i++) {
+    opcion = "<option value=" + JSON.stringify(nombresObjetivos[i]) + ">" + nombresObjetivos[i] + "</option>";
+    opcionesObjetivos.push(opcion);
+  }
+  form2.innerHTML = `
+        
+          <label for="AreasDeEnfoque">Objetivo:</label>
+          <select name="Objetivo" id=`+ idSelectObjetivos + `>
+            <optgroup label="Objetivos">
+              `+ opcionesObjetivos + `
+              
+            </optgroup>
+          </select>
+          <button onClick = seleccionAreaEnfoque(`+ idSelectObjetivos + `,` + idPObjetivo + `)> Seleccionar </button>
+          <br><br>
+  
+          
+        `;
+  const div2 = document.createElement('div');
+  div2.className = 'agregado';
+  div2.innerHTML = `
+        <button class="collapsible" id=`+ idObjetivo + ` onclick="hacerColapsable(this.id)">Objetivo</button>
+        
+        <div class="content" style = "text-align:center" id=`+ idC + `>
+          `+ form2.innerHTML + `
+          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ idPObjetivo + `> --- </p>
+          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ idPObjetivo + `)> Agregar nuevo objetivo </button>
+          </div>
+        `;
+
+  document.getElementById('ejemploObjetivo').appendChild(div2);
+  //////////////////////////////////////////
+  /*
   const div2 = document.createElement('div');
   div2.className = 'agregado';
   div2.innerHTML = `
@@ -141,7 +183,8 @@ async function agregarAreadeEnfoque() {
           </div>
         `;
   document.getElementById('ejemploObjetivo').appendChild(div2);
-
+  */
+  ///////////////////////////////////////////
   /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
 
   const div3 = document.createElement('div');
@@ -223,10 +266,10 @@ async function agregarAreaDeEnfoque(idP) {
   return response.json()
 }
 
-function seleccionAreaEnfoque(idSelect, idP) {
-  var areaseleccionada = document.getElementById(idSelect).value;
-
-  var yeah = document.getElementById(idP);
+function seleccionAreaEnfoque(idSelectAreas, idPAreaDeEnfoque) {
+  console.log(idSelectAreas);
+  var areaseleccionada = document.getElementById(idSelectAreas).value;
+  var yeah = document.getElementById(idPAreaDeEnfoque);
   yeah.innerHTML = areaseleccionada;
 
   yeah.style.maxHeight = 150 + "px";
