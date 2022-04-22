@@ -111,13 +111,13 @@ async function agregarAreadeEnfoque() {
   form.innerHTML = `
         
           <label for="AreasDeEnfoque">Áreas De Enfoque:</label>
-          <select name="AreasDeEnfoque" id=`+ idSelectAreas + `>
+          <select name="AreasDeEnfoque" id=`+ JSON.stringify(idSelectAreas) + `>
             <optgroup label="AreasDeEnfoque">
               `+ opcionesAreasDeEnfoque + `
               
             </optgroup>
           </select>
-          <button onClick = seleccionAreaEnfoque(`+ idSelectAreas + `,` + idPAreaDeEnfoque + `)> Seleccionar </button>
+          <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idSelectAreas) + `,` + JSON.stringify(idPAreaDeEnfoque) + `)> Seleccionar </button>
           <br><br>
   
           
@@ -127,10 +127,10 @@ async function agregarAreadeEnfoque() {
   div.innerHTML = `
         <button class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>
         
-        <div class="content" style = "text-align:center" id=`+ idC + `>
+        <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
           `+ form.innerHTML + `
-          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ idPAreaDeEnfoque + `> --- </p>
-          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ idPAreaDeEnfoque + `)> Agregar nuevo </button>
+          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
+          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>
           </div>
         `;
 
@@ -147,13 +147,13 @@ async function agregarAreadeEnfoque() {
   form2.innerHTML = `
         
           <label for="AreasDeEnfoque">Objetivo:</label>
-          <select name="Objetivo" id=`+ idSelectObjetivos + `>
+          <select name="Objetivo" id=`+ JSON.stringify(idSelectObjetivos) + `>
             <optgroup label="Objetivos">
               `+ opcionesObjetivos + `
               
             </optgroup>
           </select>
-          <button onClick = seleccionAreaEnfoque(`+ idSelectObjetivos + `,` + idPObjetivo + `)> Seleccionar </button>
+          <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idSelectObjetivos) + `,` + JSON.stringify(idPObjetivo) + `)> Seleccionar </button>
           <br><br>
   
           
@@ -161,12 +161,12 @@ async function agregarAreadeEnfoque() {
   const div2 = document.createElement('div');
   div2.className = 'agregado';
   div2.innerHTML = `
-        <button class="collapsible" id=`+ idObjetivo + ` onclick="hacerColapsable(this.id)">Objetivo</button>
+        <button class="collapsible" id=`+ JSON.stringify(idObjetivo) + ` onclick="hacerColapsable(this.id)">Objetivo</button>
         
-        <div class="content" style = "text-align:center" id=`+ idC + `>
+        <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
           `+ form2.innerHTML + `
-          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ idPObjetivo + `> --- </p>
-          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ idPObjetivo + `)> Agregar nuevo objetivo </button>
+          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPObjetivo) + `> --- </p>
+          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPObjetivo) + `)> Agregar nuevo objetivo </button>
           </div>
         `;
 
