@@ -50,7 +50,7 @@ client.connect(async function (err, db) {
 
                 res.status(206).send(mensaje);
             } else {
-
+                console.log(configuracion)
                 res.status(200).send(configuracion);
             }
         } catch (err) {
@@ -93,7 +93,7 @@ client.connect(async function (err, db) {
             cantPlanes = {
                 cantPlanes: data.cantPlanes
               }
-
+            console.log(data.cantPlanes)
             //Almacena en Json
             info = await gestorConfig.modificarConfiguracion(db, nomEmpresa, cantPlanes.cantPlanes);
 

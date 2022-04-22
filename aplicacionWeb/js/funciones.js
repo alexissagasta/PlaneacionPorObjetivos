@@ -1,3 +1,5 @@
+nombresAreasEnfoque = [];
+let cantPlanes;
 
 function agregarColapsable() {
   var coll = document.getElementsByClassName("collapsible");
@@ -37,7 +39,7 @@ function randomInt() {
   return intr;
 }
 
-nombresAreasEnfoque = [];
+
 async function getData() {
   //
   const response = await fetch("/areasDeEnfoque", {
@@ -59,7 +61,7 @@ async function getData() {
   });
 }
 
-let cantPlanes;
+
 async function getConfig() {
   //
   var nombEmpresa = "todas";
@@ -71,13 +73,22 @@ async function getConfig() {
     }
   })
   const data = await response.json();
+  planActual = data[0]
+  console.log("plan actual: ")
+  console.log(planActual)
+  console.log("cantidad planes: ")
+  console.log(+planActual.cantPlanes)
 
-  const lts = data;
-  cantPlanes = lts.cantPlanes;
-  
+  cantPlanes= planActual.cantPlanes;
+
+  return cantPlanes
 }
 
-function agregarAreadeEnfoque() {
+
+
+async function agregarAreadeEnfoque() {
+  await getConfig();
+  console.log(cantPlanes)
   numero = parseInt(cantPlanes, 10);
   idSelect = "idSelect"+ cantPlanes;
   id = "id"+ cantPlanes;

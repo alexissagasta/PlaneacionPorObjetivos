@@ -7,7 +7,6 @@ class gestionarAreasDeEnfoque {
             var dbo = db.db("PlanesPorObjetivos");
             const res = await dbo.collection("areasDeEnfoque").insertOne(areaDeEnfoque);
             console.log("Una área de enfoque ha sido agregada");
-            console.log({ areaDeEnfoque: res });
             return res;
 
         } catch (e) {
@@ -39,7 +38,7 @@ class gestionarAreasDeEnfoque {
             var dbo = db.db("PlanesPorObjetivos");
             // execute find query
             const items = await dbo.collection('areasDeEnfoque').find({}).toArray();
-            console.log(items);
+            //console.log(items);
             return items;
         } catch (e) {
             console.error(e);
@@ -53,7 +52,7 @@ class gestionarAreasDeEnfoque {
             const db = client.db('Invernaderos');
             // execute find query
             const items = await db.collection('invernadero').find({ "_id": id }).toArray();
-            console.log(items);
+            //console.log(items);
             return items;
         } catch (e) {
             console.error(e);

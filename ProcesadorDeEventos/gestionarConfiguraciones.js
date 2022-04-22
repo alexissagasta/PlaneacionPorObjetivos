@@ -86,7 +86,6 @@ class gestionarConfiguraciones {
             const db = client.db('PlanesPorObjetivos');
             // execute find query
             const items = await db.collection('configuraciones').find({ "empresa": nombreEmpresa }).toArray();
-            console.log(items);
             return items;
         } catch (e) {
             console.error(e);
