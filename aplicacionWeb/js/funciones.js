@@ -1,6 +1,6 @@
+//Se declaran variables para su uso en distintas fucniones
 nombresAreasEnfoque = [];
 nombresObjetivos = [];
-
 let cantPlanes;
 
 function agregarColapsable() {
@@ -34,13 +34,6 @@ function hacerColapsable(id) {
     content.style.maxHeight = content.scrollHeight + "px";
   }
 }
-
-function randomInt() {
-  intr = Math.random();
-  console.log(intr);
-  return intr;
-}
-
 
 async function getData() {
   //
@@ -89,11 +82,20 @@ async function getConfig() {
 }
 
 
-
+//Esta funcion se encarga de crear nuevos elementos de area de enfoque, objetivo y
+//plan de áccion en el docuemnto html
 async function agregarAreadeEnfoque() {
+
+  //Se llama a la funcion getConfig para obtener la configuracion de la empresa y 
+  //establecer el valor de cantPlanes
   await getConfig();
-  console.log(cantPlanes)
+
+  //Se crea la variable numero que mas adelante se usara para establecer el nuevo valor
+  //de cantPlanes
   numero = parseInt(cantPlanes, 10);
+
+  //Se crean las ids de los nuevos elementos a crear; esto al concatenar el tipo de elemento 
+  //y la cantPlanes disponibles
   idSelectAreas = "idSelectAreas"+ cantPlanes;
   idSelectObjetivos = "idSelectObjetivos"+ cantPlanes;
   id = "id"+ cantPlanes;
@@ -102,6 +104,8 @@ async function agregarAreadeEnfoque() {
   idC = "idC"+ cantPlanes;
   idObjetivo = "idObjetivo"+ cantPlanes;
   idPlan = "idPlan"+ cantPlanes;
+
+  /*En este apartado inicia para agregar AREAS DE ENFOQUE con el botón */
   const form = document.createElement('form');
   opcionesAreasDeEnfoque = [];
   for (let i = 0; i < nombresAreasEnfoque.length; i++) {
@@ -122,6 +126,8 @@ async function agregarAreadeEnfoque() {
   
           
         `;
+
+  //aqui se crea la divicion que incluye el boton(collapsible) y el contenido(content)      
   const div = document.createElement('div');
   div.className = 'agregado';
   div.innerHTML = `
@@ -138,7 +144,6 @@ async function agregarAreadeEnfoque() {
 
   /*En este apartado inicia para agregar OBJETIVOS con el mismo botón */
   const form2 = document.createElement('form');
-  //opcionesAreasDeEnfoque = [];
   opcionesObjetivos = [];
   for (let i = 0; i < nombresObjetivos.length; i++) {
     opcion = "<option value=" + JSON.stringify(nombresObjetivos[i]) + ">" + nombresObjetivos[i] + "</option>";
@@ -171,22 +176,8 @@ async function agregarAreadeEnfoque() {
         `;
 
   document.getElementById('ejemploObjetivo').appendChild(div2);
-  //////////////////////////////////////////
-  /*
-  const div2 = document.createElement('div');
-  div2.className = 'agregado';
-  div2.innerHTML = `
-        <button class="collapsible" id=`+ idObjetivo + ` onclick="hacerColapsable(this.id)">Objetivo</button>
-          <div class="content">
-            <p contenteditable="true">Aumentar en un 50% el porcentaje de recompra de los clientes
-          actuales, en los productos más vendidos de la librería durante el año 2022</p>
-          </div>
-        `;
-  document.getElementById('ejemploObjetivo').appendChild(div2);
-  */
-  ///////////////////////////////////////////
+  
   /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
-
   const div3 = document.createElement('div');
   div3.className = 'agregado';
   div3.innerHTML = `
@@ -223,7 +214,8 @@ async function agregarAreadeEnfoque() {
             updateCantPlanes(JSON.stringify(numero));
 }
 
-//Función que sirve para actualizar el numero de planes en la base de datos que se encuentra en ese momento
+//Función que sirve para actualizar el numero de planes en la base de datos que se 
+//encuentra en ese momento
 async function updateCantPlanes(numero){
 
   cantPlanes = {
@@ -244,6 +236,8 @@ async function updateCantPlanes(numero){
   return response.json()
 
 }
+
+//Agrega un area de enfoque a la base de datos a partir del idP que se le envie
 async function agregarAreaDeEnfoque(idP) {
 
   yeah = document.getElementById(idP).textContent;
@@ -266,8 +260,9 @@ async function agregarAreaDeEnfoque(idP) {
   return response.json()
 }
 
+//Funcion que se encarga de asiganar el valor el elemento idSelectAreas que tiene en 
+//ese momento al elemento idPAreaDeEnfoque
 function seleccionAreaEnfoque(idSelectAreas, idPAreaDeEnfoque) {
-  console.log(idSelectAreas);
   var areaseleccionada = document.getElementById(idSelectAreas).value;
   var yeah = document.getElementById(idPAreaDeEnfoque);
   yeah.innerHTML = areaseleccionada;
