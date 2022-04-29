@@ -178,6 +178,8 @@ async function agregarAreadeEnfoque() {
   document.getElementById('ejemploObjetivo').appendChild(div2);
   
   /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
+
+  /*Crear una función getPlanes() para planes de acción y un foreach de acciones y una para recursos */
   const div3 = document.createElement('div');
   div3.className = 'agregado';
   div3.innerHTML = `
@@ -192,18 +194,39 @@ async function agregarAreadeEnfoque() {
                 </optgroup>
               </select>
               <br><br>
+
+              <label for="acciones">Acciones:</label>
+              <select name="acciones" id="acciones">
+                <optgroup label="Acciones">
+                  <option value="Buscar capacitadores en servicio al cliente">Buscar capacitadores en servicio al cliente</option>
+                  <option value="Cotizar al mejor para la empresa">Cotizar al mejor para la empresa</option>
+                  <option value="Establecer presupuesto, fecha y recursos">Establecer presupuesto, fecha y recursos</option>
+                  <option value="Invitar a los colaboradores a la capacitación">Invitar a los colaboradores a la capacitación</option>
+                  <option value="Desarrollar la capacitación">Desarrollar la capacitación</option>
+                  <option value="Evaluar el resultado">Evaluar el resultado</option>
+                </optgroup>
+              </select>
+              <br>
+
+              <label for="recursos">Recursos:</label>
+              
+              <select name="recursos" id="recursos">
+                <optgroup label="Recursos">
+                  <option value="50,000.00 pesos">$50,000.00 pesos</option>
+                  <option value="3 empleados">3 empleados</option>
+                </optgroup>
+              </select>
+              <br>
+
+              <label for="tiempo">Tiempo:</label>
+              <p style = "text-align:center;display:inline-block" contenteditable="true"> 12 meses </p>
+              <br>
+
+              <label for="indicadores">Indicadores:</label>
+              <p style = "text-align:center;display:inline-block" contenteditable="true"> Porcentaje de ventas del 2021 </p>
+              <br>
+
             </form>
-            <p contenteditable="false">Acciones:</p>
-            <p contenteditable="false">Contactar mercadologo</p>
-            <p contenteditable="false">Hacer listado de clientes frecuentes</p>
-            <p contenteditable="false">Clasificar libros mas vendidos</p>
-            <p contenteditable="false">Recursos:</p>
-            <p contenteditable="false">50,000 pesos</p>
-            <p contenteditable="false">3 empleados</p>
-            <p contenteditable="false">Tiempo:</p>
-            <p contenteditable="false">12 meses</p>
-            <p contenteditable="false">Indicadores:</p>
-            <p contenteditable="false">Porcentaje de ventas de libros del 2021</p>
           </div>
             
             `
