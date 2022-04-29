@@ -2,12 +2,11 @@
 
 class gestionarPlanes {
 
-    registrarInvernadero = async (db, invernadero) => {
+    registrarPlaneDeAccion = async (db, planDeAccion) => {
         try {
-            var dbo = db.db("Invernaderos");
-            const res = await dbo.collection("invernadero").insertOne(invernadero);
-            console.log("Un invernadero ha sido agregado");
-            console.log({ invernadero: res });
+            var dbo = db.db("PlanesPorObjetivos");
+            const res = await dbo.collection("Planes").insertOne(planDeAccion);
+            console.log("Un plan de acción ha sido agregado");
             return res;
 
         } catch (e) {
@@ -15,30 +14,14 @@ class gestionarPlanes {
         }
 
     }
-
-    borrarInvernaderoPorId = async (db, id) => {
-        try {
-            var dbo = db.db("Invernaderos");
-            var myquery = { "_id": id };
-            const res = await dbo.collection("invernadero").deleteOne(myquery);
-            console.log("Un invernadero ha sido eliminado");
-            console.log({ rifa: res });
-            return res;
-
-        } catch (e) {
-            console.error(e);
-        }
-
-    }
-
-
-    listarInvernaderos = async (db) => {
+    
+    listarPlanesDeAccion = async (db) => {
 
         try {
             // specify the DB's name
-            var dbo = db.db("Invernaderos");
+            var dbo = db.db("PlanesPorObjetivos");
             // execute find query
-            const items = await dbo.collection('invernadero').find({}).toArray();
+            const items = await dbo.collection('Planes').find({}).toArray();
             console.log(items);
             return items;
         } catch (e) {
@@ -47,12 +30,12 @@ class gestionarPlanes {
 
     }
 
-    listarInvernaderoPorId = async (client, id) => {
+    listarPlanesDeAccionPorTitulo = async (client, titulo) => {
         try {
             // specify the DB's name
-            const db = client.db('Invernaderos');
+            const db = client.db('PlanesPorObjetivos');
             // execute find query
-            const items = await db.collection('invernadero').find({ "_id": id }).toArray();
+            const items = await db.collection('Planes').find({ "Titulo": titulo }).toArray();
             console.log(items);
             return items;
         } catch (e) {
@@ -60,44 +43,6 @@ class gestionarPlanes {
         }
 
     }
-
-    agregarLecturaInvernadero = async (db, idInv, lectura, lecturaId) => {
-        try {
-            var dbo = db.db("Invernaderos");
-            var myquery = { "_id": idInv };
-            //busca si ya existe una lectura con el mismo id
-            var idExist = await dbo.collection("invernadero").find({
-                lecturas: {
-                    $elemMatch: {
-                        _id: lecturaId, idInvernadero: idInv
-                    }
-                }
-            }).toArray();
-
-            if (idExist.length > 0) {
-                return "Una lectura ya tiene esa id!"
-            } else {
-
-                const res = await dbo.collection("invernadero").updateOne(myquery, {
-                    $addToSet:
-                    {
-                        "lecturas": lectura
-                    }
-                });
-                console.log("Una lectura ha sido agregada");
-                console.log({ lectura: res });
-                return res;
-
-            }
-
-
-        } catch (e) {
-            console.error(e);
-        }
-
-    }
-
-
 }
 
 module.exports = gestionarPlanes

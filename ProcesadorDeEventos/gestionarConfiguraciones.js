@@ -1,4 +1,4 @@
-//gestionarAreasDeEnfoque.js
+//gestionarConfiguraciones.js
 
 class gestionarConfiguraciones {
 
