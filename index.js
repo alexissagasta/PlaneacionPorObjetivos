@@ -1,6 +1,7 @@
 //index.js
 const ruteador = require("./ManejadorDeEventos/ruteadorAreasDeEnfoque.js");
 const ruteadorConfig = require("./ManejadorDeEventos/ruteadorConfiguraciones.js");
+const ruteadorPlanes = require("./ManejadorDeEventos/ruteadorPlanesDeAccion.js");
 const express = require("express");
 var fs = require("fs");
 var morgan = require('morgan');
@@ -19,6 +20,7 @@ async function main() {
     app.use(express.static("./public"));
     app.use(morgan('combined', { stream: accessLogStream }))
     app.use("/", ruteadorConfig);
+    app.use("/", ruteadorPlanes);
     app.use("/", ruteador);
 
     app.get("/", (req, res) => {
