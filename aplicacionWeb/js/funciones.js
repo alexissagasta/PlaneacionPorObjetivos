@@ -102,7 +102,7 @@ async function getConfig() {
   console.log("cantidad planes: ")
   console.log(planActual.cantPlanes)
 
-  cantPlanes= planActual.cantPlanes;
+  cantPlanes = planActual.cantPlanes;
 
   return cantPlanes
 }
@@ -122,14 +122,14 @@ async function agregarAreadeEnfoque() {
 
   //Se crean las ids de los nuevos elementos a crear; esto al concatenar el tipo de elemento 
   //y la cantPlanes disponibles
-  idSelectAreas = "idSelectAreas"+ cantPlanes;
-  idSelectObjetivos = "idSelectObjetivos"+ cantPlanes;
-  id = "id"+ cantPlanes;
-  idPAreaDeEnfoque = "idPAreaDeEnfoque"+ cantPlanes;
-  idPObjetivo = "idPObjetivo"+ cantPlanes;
-  idC = "idC"+ cantPlanes;
-  idObjetivo = "idObjetivo"+ cantPlanes;
-  idPlan = "idPlan"+ cantPlanes;
+  idSelectAreas = "idSelectAreas" + cantPlanes;
+  idSelectObjetivos = "idSelectObjetivos" + cantPlanes;
+  id = "id" + cantPlanes;
+  idPAreaDeEnfoque = "idPAreaDeEnfoque" + cantPlanes;
+  idPObjetivo = "idPObjetivo" + cantPlanes;
+  idC = "idC" + cantPlanes;
+  idObjetivo = "idObjetivo" + cantPlanes;
+  idPlan = "idPlan" + cantPlanes;
 
   /*En este apartado inicia para agregar AREAS DE ENFOQUE con el botón */
   const form = document.createElement('form');
@@ -202,38 +202,27 @@ async function agregarAreadeEnfoque() {
         `;
 
   document.getElementById('ejemploObjetivo').appendChild(div2);
-  
+
   /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
 
   /*Crear una función getPlanes() para planes de acción y un foreach de acciones y una para recursos */
-  const divAcciones = document.createElement('div');
-  opcionPlanAcciones = [];
-  for (let i = 0; i < planAcciones.length; i++) {
-    opcion = "<p value=" + JSON.stringify(planAcciones[i]) + ">" + planAcciones[i] + "</p>";
-    opcionPlanAcciones.push(opcion);
-  }
 
-  divAcciones.innerHTML = `
-        
-      `+opcionPlanAcciones+`
-          
-        `;
-const divRecursos = document.createElement('div');
+  const divRecursos = document.createElement('div');
   //Se crea principalmente el array opcionPlanRecursos
   opcionPlanRecursos = [];
   for (let i = 0; i < planRecursos.length; i++) {
     opcion = "<p value=" + JSON.stringify(planRecursos[i]) + ">" + planRecursos[i] + "</p>";
     opcionPlanRecursos.push(opcion);
-    
+
   }
 
   divRecursos.innerHTML = `
         
-      `+opcionPlanRecursos+`
+      `+ opcionPlanRecursos + `
           
         `;
-  
-  
+
+
   const div3 = document.createElement('div');
   div3.className = 'agregado';
   div3.innerHTML = `
@@ -250,12 +239,12 @@ const divRecursos = document.createElement('div');
               <br><br>
 
               <label for="acciones">Acciones:</label>
-              `+divAcciones.innerHTML+`
+              <p id="TodasAcciones"></p>
               <br>
 
               <label for="recursos">Recursos:</label>
               
-              `+divRecursos.innerHTML+`
+              `+ divRecursos.innerHTML + `
               <br>
 
               <label for="tiempo">Tiempo:</label>
@@ -271,15 +260,38 @@ const divRecursos = document.createElement('div');
             
             `
 
-            document.getElementById('ejemploPlanesAccion').appendChild(div3);
+  document.getElementById('ejemploPlanesAccion').appendChild(div3);
 
-            numero--;
-            updateCantPlanes(JSON.stringify(numero));
+  const divAcciones = document.createElement('div');
+  opcionPlanAcciones = [];
+/*
+  var x=0;
+  planAcciones.forEach(i => {var pdiv = document.createElement('div');
+  let lqsea = i;
+  x++;
+  pdiv.className = 'row';
+  pdiv.id="id"+JSON.stringify(x);
+
+  pdiv.innerHTML =`<p>${lqsea}</p>`;
+
+  document.getElementById('TodasAcciones').appendChild(pdiv)})
+  */
+let accionesTodas="<ul>";
+  for (let i = 0; i < planAcciones.length; i++) {
+
+    accionesTodas +="<li contenteditable=true>" + planAcciones[i]+ "</li>";
+  }
+  accionesTodas += "</ul>"
+
+  document.getElementById('TodasAcciones').innerHTML = accionesTodas;
+
+  numero--;
+  updateCantPlanes(JSON.stringify(numero));
 }
 
 //Función que sirve para actualizar el numero de planes en la base de datos que se 
 //encuentra en ese momento
-async function updateCantPlanes(numero){
+async function updateCantPlanes(numero) {
 
   cantPlanes = {
     cantPlanes: numero
