@@ -1,6 +1,8 @@
 //Se declaran variables para su uso en distintas fucniones
 nombresAreasEnfoque = [];
 nombresObjetivos = [];
+planAcciones = [];
+planRecursos = [];
 let cantPlanes;
 
 function agregarColapsable() {
@@ -54,6 +56,30 @@ async function getData() {
     const objetivos = lt.objetivos
     nombresAreasEnfoque.push(nombre);
     nombresObjetivos.push(objetivos);
+
+  });
+}
+
+//Función que sirve para traer los planes de acción.
+async function getPlanesAccion() {
+  //
+  const response = await fetch("/planesDeAccion", {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  })
+  const data = await response.json();
+
+  const lts = data;
+
+  lts.forEach(lt => {
+
+    const acciones = lt.acciones;
+    const recursos = lt.recursos
+    planAcciones.push(acciones);
+    planRecursos.push(recursos);
 
   });
 }
@@ -180,6 +206,34 @@ async function agregarAreadeEnfoque() {
   /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
 
   /*Crear una función getPlanes() para planes de acción y un foreach de acciones y una para recursos */
+  const divAcciones = document.createElement('div');
+  opcionPlanAcciones = [];
+  for (let i = 0; i < planAcciones.length; i++) {
+    opcion = "<p value=" + JSON.stringify(planAcciones[i]) + ">" + planAcciones[i] + "</p>";
+    opcionPlanAcciones.push(opcion);
+  }
+
+  divAcciones.innerHTML = `
+        
+      `+opcionPlanAcciones+`
+          
+        `;
+const divRecursos = document.createElement('div');
+  //Se crea principalmente el array opcionPlanRecursos
+  opcionPlanRecursos = [];
+  for (let i = 0; i < planRecursos.length; i++) {
+    opcion = "<p value=" + JSON.stringify(planRecursos[i]) + ">" + planRecursos[i] + "</p>";
+    opcionPlanRecursos.push(opcion);
+    
+  }
+
+  divRecursos.innerHTML = `
+        
+      `+opcionPlanRecursos+`
+          
+        `;
+  
+  
   const div3 = document.createElement('div');
   div3.className = 'agregado';
   div3.innerHTML = `
@@ -196,26 +250,12 @@ async function agregarAreadeEnfoque() {
               <br><br>
 
               <label for="acciones">Acciones:</label>
-              <select name="acciones" id="acciones">
-                <optgroup label="Acciones">
-                  <option value="Buscar capacitadores en servicio al cliente">Buscar capacitadores en servicio al cliente</option>
-                  <option value="Cotizar al mejor para la empresa">Cotizar al mejor para la empresa</option>
-                  <option value="Establecer presupuesto, fecha y recursos">Establecer presupuesto, fecha y recursos</option>
-                  <option value="Invitar a los colaboradores a la capacitación">Invitar a los colaboradores a la capacitación</option>
-                  <option value="Desarrollar la capacitación">Desarrollar la capacitación</option>
-                  <option value="Evaluar el resultado">Evaluar el resultado</option>
-                </optgroup>
-              </select>
+              `+divAcciones.innerHTML+`
               <br>
 
               <label for="recursos">Recursos:</label>
               
-              <select name="recursos" id="recursos">
-                <optgroup label="Recursos">
-                  <option value="50,000.00 pesos">$50,000.00 pesos</option>
-                  <option value="3 empleados">3 empleados</option>
-                </optgroup>
-              </select>
+              `+divRecursos.innerHTML+`
               <br>
 
               <label for="tiempo">Tiempo:</label>
@@ -294,4 +334,4 @@ function seleccionAreaEnfoque(idSelectAreas, idPAreaDeEnfoque) {
 }
 
 
-this.onload = agregarColapsable(), getData();
+this.onload = agregarColapsable(), getData(), getPlanesAccion();
