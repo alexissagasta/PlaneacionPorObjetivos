@@ -13,11 +13,12 @@ const client = new MongoClient(uri, {
 
 client.connect(async function (err, db) {
 
-    router.get("/planesDeAccion", async (req, res, next) => {
+    router.get("/planesDeAccion/:tituloPlan", async (req, res, next) => {
+        var tituloPlan = req.params.tituloPlan;
         try {
             
             //Busca en la BD
-            let planes = await gestorPlanes.listarPlanesDeAccion(db);
+            let planes = await gestorPlanes.listarPlanesDeAccionPorTitulo(db, tituloPlan);
             if (planes.length === 0) {
 
                 mensaje = { msj: "no hay planes!" }

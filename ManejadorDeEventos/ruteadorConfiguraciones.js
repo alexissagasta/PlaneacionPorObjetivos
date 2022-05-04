@@ -58,7 +58,7 @@ client.connect(async function (err, db) {
         }
     });
 
-    router.post("/areaDeEnfoque", async (req, res, next) => {
+    router.post("/configuracion", async (req, res, next) => {
         try {
             const data = req.body;
             console.log(data);

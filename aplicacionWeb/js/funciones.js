@@ -61,9 +61,9 @@ async function getData() {
 }
 
 //Función que sirve para traer los planes de acción.
-async function getPlanesAccion() {
+async function getPlanesAccion(titulo) {
   //
-  const response = await fetch("/planesDeAccion", {
+  const response = await fetch("/planesDeAccion/"+titulo, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -72,16 +72,8 @@ async function getPlanesAccion() {
   })
   const data = await response.json();
 
-  const lts = data;
-
-  lts.forEach(lt => {
-
-    const acciones = lt.acciones;
-    const recursos = lt.recursos
-    planAcciones.push(acciones);
-    planRecursos.push(recursos);
-
-  });
+  planAcciones = data.acciones;
+  planRecursos = data.recursos;
 }
 
 
@@ -205,9 +197,21 @@ async function agregarAreadeEnfoque() {
 
   /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
 
-  /*Crear una función getPlanes() para planes de acción y un foreach de acciones y una para recursos */
+
+  //Pendientes
+  //Miercoles
+  /*Crear el apartado para seleccionar un plan (select)*/
+  /*modificar los objetivos y las acciones como una tabla en lugar de un p*/
+  /*obtener los objetivos individualmente y no como array*/
+  /*Separar archivo funciones en funcionesDatos y funcionesVisuales*/
+
+  //Jueves
+  /*Boton guardar cambios*/
+
+  await getPlanesAccion()
 
   const divRecursos = document.createElement('div');
+  
   //Se crea principalmente el array opcionPlanRecursos
   opcionPlanRecursos = [];
   for (let i = 0; i < planRecursos.length; i++) {
@@ -264,22 +268,11 @@ async function agregarAreadeEnfoque() {
 
   const divAcciones = document.createElement('div');
   opcionPlanAcciones = [];
-/*
-  var x=0;
-  planAcciones.forEach(i => {var pdiv = document.createElement('div');
-  let lqsea = i;
-  x++;
-  pdiv.className = 'row';
-  pdiv.id="id"+JSON.stringify(x);
-
-  pdiv.innerHTML =`<p>${lqsea}</p>`;
-
-  document.getElementById('TodasAcciones').appendChild(pdiv)})
-  */
-let accionesTodas="<ul>";
+ 
+  let accionesTodas = "<ul>";
   for (let i = 0; i < planAcciones.length; i++) {
 
-    accionesTodas +="<li contenteditable=true>" + planAcciones[i]+ "</li>";
+    accionesTodas += "<li contenteditable=true>" + planAcciones[i] + "</li>";
   }
   accionesTodas += "</ul>"
 
@@ -341,9 +334,8 @@ function seleccionAreaEnfoque(idSelectAreas, idPAreaDeEnfoque) {
   var areaseleccionada = document.getElementById(idSelectAreas).value;
   var yeah = document.getElementById(idPAreaDeEnfoque);
   yeah.innerHTML = areaseleccionada;
-
   yeah.style.maxHeight = 150 + "px";
 }
 
 
-this.onload = agregarColapsable(), getData(), getPlanesAccion();
+this.onload = agregarColapsable(), getData();
