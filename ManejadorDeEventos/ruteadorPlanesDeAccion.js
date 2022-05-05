@@ -19,7 +19,7 @@ client.connect(async function (err, db) {
             
             //Busca en la BD
             let planes = await gestorPlanes.listarPlanesDeAccionPorTitulo(db, tituloPlan);
-            if (planes.length === 0) {
+            if (planes=null) {
 
                 mensaje = { msj: "no hay planes!" }
 
@@ -27,6 +27,25 @@ client.connect(async function (err, db) {
             } else {
                 console.log(planes)
                 res.status(200).send(planes);
+            }
+        } catch (err) {
+            next(err)
+        }
+    });
+
+    router.get("/titulosPlanesDeAccion", async (req, res, next) => {
+        try {
+            
+            //Busca en la BD
+            let titulos = await gestorPlanes.listarTitulosDePlanesDeAccion(db);
+            console.log(titulos)
+            if (titulos.length==0) {
+                
+                mensaje = { msj: "no hay planes!" }
+
+                res.status(206).send(mensaje);
+            } else {
+                res.status(200).send(titulos);
             }
         } catch (err) {
             next(err)

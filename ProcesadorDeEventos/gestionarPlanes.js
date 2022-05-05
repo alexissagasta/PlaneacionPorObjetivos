@@ -43,6 +43,23 @@ class gestionarPlanes {
         }
 
     }
+
+    listarTitulosDePlanesDeAccion = async (client) => {
+        try {
+            // specify the DB's name
+            const db = client.db('PlanesPorObjetivos');
+            // execute find query
+            const items = await db.collection('Planes').find({}).toArray();
+            let titulos=[];
+            items.forEach(element => {
+                titulos.push(element.titulo)
+            });
+            return titulos;
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
 }
 
 module.exports = gestionarPlanes
