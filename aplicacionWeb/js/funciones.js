@@ -3,6 +3,7 @@ nombresAreasEnfoque = [];
 nombresObjetivos = [];
 planAcciones = [];
 planRecursos = [];
+planAccionTitulo = [];
 let cantPlanes;
 
 function agregarColapsable() {
@@ -36,7 +37,7 @@ function hacerColapsable(id) {
     content.style.maxHeight = content.scrollHeight + "px";
   }
 }
-
+//Función que sirve para traer las areas de enfoque
 async function getData() {
   //
   const response = await fetch("/areasDeEnfoque", {
@@ -76,6 +77,20 @@ async function getPlanesAccion(titulo) {
   planRecursos = data.recursos;
 }
 
+//Función que sirve para traer el titulo de planes de acción.
+async function getPlanesTitulo() {
+  //
+  const response = await fetch("/titulosPlanesDeAccion", {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  })
+  const data = await response.json();
+
+  planAccionTitulo = data;
+}
 
 async function getConfig() {
   //
@@ -118,9 +133,11 @@ async function agregarAreadeEnfoque() {
     //y la cantPlanes disponibles
     idSelectAreas = "idSelectAreas" + cantPlanes;
     idSelectObjetivos = "idSelectObjetivos" + cantPlanes;
+    idSelectPlanes = "idSelectPlanes" + cantPlanes;
     id = "id" + cantPlanes;
     idPAreaDeEnfoque = "idPAreaDeEnfoque" + cantPlanes;
     idPObjetivo = "idPObjetivo" + cantPlanes;
+    idPPlanes = "idPPlanes" + cantPlanes;
     idC = "idC" + cantPlanes;
     idObjetivo = "idObjetivo" + cantPlanes;
     idPlan = "idPlan" + cantPlanes;
@@ -218,55 +235,88 @@ async function agregarAreadeEnfoque() {
 
     //Se crea principalmente el array opcionPlanRecursos
     opcionPlanRecursos = [];
+    /*
     for (let i = 0; i < planRecursos.length; i++) {
       opcion = "<p value=" + JSON.stringify(planRecursos[i]) + ">" + planRecursos[i] + "</p>";
       opcionPlanRecursos.push(opcion);
     }
-
+    */
     divRecursos.innerHTML = `
         
       `+ opcionPlanRecursos + `
           
         `;
 
-
+    const form3 = document.createElement('form');
+    opcionesPlanAccionTitulo = [];
+    for (let i = 0; i < planAccionTitulo.length; i++) {
+      opcion = "<option value=" + JSON.stringify(planAccionTitulo[i]) + ">" + planAccionTitulo[i] + "</option>";
+      opcionesPlanAccionTitulo.push(opcion);
+    }
+    form3.innerHTML = `
+        
+          <label for="PlanesDeAccion">Planes de acción:</label>
+          <select name="plandeaccion" id=`+ JSON.stringify(idSelectPlanes) + `>
+            <optgroup label="Planes de acciones">
+              `+ opcionesPlanAccionTitulo + `
+              
+            </optgroup>
+          </select>
+          <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idPPlanes) + `)> Seleccionar </button>
+          <br><br>
+  
+          
+        `;
     const div3 = document.createElement('div');
     div3.className = 'agregado';
     div3.innerHTML = `
-          <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
-          <div class="content">
-            <form>
-              <label for="encargados">Encargado:</label>
-              <select name="encargados" id="encargados">
-                <optgroup label="Encargados">
-                  <option value="luis">Luis</option>
-                  <option value="mario">Mario</option>
-                </optgroup>
-              </select>
-              <br><br>
-              </form>
-              <label for="acciones">Acciones:</label>
-              <p id="TodasAcciones"></p>
-              <br>
-
-              <label for="recursos">Recursos:</label>
-              
-              `+ divRecursos.innerHTML + `
-              <br>
-
-              <label for="tiempo">Tiempo:</label>
-              <p style = "text-align:center;display:inline-block" contenteditable="true"> 12 meses </p>
-              <br>
-
-              <label for="indicadores">Indicadores:</label>
-              <p style = "text-align:center;display:inline-block" contenteditable="true"> Porcentaje de ventas del 2021 </p>
-              <br>
+        <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
+        
+        <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
+          `+ form3.innerHTML + `
+          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPPlanes) + `> --- </p>
+          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPPlanes) + `)> Agregar nuevo plan de acción </button>
           </div>
-            
-            `
+        `;
 
+    /*
+        const div3 = document.createElement('div');
+        div3.className = 'agregado';
+        div3.innerHTML = `
+              <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
+              <div class="content">
+                <form>
+                  <label for="encargados">Encargado:</label>
+                  <select name="encargados" id="encargados">
+                    <optgroup label="Encargados">
+                      <option value="luis">Luis</option>
+                      <option value="mario">Mario</option>
+                    </optgroup>
+                  </select>
+                  <br><br>
+                  </form>
+                  <label for="acciones">Acciones:</label>
+                  <p id="TodasAcciones"></p>
+                  <br>
+    
+                  <label for="recursos">Recursos:</label>
+                  
+                  `+ divRecursos.innerHTML + `
+                  <br>
+    
+                  <label for="tiempo">Tiempo:</label>
+                  <p style = "text-align:center;display:inline-block" contenteditable="true"> 12 meses </p>
+                  <br>
+    
+                  <label for="indicadores">Indicadores:</label>
+                  <p style = "text-align:center;display:inline-block" contenteditable="true"> Porcentaje de ventas del 2021 </p>
+                  <br>
+              </div>
+                
+                `
+    */
     document.getElementById('ejemploPlanesAccion').appendChild(div3);
-
+    /*
     const divAcciones = document.createElement('div');
     opcionPlanAcciones = [];
 
@@ -281,6 +331,7 @@ async function agregarAreadeEnfoque() {
 
     numero--;
     await updateCantPlanes(JSON.stringify(numero));
+    */
   } else {
     alert("ya creo el maximo de planes puede incrementar la cantidad en conficuraciones")
   }
