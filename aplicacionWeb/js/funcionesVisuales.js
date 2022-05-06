@@ -32,7 +32,7 @@ function hacerColapsable(id) {
     }
 }
 
-//Funcion que se encarga de asiganar el valor el elemento idSelectAreas que tiene en 
+//Funcion que se encarga de asiganar el valor al elemento idSelectAreas que tiene en 
 //ese momento al elemento idPAreaDeEnfoque
 function seleccionAreaEnfoque(idSelectAreas, idPAreaDeEnfoque) {
     var areaseleccionada = document.getElementById(idSelectAreas).value;

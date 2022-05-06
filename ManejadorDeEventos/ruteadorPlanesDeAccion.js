@@ -19,15 +19,8 @@ client.connect(async function (err, db) {
             
             //Busca en la BD
             let planes = await gestorPlanes.listarPlanesDeAccionPorTitulo(db, tituloPlan);
-            if (planes=null) {
-
-                mensaje = { msj: "no hay planes!" }
-
-                res.status(206).send(mensaje);
-            } else {
-                console.log(planes)
-                res.status(200).send(planes);
-            }
+            res.status(200).send(planes);
+            
         } catch (err) {
             next(err)
         }

@@ -35,9 +35,10 @@ class gestionarPlanes {
             // specify the DB's name
             const db = client.db('PlanesPorObjetivos');
             // execute find query
-            const items = await db.collection('Planes').findOne({ "titulo": titulo });
-            console.log(items);
-            return items;
+            const items = await db.collection('Planes').find({ "titulo": titulo }).toArray();
+            console.log("titulo= "+titulo);
+            console.log("contenido= "+JSON.stringify(items[0]));
+            return items[0];
         } catch (e) {
             console.error(e);
         }
