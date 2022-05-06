@@ -137,6 +137,10 @@ async function main() {
     });
     
     /*FINAL RUTAS PAGINAS HTML*/
+    app.get("/aplicacionWeb/scriptVisuales", (req, res) => {
+        res.sendFile(__dirname + "/aplicacionWeb/js/funcionesVisuales.js");       
+    });
+
     app.get("/aplicacionWeb/script", (req, res) => {
         res.sendFile(__dirname + "/aplicacionWeb/js/funciones.js");       
     });

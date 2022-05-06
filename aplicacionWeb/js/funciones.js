@@ -6,37 +6,6 @@ planRecursos = [];
 planAccionTitulo = [];
 let cantPlanes;
 
-function agregarColapsable() {
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function () {
-      this.classList.toggle("active");
-      var content = this.nextElementSibling;
-      if (content.style.maxHeight) {
-        content.style.maxHeight = null;
-      } else {
-        content.style.maxHeight = content.scrollHeight + "px";
-      }
-    });
-  }
-}
-
-function hacerColapsable(id) {
-  var coll = document.getElementById(id);
-  if (coll.getAttribute("class") == "collapsible") {
-    coll.setAttribute("class", "collapsible active");
-  } else {
-    coll.setAttribute("class", "collapsible");
-  }
-  var content = coll.nextElementSibling;
-  if (content.style.maxHeight) {
-    content.style.maxHeight = null;
-  } else {
-    content.style.maxHeight = content.scrollHeight + "px";
-  }
-}
 //Función que sirve para traer las areas de enfoque
 async function getData() {
   //
@@ -71,7 +40,7 @@ async function getPlanesAccion(titulo) {
       // 'Content-Type': 'application/x-www-form-urlencoded',
     }
   })
-  const data = await response.json();
+  const data = await response;
 
   planAcciones = data.acciones;
   planRecursos = data.recursos;
@@ -221,17 +190,13 @@ async function agregarAreadeEnfoque() {
     document.getElementById('ejemploObjetivo').appendChild(div2);
 
     /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
-
+    await getPlanesTitulo()
     //Pendientes
     //Jueves
-    /*Prioridad #1: Hacer el merge*/
     /*modificar acciones como una tabla en lugar de un p*/
-    /*Separar archivo funciones en funcionesDatos y funcionesVisuales*/
     /*Boton guardar cambios*/
 
-    //await getPlanesAccion() reactivar ya que se le agregue objetivos a los planes en la BD
-
-    const divRecursos = document.createElement('div');
+    await getPlanesAccion()
 
     //Se crea principalmente el array opcionPlanRecursos
     opcionPlanRecursos = [];
@@ -241,11 +206,7 @@ async function agregarAreadeEnfoque() {
       opcionPlanRecursos.push(opcion);
     }
     */
-    divRecursos.innerHTML = `
-        
-      `+ opcionPlanRecursos + `
-          
-        `;
+   
 
     const form3 = document.createElement('form');
     opcionesPlanAccionTitulo = [];
@@ -267,6 +228,8 @@ async function agregarAreadeEnfoque() {
   
           
         `;
+  
+//Inicio de selección de titulos de plan de acción
     const div3 = document.createElement('div');
     div3.className = 'agregado';
     div3.innerHTML = `
@@ -274,18 +237,19 @@ async function agregarAreadeEnfoque() {
         
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
           `+ form3.innerHTML + `
-          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPPlanes) + `> --- </p>
+          <div id="contenidoPlanesAcciones">
+            <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPPlanes) + `> --- </p>
+          </div>
           <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPPlanes) + `)> Agregar nuevo plan de acción </button>
           </div>
         `;
 
-    /*
-        const div3 = document.createElement('div');
-        div3.className = 'agregado';
-        div3.innerHTML = `
-              <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
-              <div class="content">
+        const div4 = document.createElement('div');
+        div4.className = 'agregado';
+        div4.innerHTML = `
+              
                 <form>
+
                   <label for="encargados">Encargado:</label>
                   <select name="encargados" id="encargados">
                     <optgroup label="Encargados">
@@ -294,14 +258,15 @@ async function agregarAreadeEnfoque() {
                     </optgroup>
                   </select>
                   <br><br>
-                  </form>
+
+                </form>
+
                   <label for="acciones">Acciones:</label>
                   <p id="TodasAcciones"></p>
                   <br>
     
                   <label for="recursos">Recursos:</label>
-                  
-                  `+ divRecursos.innerHTML + `
+                  <p id="TodasRecursos"></p>
                   <br>
     
                   <label for="tiempo">Tiempo:</label>
@@ -311,27 +276,28 @@ async function agregarAreadeEnfoque() {
                   <label for="indicadores">Indicadores:</label>
                   <p style = "text-align:center;display:inline-block" contenteditable="true"> Porcentaje de ventas del 2021 </p>
                   <br>
-              </div>
                 
                 `
-    */
+
     document.getElementById('ejemploPlanesAccion').appendChild(div3);
-    /*
+    document.getElementById(' contenidoPlanesAcciones').innerHTML=(div4.innerHTML);
+  
     const divAcciones = document.createElement('div');
     opcionPlanAcciones = [];
 
-    let accionesTodas = "<ul>";
+    let accionesTodas = "<table>";
     for (let i = 0; i < planAcciones.length; i++) {
 
       accionesTodas += "<li contenteditable=true>" + planAcciones[i] + "</li>";
     }
-    accionesTodas += "</ul>"
+    accionesTodas += "</table>"
 
     document.getElementById('TodasAcciones').innerHTML = accionesTodas;
 
+
     numero--;
     await updateCantPlanes(JSON.stringify(numero));
-    */
+    
   } else {
     alert("ya creo el maximo de planes puede incrementar la cantidad en conficuraciones")
   }
@@ -381,15 +347,6 @@ async function agregarAreaDeEnfoque(idP) {
 
   });
   return response.json()
-}
-
-//Funcion que se encarga de asiganar el valor el elemento idSelectAreas que tiene en 
-//ese momento al elemento idPAreaDeEnfoque
-function seleccionAreaEnfoque(idSelectAreas, idPAreaDeEnfoque) {
-  var areaseleccionada = document.getElementById(idSelectAreas).value;
-  var yeah = document.getElementById(idPAreaDeEnfoque);
-  yeah.innerHTML = areaseleccionada;
-  yeah.style.maxHeight = yeah.scrollHeight + "px";
 }
 
 
