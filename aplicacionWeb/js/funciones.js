@@ -191,8 +191,11 @@ async function agregarAreadeEnfoque() {
 
     /*En este apartado inicia para agregar PLANES DE ACCIÓN con el mismo botón*/
     await getPlanesTitulo()
+    
     //Pendientes
-    //Jueves
+    //Viernes
+    /*al seleccionar un plan que se remplase el contenido 
+    de div id="contenidoPlanesAcciones" por el contenido de div4*/
     /*modificar acciones como una tabla en lugar de un p*/
     /*Boton guardar cambios*/
 
