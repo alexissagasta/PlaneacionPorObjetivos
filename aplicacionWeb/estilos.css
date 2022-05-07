@@ -1,6 +1,6 @@
 body {
   background-color:rgb(95, 150, 186);
-  background-image: rgb(95, 150, 186);
+  background-image: url("/aplicacionWeb/backImagen");
 }
 
 p, form {
