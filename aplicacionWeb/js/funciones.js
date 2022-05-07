@@ -16,10 +16,9 @@ async function getData() {
       // 'Content-Type': 'application/x-www-form-urlencoded',
     }
   })
+
   const data = await response.json();
-
   const lts = data;
-
   lts.forEach(lt => {
 
     const nombre = lt.nombre;
@@ -40,8 +39,8 @@ async function getPlanesAccion(titulo) {
       // 'Content-Type': 'application/x-www-form-urlencoded',
     }
   })
+
   const data = await response.json();
-  console.log(data)
   planAcciones = data.acciones;
   planRecursos = data.recursos;
 }
@@ -56,8 +55,8 @@ async function getPlanesTitulo() {
       // 'Content-Type': 'application/x-www-form-urlencoded',
     }
   })
-  const data = await response.json();
 
+  const data = await response.json();
   planAccionTitulo = data;
 }
 
@@ -71,13 +70,9 @@ async function getConfig() {
       // 'Content-Type': 'application/x-www-form-urlencoded',
     }
   })
+
   const data = await response.json();
   planActual = data[0]
-  console.log("plan actual: ")
-  console.log(planActual)
-  console.log("cantidad planes: ")
-  console.log(planActual.cantPlanes)
-
   cantPlanes = planActual.cantPlanes;
 
   return cantPlanes
@@ -122,27 +117,22 @@ async function agregarAreadeEnfoque() {
       opcion = "<option value=" + JSON.stringify(nombresAreasEnfoque[i]) + ">" + nombresAreasEnfoque[i] + "</option>";
       opcionesAreasDeEnfoque.push(opcion);
     }
-    form.innerHTML = `
-        
+    form.innerHTML = `    
           <label for="AreasDeEnfoque">Áreas De Enfoque:</label>
           <select name="AreasDeEnfoque" id=`+ JSON.stringify(idSelectAreas) + `>
             <optgroup label="AreasDeEnfoque">
-              `+ opcionesAreasDeEnfoque + `
-              
+              `+ opcionesAreasDeEnfoque + `       
             </optgroup>
           </select>
           <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idSelectAreas) + `,` + JSON.stringify(idPAreaDeEnfoque) + `)> Seleccionar </button>
-          <br><br>
-  
-          
+          <br><br>    
         `;
 
     //aqui se crea la divicion que incluye el boton(collapsible) y el contenido(content)      
     const div = document.createElement('div');
     div.className = 'agregado';
     div.innerHTML = `
-        <button class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>
-        
+        <button class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
           `+ form.innerHTML + `
           <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
@@ -159,26 +149,22 @@ async function agregarAreadeEnfoque() {
       opcion = "<option value=" + JSON.stringify(nombresObjetivos[i]) + ">" + nombresObjetivos[i] + "</option>";
       opcionesObjetivos.push(opcion);
     }
-    form2.innerHTML = `
-        
+    form2.innerHTML = `      
           <label for="AreasDeEnfoque">Objetivo:</label>
           <select name="Objetivo" id=`+ JSON.stringify(idSelectObjetivos) + `>
             <optgroup label="Objetivos">
-              `+ opcionesObjetivos + `
-              
+              `+ opcionesObjetivos + `              
             </optgroup>
           </select>
           <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idSelectObjetivos) + `,` + JSON.stringify(idPObjetivo) + `)> Seleccionar </button>
-          <br><br>
-  
-          
+          <br><br>         
         `;
+
     const div2 = document.createElement('div');
     div2.className = 'agregado';
     //<p style = "text-align:center;" contenteditable="true" id=`+ JSON.stringify(idPObjetivo) + `> --- </p>
     div2.innerHTML = `
         <button class="collapsible" id=`+ JSON.stringify(idObjetivo) + ` onclick="hacerColapsable(this.id)">Objetivo</button>
-        
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
           `+ form2.innerHTML + `
           <table class="center" style =  contenteditable:"true">
@@ -203,67 +189,48 @@ async function agregarAreadeEnfoque() {
     /*modificar acciones como una tabla en lugar de un p*/
     /*Boton guardar cambios*/
 
-
-
-    //Se crea principalmente el array opcionPlanRecursos
-    opcionPlanRecursos = [];
-    /*
-    for (let i = 0; i < planRecursos.length; i++) {
-      opcion = "<p value=" + JSON.stringify(planRecursos[i]) + ">" + planRecursos[i] + "</p>";
-      opcionPlanRecursos.push(opcion);
-    }
-    */
-
-
     const form3 = document.createElement('form');
     opcionesPlanAccionTitulo = [];
     for (let i = 0; i < planAccionTitulo.length; i++) {
       opcion = "<option value=" + JSON.stringify(planAccionTitulo[i]) + ">" + planAccionTitulo[i] + "</option>";
       opcionesPlanAccionTitulo.push(opcion);
     }
-    form3.innerHTML = `
-        
+    form3.innerHTML = ` 
           <label for="PlanesDeAccion">Planes de acción:</label>
           <select name="plandeaccion" id=`+ JSON.stringify(idSelectPlanes) + `>
             <optgroup label="Planes de acciones">
-              `+ opcionesPlanAccionTitulo + `
-              
+              `+ opcionesPlanAccionTitulo + `    
             </optgroup>
           </select>
           <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) + `,` + JSON.stringify(idIndicadores) + `)> Seleccionar </button>
-          <br><br>
-  
-          
+          <br><br>       
         `;
-        
+
     const div4 = document.createElement('div');
     div4.className = 'agregado';
     div4.id = 'div4';
     div4.innerHTML = `
-                      <label for="encargados">Encargado:</label>
-                      <form id=`+ JSON.stringify(idFormPlanEncargados) + `>
-    
-                      </form>
-    
-                      <label for="acciones">Acciones:</label>
-                      <div id=`+ JSON.stringify(idTodasAcciones) + `></div>
-                      <br>
+          <label for="encargados">Encargado:</label>
+          <form id=`+ JSON.stringify(idFormPlanEncargados) + `></form>
+          <br>
+
+          <label for="acciones">Acciones:</label>
+          <div id=`+ JSON.stringify(idTodasAcciones) + `></div>
+          <br>
         
-                      <label for="recursos">Recursos:</label>
-                      <div id=`+ JSON.stringify(idTodosRecursos) + `></div>
-                      <br>
+          <label for="recursos">Recursos:</label>
+          <div id=`+ JSON.stringify(idTodosRecursos) + `></div>
+          <br>
         
-                      <label for="indicadores">Indicadores:</label>
-                      <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idIndicadores) + `></p>
-                      <br>
-                    
-                    `
+          <label for="indicadores">Indicadores:</label>
+          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idIndicadores) + `></p>
+          <br>      
+          `
 
     const div3 = document.createElement('div');
     div3.className = 'agregado';
     div3.innerHTML = `
         <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
-        
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
           `+ form3.innerHTML + `
           <div id="contenidoPlanesAcciones">
@@ -279,7 +246,7 @@ async function agregarAreadeEnfoque() {
     await updateCantPlanes(JSON.stringify(numero));
 
   } else {
-    alert("ya creo el maximo de planes puede incrementar la cantidad en conficuraciones")
+    alert("Ya creo el maximo de planes, puede incrementar la cantidad en configuraciónes.")
   }
 }
 
@@ -290,6 +257,7 @@ async function updateCantPlanes(numero) {
   cantPlanes = {
     cantPlanes: numero
   }
+
   var nombEmpresa = "todas";
   const response = await fetch("/configuracion/todas", {
     method: 'PUT',
@@ -297,33 +265,24 @@ async function updateCantPlanes(numero) {
       'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-
     body: JSON.stringify(cantPlanes)
-
-
   });
-  return response.json()
 
+  return response.json()
 }
 
 //Agrega un area de enfoque a la base de datos a partir del idP que se le envie
 async function agregarAreaDeEnfoque(idP) {
 
   yeah = document.getElementById(idP).textContent;
-
-  areaDeEnfoque = {
-    nombre: yeah
-  }
-  //
+  areaDeEnfoque = {nombre: yeah}
   const response = await fetch("/areaDeEnfoque", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-
     body: JSON.stringify(areaDeEnfoque)
-
 
   });
   return response.json()
@@ -348,23 +307,19 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
     */
 
   // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
-  let accionesTodas = "<table class=center style =  contenteditable:true><tr><td contenteditable=true>Acciones</td> <td contenteditable=true>Porcentaje completado</td></tr>";
+  let accionesTodas = "<table class=center style =  contenteditable:true ><tr class=cabecera style = contenteditable:false><td>Acciones</td> <td>Porcentaje completado</td></tr>";
   for (let i = 0; i < planAcciones.length; i++) {
-
     accionesTodas += "<tr><td contenteditable=true>" + planAcciones[i] + "</td> <td contenteditable=true>0%</td></tr>";
-
   }
   accionesTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let recursosTodas = "<table class=center style =  contenteditable:true><tr><td contenteditable=true>Recursos</td></tr>";
+  let recursosTodas = "<table class=center style = contenteditable:true><tr class=cabecera style = contenteditable:false><td>Recursos</td></tr>";
   for (let i = 0; i < planRecursos.length; i++) {
-
-    recursosTodas += "<tr><td contenteditable=true>" + planAcciones[i] + "</td></tr>";
-
+    recursosTodas += "<tr><td contenteditable=true>" + planRecursos[i] + "</td></tr>";
   }
   recursosTodas += "</table>"
-  
+
   document.getElementById(idTodasAcciones).innerHTML = accionesTodas;
   document.getElementById(idTodosRecursos).innerHTML = recursosTodas;
   

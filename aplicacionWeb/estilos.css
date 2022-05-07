@@ -83,6 +83,11 @@ table.center {
   margin-left: auto; 
   margin-right: auto;
 }
+
+tr.cabecera {
+  font-weight:bold; 
+  font-size:20px;
+}
 /*
 ul {
   position: fixed;
