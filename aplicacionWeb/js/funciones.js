@@ -168,12 +168,17 @@ async function agregarAreadeEnfoque() {
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idC) + `>
           `+ form2.innerHTML + `
           <table class="center" style =  contenteditable:"true">
+            <tr class=cabecera style = contenteditable:false>
+              <td>Objetivo</td> 
+              <td>Porcentaje completado</td>
+            </tr>
             <tr>
               <td id=`+ JSON.stringify(idPObjetivo) + `> --- </td>
               <td> --- </td>
             </tr>
           </table>
           <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPObjetivo) + `)> Agregar nuevo objetivo </button>
+          <br><br>
           </div>
         `;
 
@@ -237,6 +242,7 @@ async function agregarAreadeEnfoque() {
             <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPPlanes) + `>` + div4.innerHTML + `</p>
           </div>
           <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPPlanes) + `)> Agregar nuevo plan de acción </button>
+          <br><br>
           </div>
         `;
 
