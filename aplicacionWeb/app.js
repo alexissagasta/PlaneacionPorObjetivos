@@ -27,9 +27,8 @@ async function main() {
         res.sendFile(__dirname + "/aplicacionWeb/index.html");
     });
     
-
     app.get("/aplicacionWeb/estilos", (req, res) => {
-        res.sendFile(__dirname + "/aplicacionWeb/estilos.css");       
+        res.sendFile(__dirname + "/estilos.css");       
     });
 
     app.get("/aplicacionWeb/nucleo-icons", (req, res) => {
