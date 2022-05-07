@@ -149,7 +149,7 @@ async function main() {
     });
 
     app.get("/aplicacionWeb/backImagen", (req, res) => {
-        res.sendFile(__dirname + "/background.jpg");       
+        res.sendFile(__dirname + "/background.png");       
     });
 
     app.use(function (err, req, res, next) {
