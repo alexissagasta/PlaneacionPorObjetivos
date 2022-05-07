@@ -137,19 +137,19 @@ async function main() {
     
     /*FINAL RUTAS PAGINAS HTML*/
     app.get("/aplicacionWeb/scriptVisuales", (req, res) => {
-        res.sendFile(__dirname + "/aplicacionWeb/js/funcionesVisuales.js");       
+        res.sendFile(__dirname + "/js/funcionesVisuales.js");       
     });
 
     app.get("/aplicacionWeb/script", (req, res) => {
-        res.sendFile(__dirname + "/aplicacionWeb/js/funciones.js");       
+        res.sendFile(__dirname + "/js/funciones.js");       
     });
     
     app.get("/aplicacionWeb/jquery360", (req, res) => {
-        res.sendFile(__dirname + "/aplicacionWeb/js/jquery-3.6.0.min.js");       
+        res.sendFile(__dirname + "/js/jquery-3.6.0.min.js");       
     });
 
     app.get("/aplicacionWeb/backImagen", (req, res) => {
-        res.sendFile(__dirname + "/aplicacionWeb/background.jpg");       
+        res.sendFile(__dirname + "/background.jpg");       
     });
 
     app.use(function (err, req, res, next) {
