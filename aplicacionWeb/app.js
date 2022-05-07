@@ -158,7 +158,7 @@ async function main() {
         res.send({alerta: 'Ocurrio un error interno!'});
     })
 
-    app.listen(3000, (err) => {
+    app.listen(process.env.PORT || 3000, (err) => {
         if (err) {
             console.error(err);
             process.exit(1);
