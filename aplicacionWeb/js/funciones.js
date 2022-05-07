@@ -235,7 +235,7 @@ async function agregarAreadeEnfoque() {
   
           
         `;
-
+        
     const div4 = document.createElement('div');
     div4.className = 'agregado';
     div4.id = 'div4';
@@ -347,7 +347,7 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
     <br><br>
     */
 
-
+  // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
   let accionesTodas = "<table class=center style =  contenteditable:true><tr><td contenteditable=true>Acciones</td> <td contenteditable=true>Porcentaje completado</td></tr>";
   for (let i = 0; i < planAcciones.length; i++) {
 
@@ -356,7 +356,18 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
   }
   accionesTodas += "</table>"
 
+  // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
+  let recursosTodas = "<table class=center style =  contenteditable:true><tr><td contenteditable=true>Recursos</td></tr>";
+  for (let i = 0; i < planRecursos.length; i++) {
+
+    recursosTodas += "<tr><td contenteditable=true>" + planAcciones[i] + "</td></tr>";
+
+  }
+  recursosTodas += "</table>"
+  
   document.getElementById(idTodasAcciones).innerHTML = accionesTodas;
+  document.getElementById(idTodosRecursos).innerHTML = recursosTodas;
+  
   /*
   var areaseleccionada = document.getElementById(idSelectPlan).value;
   var yeah = document.getElementById(idDivPlan);
