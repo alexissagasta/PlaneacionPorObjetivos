@@ -17,7 +17,7 @@ async function main() {
         })
 
     app.use(express.json());
-    app.use(express.static("./public"));
+    app.use(express.static("./apicacionWeb"));
     app.use(morgan('combined', { stream: accessLogStream }))
     app.use("/", ruteadorConfig);
     app.use("/", ruteadorPlanes);
