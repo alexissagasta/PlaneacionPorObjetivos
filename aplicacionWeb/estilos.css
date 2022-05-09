@@ -26,13 +26,23 @@ p, form {
   color: white;
   cursor: pointer;
   padding: 18px;
-  width: 7%;
   border-radius: 8px;
   border: none;
-  text-align: left;
+  text-align: center;
   outline: none;
   font-size: 15px;
-  display:inline-block;
+}
+
+.btnEliminarElemento {
+  background-color: rgb(233, 35, 35);
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 15px;
 }
 
 .btnGuardarCambios {

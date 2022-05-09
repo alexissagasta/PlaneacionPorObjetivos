@@ -3,7 +3,7 @@ nombresAreasEnfoque = [];
 nombresObjetivos = [];
 planAcciones = [];
 planRecursos = [];
-planIndicadores =[];
+planIndicadores = [];
 planAccionTitulo = [];
 let cantPlanes;
 
@@ -102,6 +102,10 @@ async function agregarAreadeEnfoque() {
     idSelectObjetivos = "idSelectObjetivos" + cantPlanes;
     idSelectPlanes = "idSelectPlanes" + cantPlanes;
 
+    idDivAreaDeEnfoque = "idDivAreaDeEnfoque" + cantPlanes;
+    idDivObjetivo = "idDivObjetivo" + cantPlanes;
+    idDivPlanes = "idDivPlanes" + cantPlanes;
+
     idPAreaDeEnfoque = "idPAreaDeEnfoque" + cantPlanes;
     idPObjetivo = "idPObjetivo" + cantPlanes;
     idPPlanes = "idPPlanes" + cantPlanes;
@@ -138,13 +142,17 @@ async function agregarAreadeEnfoque() {
     //aqui se crea la divicion que incluye el boton(collapsible) y el contenido(content)      
     const div = document.createElement('div');
     div.className = 'agregado';
+    div.id= idDivAreaDeEnfoque;
     div.innerHTML = `
-        <button class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
-        <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCAreaDeEnfoque) + `>
-          `+ form.innerHTML + `
-          <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
-          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>
-          </div>
+      <button style="display:inline-block" class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
+      <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCAreaDeEnfoque) + `>
+        `+ form.innerHTML + `
+        <p style = "text-align:center" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
+        <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>     
+        <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idDivAreaDeEnfoque) + `,` + JSON.stringify(idDivObjetivo) + `,` + JSON.stringify(idDivPlanes)+ `)>Eliminar</button>
+      </div>
+      
+        
         `;
 
     document.getElementById('ejemploAreadeEnfoque').appendChild(div);
@@ -169,7 +177,7 @@ async function agregarAreadeEnfoque() {
 
     const div2 = document.createElement('div');
     div2.className = 'agregado';
-    //<p style = "text-align:center;" contenteditable="true" id=`+ JSON.stringify(idPObjetivo) + `> --- </p>
+    div2.id= idDivObjetivo;
     div2.innerHTML = `
         <button class="collapsible" id=`+ JSON.stringify(idObjetivo) + ` onclick="hacerColapsable(this.id)">Objetivo</button>
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCObjetivo) + `>
@@ -211,7 +219,7 @@ async function agregarAreadeEnfoque() {
               `+ opcionesPlanAccionTitulo + `    
             </optgroup>
           </select>
-          <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) + `,` + JSON.stringify(idIndicadores) +`,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
+          <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
           <br><br>       
         `;
 
@@ -238,6 +246,7 @@ async function agregarAreadeEnfoque() {
 
     const div3 = document.createElement('div');
     div3.className = 'agregado';
+    div3.id= idDivPlanes;
     div3.innerHTML = `
         <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCPlanes) + `>
@@ -285,7 +294,7 @@ async function updateCantPlanes(numero) {
 async function agregarAreaDeEnfoque(idP) {
 
   yeah = document.getElementById(idP).textContent;
-  areaDeEnfoque = {nombre: yeah}
+  areaDeEnfoque = { nombre: yeah }
   const response = await fetch("/areaDeEnfoque", {
     method: 'POST',
     headers: {
@@ -298,10 +307,36 @@ async function agregarAreaDeEnfoque(idP) {
   return response.json()
 }
 
+//Funcion que se encarga de eliminar un set de area de enfoque, objetivo y plan de accion
+async function eliminarAreaDeEnfoque(idArea, idObjetivo, idPlan) {
+
+  //Se llama a la funcion getConfig para obtener la configuracion de la empresa y 
+  //establecer el valor de cantPlanes
+  await getConfig();
+
+  //Se crea la variable numero que mas adelante se usara para establecer el nuevo valor
+  //de cantPlanes
+  numero = parseInt(cantPlanes, 10);
+
+  //Se obtienen los elementos que se removeran
+  let area = document.getElementById(idArea);
+  let objetivo = document.getElementById(idObjetivo);
+  let plan = document.getElementById(idPlan);
+
+  //Se remueven los elementos
+  area.remove();
+  objetivo.remove();
+  plan.remove();
+
+  //Se aumenta y actualiza la cantidad de planes en la base de datos
+  numero++;
+  await updateCantPlanes(JSON.stringify(numero));
+
+}
 
 //Funcion que se encarga de asiganar el valor al elemento idSelectPlan que tiene en 
 //ese momento al elemento idDivPlan
-async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idIndicadores,idContenido) {
+async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idIndicadores, idContenido) {
   var planseleccionado = document.getElementById(idSelectPlanes).value;
   await getPlanesAccion(planseleccionado)
 
@@ -336,7 +371,7 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
   document.getElementById(idTodosRecursos).innerHTML = recursosTodas;
   document.getElementById(idFormPlanEncargados).innerHTML = encargadosTodos;
   document.getElementById(idIndicadores).innerHTML = indicadores;
-  
+
   //se cambia el tamaño del elemento divPlan
   var div = document.getElementById(idContenido);
   div.style.maxHeight = div.scrollHeight + "px";
