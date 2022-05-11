@@ -93,7 +93,7 @@ async function agregarAreadeEnfoque() {
   //de cantPlanes
   numero = parseInt(cantPlanes, 10);
 
-  if (0 < numero && numero <= 3) {
+  if (1 <= numero && numero <= 3) {
 
     //Se crean las ids de los nuevos elementos a crear; esto al concatenar el tipo de elemento 
     //y la cantPlanes disponibles
@@ -288,6 +288,7 @@ async function updateCantPlanes(numero) {
   });
 
   return response.json()
+
 }
 
 //Agrega un area de enfoque a la base de datos a partir del idP que se le envie
@@ -376,6 +377,7 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
   var div = document.getElementById(idContenido);
   div.style.maxHeight = div.scrollHeight + "px";
   console.log()
+  
 }
 
 this.onload = agregarColapsable(), getData();
