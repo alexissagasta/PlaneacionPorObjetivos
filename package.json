@@ -10,10 +10,19 @@
   "author": "alexis y luis",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.20.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.8",
     "express": "^4.17.3",
     "express-json-validator-middleware": "^2.2.1",
+    "express-session": "^1.17.3",
     "mongodb": "^4.4.1",
+    "mongoose": "^6.3.8",
     "morgan": "^1.10.0",
-    "nodejs": "^0.0.0"
+    "nodejs": "^0.0.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
   }
 }
