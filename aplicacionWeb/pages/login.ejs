@@ -24,16 +24,16 @@
     Ingresar
   </title>
   <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
-  <!-- Nucleo Icons -->
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.1" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+<!-- Nucleo Icons -->
+<link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+<link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+<!-- Font Awesome Icons -->
+<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<!-- CSS Files -->
+<link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.1" rel="stylesheet" />
 </head>
 
 <body class="bg-gray-200">
@@ -59,21 +59,32 @@
                 </div>
               </div>
               <div class="card-body">
-                <form role="form" class="text-start">
+
+                <% if(message.length > 0) { %>
+                  <div class="alert alert-danger">
+                    <%= message %>
+                  </div>
+
+                  <% } %>
+                  
+                <form action="/login" method="post" role="form" class="text-start">
                   <div class="input-group input-group-outline my-3">
                     <label class="form-label">Correo</label>
-                    <input type="email" id="correo" class="form-control">
+                    <input type="email" name="email" class="form-control">
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Contraseña</label>
-                    <input type="password" id="contrasena" class="form-control">
+                    <input type="password" name="password" class="form-control">
                   </div>
                   <div class="text-center">
-                    <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2">Ingresar</button>
+                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Ingresar</button>
                   </div>
                   <p class="mt-4 text-sm text-center">
                     No estas registrado?
-                    <a href="../pages/sign-up.html" class="text-primary text-gradient font-weight-bold">Registrate</a>
+                    <a href="/signup" class="text-primary text-gradient font-weight-bold">Registrate</a>
+                  </p>
+                  <p class="mt-4 text-sm text-center">
+                    Ir al <a href="/" class="text-primary text-gradient font-weight-bold">Inicio</a>.
                   </p>
                 </form>
               </div>

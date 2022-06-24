@@ -8,6 +8,24 @@ var morgan = require('morgan');
 var path = require("path");
 const e = require("express");
 const app = express();
+const mongoose = require('mongoose');
+const passport = require('passport');
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+
+const { url } = require("./config/database")
+
+mongoose.connect(url, {
+    
+});
+
+require('./config/passport')(passport);
+
+app.set('views', path.join(__dirname, 'pages'));
+app.set('view engine', 'ejs');
+
 
 async function main() {
     // Crea un archivo en el directorio actual
@@ -17,11 +35,26 @@ async function main() {
         })
 
     app.use(express.json());
-    app.use(express.static("aplicacionWeb"));
+    app.use(express.static("aplicacionWeb")); //NO MOVER
     app.use(morgan('combined', { stream: accessLogStream }))
     app.use("/", ruteadorConfig);
     app.use("/", ruteadorPlanes);
     app.use("/", ruteador);
+    app.use(cookieParser());
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(session({
+        secret: 'planeacionxobjetivos',
+        resave: false,
+        saveUninitialized: false
+    }));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(flash());
+
+    //routes
+    // ruta directa de configuración del login y signup
+    require('../ManejadorDeEventos/ruteadorLogin')(app, passport);//Con esta linea de codigo le paso la configuración de iniicio de sesión y passport del archivo ruteadorLogin
 
     app.get("/", (req, res) => {
         res.sendFile(__dirname + "/aplicacionWeb/index.html");
@@ -127,12 +160,12 @@ async function main() {
         res.sendFile(__dirname + "/pages/notifications.html");       
     });
 
-    app.get("/aplicacionWeb/sign-in_html", (req, res) => {
-        res.sendFile(__dirname + "/pages/sign-in.html");       
+    app.get("/login", (req, res) => {
+        res.render(__dirname + "/pages/login.ejs");       
     });
 
-    app.get("/aplicacionWeb/sign-up_html", (req, res) => {
-        res.sendFile(__dirname + "/pages/sign-up.html");       
+    app.get("/signup", (req, res) => {
+        res.render(__dirname + "/pages/sign-up.ejs");       
     });
     
     /*FINAL RUTAS PAGINAS HTML*/
