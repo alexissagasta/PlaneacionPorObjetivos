@@ -56,6 +56,8 @@ async function main() {
     // ruta directa de configuración del login y signup
     require('../ManejadorDeEventos/ruteadorLogin')(app, passport);//Con esta linea de codigo le paso la configuración de iniicio de sesión y passport del archivo ruteadorLogin
 
+    require('../ManejadorDeEventos/ruteadorPlanesEmpresa')(app, passport);
+
     app.get("/", (req, res) => {
         res.sendFile(__dirname + "/aplicacionWeb/index.html");
     });

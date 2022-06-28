@@ -12,30 +12,6 @@ const client = new MongoClient(uri, {
     useUnifiedTopology: true,
 });
 
-const lecturaSchema = {
-    type: "object",
-    required: ["id", "gradoTemperatura", "indiceHumedad", "fechaLectura"],
-    properties: {
-        id: {
-            type: "number",
-        },
-
-        gradoTemperatura: {
-            type: "string",
-        },
-        indiceHumedad: {
-            type: "string",
-        },
-        fechaLectura: {
-            type: "string",
-        }
-    },
-};
-
-const { validate } = new Validator();
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
 client.connect(async function (err, db) {
 
     router.get("/configuracion/:nombreEmpresa", async (req, res, next) => {
