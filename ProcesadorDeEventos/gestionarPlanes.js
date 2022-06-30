@@ -1,5 +1,7 @@
 //gestionarPlanes.js
 
+const bodyParser = require("body-parser");
+
 class gestionarPlanes {
 
     registrarPlaneDeAccion = async (db, planDeAccion) => {
@@ -7,6 +9,57 @@ class gestionarPlanes {
             var dbo = db.db("PlanesPorObjetivos");
             const res = await dbo.collection("Planes").insertOne(planDeAccion);
             console.log("Un plan de acción ha sido agregado");
+            return res;
+
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
+    obtenerPlanEmpresa = async (client, user) => {
+        try {
+            // specify the DB's name
+            const db = client.db('PlanesPorObjetivos');
+            // execute find query
+            const items = await db.collection('planesEmpresa').find({ "email": user }).toArray();
+            console.log("contenido= "+JSON.stringify(items));
+            return items;
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
+    registrarPlanEmpresa = async (db, planEmpresa, email) => {
+        const items = await db.collection('planesEmpresa').find({ "email": email }).toArray();
+        if(!items){
+            try {
+                var dbo = db.db("PlanesPorObjetivos");
+                const res = await dbo.collection("planesEmpresa").insertOne(planEmpresa);
+                console.log("El plan de la empresa se registro con exito");
+                return res;
+    
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        
+        try {
+            var dbo = db.db("PlanesPorObjetivos");
+            const res = await dbo.collection("planesEmpresa").updateOne({ email: email }, {
+                $set:
+                {
+                    "mision": planEmpresa.mision,
+                    "vision": planEmpresa.vision,
+                    "valores": planEmpresa.valores,
+                    "areasEnfoque": planEmpresa.areasEnfoque,
+                    "objetivos": planEmpresa.objetivos,
+                    "planesAccion": planEmpresa.planesAccion
+                }
+            });
+            console.log("Plan se modifico");
+            console.log({ configuracion: res });
             return res;
 
         } catch (e) {

@@ -1,56 +1,53 @@
-module.exports = (app, passport) => {
+const { MongoClient } = require('mongodb');
+const uri = "mongodb+srv://admin:javamongo@cluster0.5qkke.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-	// index routes
-	app.get('/', (req, res) => {
-		res.render('index');
-	});
+const express = require("express");
+const router = express.Router();
+const gestionarPlanes = require("../ProcesadorDeEventos/gestionarPlanes.js");
+let gestorPlanes = new gestionarPlanes();
 
-	//login view
-	app.get('/login', (req, res) => {
-		res.render('login.ejs', {
-			message: req.flash('loginMessage')
-		});
-	});
+const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
-	app.post('/login', passport.authenticate('local-login', {
-		successRedirect: '/profile',
-		failureRedirect: '/login',
-		failureFlash: true
-	}));
+client.connect(async function (err, db) {
 
-	// signup view
-	app.get('/signup', (req, res) => {
-		res.render('signup', {
-			message: req.flash('signupMessage')
-		});
-	});
+    router.get("/obtenerPlanEmpresa", async (req, res, next) => {
+        var email = req.body.email;
+        try {
 
-	app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect: '/profile',
-		failureRedirect: '/signup',
-		failureFlash: true // allow flash messages
-	}));
+            //Busca en la BD
 
-	//profile view
-	app.get('/profile', isLoggedIn, (req, res) => {
-		res.render('profile', {
-			user: req.user
-		});
-	});
+            let planesEmpresa = await gestorPlanes.obtenerPlanEmpresa(db, email);
+            if (planesEmpresa.length == 0) {
 
-	// logout
-	app.get('/logout', (req, res, next) => {
-		req.logout(function(err) {
-		  if (err) { return next(err); }
-		  res.redirect('/');
-		});
-	  });
-};
+                mensaje = { msj: "no hay planes!" }
 
-function isLoggedIn (req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	}
+                res.status(206).send(mensaje);
+            } else {
+                res.status(200).send(planesEmpresa);
+            }
 
-	res.redirect('/');
-}
+        } catch (err) {
+            next(err)
+        }
+    });
+
+    router.post("/registrarPlanEmpresa", async (req, res, next) => {
+        try {
+            const planEmpresa = req.body;
+            console.log(planEmpresa);
+
+            //Almacena en Json
+            //Se agrega el plan de la empresa
+            await gestorPlanes.registrarPlanEmpresa(db, planEmpresa, planEmpresa.email);
+
+            res.status(201).send({ mensaje: "plan agregado!" });
+        } catch (err) {
+            next(err)
+        }
+    });
+});
+client.close();
+module.exports = router

@@ -2,6 +2,7 @@
 const ruteador = require("../ManejadorDeEventos/ruteadorAreasDeEnfoque.js");
 const ruteadorConfig = require("../ManejadorDeEventos/ruteadorConfiguraciones.js");
 const ruteadorPlanes = require("../ManejadorDeEventos/ruteadorPlanesDeAccion.js");
+const ruteadorPlanesEmpresa = require("../ManejadorDeEventos/ruteadorPlanesEmpresa.js");
 const express = require("express");
 var fs = require("fs");
 var morgan = require('morgan');
@@ -40,6 +41,7 @@ async function main() {
     app.use("/", ruteadorConfig);
     app.use("/", ruteadorPlanes);
     app.use("/", ruteador);
+    app.use("/",ruteadorPlanesEmpresa);
     app.use(cookieParser());
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(session({
@@ -55,8 +57,7 @@ async function main() {
     //routes
     // ruta directa de configuración del login y signup
     require('../ManejadorDeEventos/ruteadorLogin')(app, passport);//Con esta linea de codigo le paso la configuración de iniicio de sesión y passport del archivo ruteadorLogin
-
-    require('../ManejadorDeEventos/ruteadorPlanesEmpresa')(app, passport);
+    
 
     app.get("/", (req, res) => {
         res.sendFile(__dirname + "/aplicacionWeb/index.html");
