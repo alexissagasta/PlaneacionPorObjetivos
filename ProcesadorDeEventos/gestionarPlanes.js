@@ -32,8 +32,10 @@ class gestionarPlanes {
     }
 
     registrarPlanEmpresa = async (db, planEmpresa, email) => {
-        const items = await db.collection('planesEmpresa').find({ "email": email }).toArray();
-        if(!items){
+        var dbo = db.db("PlanesPorObjetivos");
+        const items = await dbo.collection('planesEmpresa').find({ "email": email }).toArray();
+        console.log(items);
+        if(items.length == 0){
             try {
                 var dbo = db.db("PlanesPorObjetivos");
                 const res = await dbo.collection("planesEmpresa").insertOne(planEmpresa);
@@ -43,28 +45,30 @@ class gestionarPlanes {
             } catch (e) {
                 console.error(e);
             }
+        }else{
+            try {
+                var dbo = db.db("PlanesPorObjetivos");
+                const res = await dbo.collection("planesEmpresa").updateOne({ email: email }, {
+                    $set:
+                    {
+                        "mision": planEmpresa.mision,
+                        "vision": planEmpresa.vision,
+                        "valores": planEmpresa.valores,
+                        "areasEnfoque": planEmpresa.areasEnfoque,
+                        "objetivos": planEmpresa.objetivos,
+                        "planesAccion": planEmpresa.planesAccion
+                    }
+                });
+                console.log("Plan se modifico");
+                console.log({ configuracion: res });
+                return res;
+    
+            } catch (e) {
+                console.error(e);
+            }
         }
         
-        try {
-            var dbo = db.db("PlanesPorObjetivos");
-            const res = await dbo.collection("planesEmpresa").updateOne({ email: email }, {
-                $set:
-                {
-                    "mision": planEmpresa.mision,
-                    "vision": planEmpresa.vision,
-                    "valores": planEmpresa.valores,
-                    "areasEnfoque": planEmpresa.areasEnfoque,
-                    "objetivos": planEmpresa.objetivos,
-                    "planesAccion": planEmpresa.planesAccion
-                }
-            });
-            console.log("Plan se modifico");
-            console.log({ configuracion: res });
-            return res;
-
-        } catch (e) {
-            console.error(e);
-        }
+        
 
     }
     
