@@ -36,6 +36,16 @@ module.exports = (app, passport) => {
 		res.render('profile', {
 			user: req.user
 		});
+		res.send({
+			user: req.user
+		})
+	});
+	
+	//Áreas de enfoque view
+	app.get('/areasEnfoque', isLoggedIn, (req, res) => {
+		res.render('areasEnfoque', {
+			user: req.user
+		});
 	});
 
 	// logout

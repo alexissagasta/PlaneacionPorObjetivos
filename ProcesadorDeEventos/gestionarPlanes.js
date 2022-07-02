@@ -34,7 +34,6 @@ class gestionarPlanes {
     registrarPlanEmpresa = async (db, planEmpresa, email) => {
         var dbo = db.db("PlanesPorObjetivos");
         const items = await dbo.collection('planesEmpresa').find({ "email": email }).toArray();
-        console.log(items);
         if(items.length == 0){
             try {
                 var dbo = db.db("PlanesPorObjetivos");

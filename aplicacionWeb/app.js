@@ -139,24 +139,9 @@ async function main() {
     });
     
     /*INICIO RUTAS PAGINAS HTML*/
-    app.get("/aplicacionWeb/dashboard_html", (req, res) => {
-        res.sendFile(__dirname + "/pages/dashboard.html");       
-    });
-
-    app.get("/aplicacionWeb/tables_html", (req, res) => {
-        res.sendFile(__dirname + "/pages/tables.html");       
-    });
 
     app.get("/aplicacionWeb/billing_html", (req, res) => {
         res.sendFile(__dirname + "/pages/billing.html");       
-    });
-
-    app.get("/aplicacionWeb/virtual-reality_html", (req, res) => {
-        res.sendFile(__dirname + "/pages/virtual-reality.html");       
-    });
-
-    app.get("/aplicacionWeb/rtl_html", (req, res) => {
-        res.sendFile(__dirname + "/pages/rtl.html");       
     });
 
     app.get("/aplicacionWeb/notifications_html", (req, res) => {
@@ -178,6 +163,10 @@ async function main() {
 
     app.get("/aplicacionWeb/script", (req, res) => {
         res.sendFile(__dirname + "/js/funciones.js");       
+    });
+
+    app.get("/funcionesListas", (req, res) => {
+        res.sendFile(__dirname + "/js/funcionesListas.js");       
     });
     
     app.get("/aplicacionWeb/jquery360", (req, res) => {

@@ -6,6 +6,8 @@ planRecursos = [];
 planIndicadores = [];
 planAccionTitulo = [];
 let cantPlanes;
+let planEmpresa = [];
+
 
 //Función que sirve para traer las areas de enfoque
 async function getData() {
@@ -142,14 +144,14 @@ async function agregarAreadeEnfoque() {
     //aqui se crea la divicion que incluye el boton(collapsible) y el contenido(content)      
     const div = document.createElement('div');
     div.className = 'agregado';
-    div.id= idDivAreaDeEnfoque;
+    div.id = idDivAreaDeEnfoque;
     div.innerHTML = `
       <button style="display:inline-block" class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
       <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCAreaDeEnfoque) + `>
         `+ form.innerHTML + `
         <p style = "text-align:center" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
         <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>     
-        <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idDivAreaDeEnfoque) + `,` + JSON.stringify(idDivObjetivo) + `,` + JSON.stringify(idDivPlanes)+ `)>Eliminar</button>
+        <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idDivAreaDeEnfoque) + `,` + JSON.stringify(idDivObjetivo) + `,` + JSON.stringify(idDivPlanes) + `)>Eliminar</button>
       </div>
       
         
@@ -177,7 +179,7 @@ async function agregarAreadeEnfoque() {
 
     const div2 = document.createElement('div');
     div2.className = 'agregado';
-    div2.id= idDivObjetivo;
+    div2.id = idDivObjetivo;
     div2.innerHTML = `
         <button class="collapsible" id=`+ JSON.stringify(idObjetivo) + ` onclick="hacerColapsable(this.id)">Objetivo</button>
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCObjetivo) + `>
@@ -246,7 +248,7 @@ async function agregarAreadeEnfoque() {
 
     const div3 = document.createElement('div');
     div3.className = 'agregado';
-    div3.id= idDivPlanes;
+    div3.id = idDivPlanes;
     div3.innerHTML = `
         <button class="collapsible" id=`+ idPlan + ` onclick="hacerColapsable(this.id)">Plan de acción</button>
         <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCPlanes) + `>
@@ -377,7 +379,48 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
   var div = document.getElementById(idContenido);
   div.style.maxHeight = div.scrollHeight + "px";
   console.log()
-  
+
 }
+
+async function guardarCambios(email) {
+
+}
+
+async function obtenerPlanEmpresa(email) {
+  const response = await fetch("/obtenerPlanEmpresa" + email, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  })
+
+  const data = await response.json();
+  const lts = data;
+  lts.forEach(lt => {
+
+    const email = lt.email;
+    const mision = lt.mision;
+    const vision = lt.vision;
+    const valores = lt.valores;
+    const areasEnfoque = lt.areasEnfoque;
+    const objetivos = lt.objetivos;
+    const planesAccion = lt.planesAccion;
+
+    planEmpresa.push(email, mision, vision, valores, areasEnfoque, objetivos, planesAccion);
+  });
+}
+async function crearPlanEmpresa() {
+  let email = document.getElementById("#idEmail");
+  console.log(email);
+  await obtenerPlanEmpresa(email)
+  if (planEmpresa.length > 0) {
+    document.getElementById("#idMision").textContent = planEmpresa.mision;
+    document.getElementById("#idVision").textContent = planEmpresa.vision;
+    document.getElementById("#idValores").textContent = planEmpresa.valores;
+  }
+}
+
+
 
 this.onload = agregarColapsable(), getData();

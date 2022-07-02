@@ -13,8 +13,8 @@ const client = new MongoClient(uri, {
 
 client.connect(async function (err, db) {
 
-    router.get("/obtenerPlanEmpresa", async (req, res, next) => {
-        var email = req.body.email;
+    router.get("/obtenerPlanEmpresa/:email", async (req, res, next) => {
+        var email = req.params.email;
         try {
 
             //Busca en la BD
