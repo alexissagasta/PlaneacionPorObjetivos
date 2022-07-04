@@ -36,9 +36,6 @@ module.exports = (app, passport) => {
 		res.render('profile', {
 			user: req.user
 		});
-		res.send({
-			user: req.user
-		})
 	});
 	
 	//Áreas de enfoque view

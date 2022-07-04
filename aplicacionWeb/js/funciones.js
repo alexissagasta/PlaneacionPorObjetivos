@@ -387,7 +387,7 @@ async function guardarCambios(email) {
 }
 
 async function obtenerPlanEmpresa(email) {
-  const response = await fetch("/obtenerPlanEmpresa" + email, {
+  const response = await fetch("/obtenerPlanEmpresa/" + email, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -409,15 +409,16 @@ async function obtenerPlanEmpresa(email) {
 
     planEmpresa.push(email, mision, vision, valores, areasEnfoque, objetivos, planesAccion);
   });
+  console.log("Plan empresa "+planEmpresa)
 }
 async function crearPlanEmpresa() {
-  let email = document.getElementById("#idEmail");
+  let email = document.getElementById("idEmail").textContent;
   console.log(email);
   await obtenerPlanEmpresa(email)
   if (planEmpresa.length > 0) {
-    document.getElementById("#idMision").textContent = planEmpresa.mision;
-    document.getElementById("#idVision").textContent = planEmpresa.vision;
-    document.getElementById("#idValores").textContent = planEmpresa.valores;
+    document.getElementById("idMision").textContent = planEmpresa[1];
+    document.getElementById("idVision").textContent = planEmpresa[2];
+    document.getElementById("idValores").textContent = planEmpresa[3];
   }
 }
 

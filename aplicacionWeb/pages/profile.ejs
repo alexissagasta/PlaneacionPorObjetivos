@@ -36,10 +36,7 @@
   <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="js/funciones.js"></script>
   -->
-  <script>
-    var name =  user.local.email;
-    console.log(name);
-  </script>
+  
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -129,7 +126,6 @@
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <p>
               <strong >Usuario</strong> : <p id="idEmail"><%= user.local.email %></p> <br>
-              <h1>{{ user }}</h1>
             </p>
           </ol>
         </nav>
@@ -561,8 +557,8 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/aplicacionWeb/material-dashboard_min_js"></script>
-  <script>
-    onload= crearPlanEmpresa();
+  <script async>
+    crearPlanEmpresa()
   </script>
 </body>
 
