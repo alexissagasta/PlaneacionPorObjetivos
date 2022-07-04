@@ -5,9 +5,8 @@ planAcciones = [];
 planRecursos = [];
 planIndicadores = [];
 planAccionTitulo = [];
-let cantPlanes;
-let planEmpresa = [];
-
+planEmpresa = [];
+var cantPlanes;
 
 //Función que sirve para traer las areas de enfoque
 async function getData() {
@@ -411,6 +410,8 @@ async function obtenerPlanEmpresa(email) {
   });
   console.log("Plan empresa "+planEmpresa)
 }
+
+
 async function crearPlanEmpresa() {
   let email = document.getElementById("idEmail").textContent;
   console.log(email);
@@ -419,7 +420,61 @@ async function crearPlanEmpresa() {
     document.getElementById("idMision").textContent = planEmpresa[1];
     document.getElementById("idVision").textContent = planEmpresa[2];
     document.getElementById("idValores").textContent = planEmpresa[3];
+    
+    let areasEnfoqueEmpresa=planEmpresa[4]
+
+    console.log("Contenido "+areasEnfoqueEmpresa)
+    areasEnfoqueEmpresa.forEach(async lt => {
+        await agregarAreaDeEnfoqueEmpresa(lt)
+    })
+  
   }
+
+}
+
+function generateRandomInteger(max) {
+  return Math.floor(Math.random() * max) + 1;
+}
+
+
+async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa){
+  let idRandom = generateRandomInteger(100000000000);
+
+  /*En este apartado inicia para agregar AREAS DE ENFOQUE con el botón */
+  const form = document.createElement('form');
+  opcionesAreasDeEnfoque = [];
+  for (let i = 0; i < nombresAreasEnfoque.length; i++) {
+    opcion = "<option value=" + JSON.stringify(nombresAreasEnfoque[i]) + ">" + nombresAreasEnfoque[i] + "</option>";
+    opcionesAreasDeEnfoque.push(opcion);
+  }
+  form.innerHTML = `    
+        <label for="AreasDeEnfoque">Áreas De Enfoque:</label>
+        <select name="AreasDeEnfoque" id=`+ JSON.stringify(idRandom+"SelectAreas") + `>
+          <optgroup label="AreasDeEnfoque">
+            `+ opcionesAreasDeEnfoque + `       
+          </optgroup>
+        </select>
+        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectAreas") + `,` + JSON.stringify(idRandom+"PAreaDeEnfoque") + `)> Seleccionar </button>
+        <br><br>    
+      `;
+
+  //aqui se crea la divicion que incluye el boton(collapsible) y el contenido(content)      
+  const div = document.createElement('div');
+  div.className = 'agregado';
+  div.id = idRandom+"DivAreaDeEnfoque";
+  div.innerHTML = `
+    <button style="display:inline-block" class="collapsible" id=`+ idRandom + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
+    <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CAreaDeEnfoque") + `>
+      `+ form.innerHTML + `
+      <p style = "text-align:center" contenteditable="true" id=`+ JSON.stringify(idRandom+"PAreaDeEnfoque") + `> `+areasEnfoqueEmpresa+` </p>
+      <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idRandom+"PAreaDeEnfoque") + `)> Agregar nuevo </button>     
+      <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idRandom+"DivAreaDeEnfoque") + `,` + JSON.stringify(idRandom+"DivObjetivo") + `,` + JSON.stringify(idRandom+"DivPlanes") + `)>Eliminar</button>
+    </div>
+    
+      
+      `;
+
+  document.getElementById('ejemploAreadeEnfoque').appendChild(div);
 }
 
 
