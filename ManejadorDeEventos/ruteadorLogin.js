@@ -45,6 +45,37 @@ module.exports = (app, passport) => {
 		});
 	});
 
+	//ruteador para la obtención del personal desde la bd
+	const model = require("../aplicacionWeb/Modelos/trabajador")
+	app.get('/personal', isLoggedIn, (req, res) => {
+		model.find({}, (err, trabajadores)=>{
+			if(err) throw err;
+			res.render('personal', {
+				user: req.user, //Este user o variable es de la empresa que cuenta con el email de la empresa.
+				trabajadores: trabajadores
+			});
+		})
+	});
+
+	app.post('/registrarTrabajador', (req, res) =>{
+		let body = req.body;
+		body.status = false;
+
+		model.create(body, (err, trabajador) =>{
+			if(err) throw err;
+			res.redirect('/personal');
+		})
+	})
+
+	app.get('/eliminarTrabajador/:id', (req, res) =>{
+		let id = req.params.id;
+		model.remove({_id: id}, (err, trabajador)=>{
+			if(err) throw err;
+			res.redirect('/personal');
+		})
+	});
+
+
 	// logout
 	app.get('/logout', (req, res, next) => {
 		req.logout(function(err) {
