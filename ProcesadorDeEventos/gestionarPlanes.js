@@ -55,7 +55,7 @@ class gestionarPlanes {
                         "valores": planEmpresa.valores,
                         "areasEnfoque": planEmpresa.areasEnfoque,
                         "objetivos": planEmpresa.objetivos,
-                        "planesAccion": planEmpresa.planesAccion
+                        "porcentaje": planEmpresa.porcentaje
                     }
                 });
                 console.log("Plan se modifico");

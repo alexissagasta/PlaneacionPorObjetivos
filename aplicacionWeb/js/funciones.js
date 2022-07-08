@@ -3,6 +3,7 @@ nombresAreasEnfoque = [];
 nombresObjetivos = [];
 planAcciones = [];
 planRecursos = [];
+planTiempos = [];
 planIndicadores = [];
 planAccionTitulo = [];
 planEmpresa = [];
@@ -32,7 +33,7 @@ async function getData() {
 }
 
 //Función que sirve para traer los planes de acción.
-async function getPlanesAccion(titulo) {
+async function getPlanesAccion(titulo) {//de acuerdo al titulo, te trae todo el plan de acción
   //
   const response = await fetch("/planesDeAccion/" + titulo, {
     method: 'GET',
@@ -45,6 +46,7 @@ async function getPlanesAccion(titulo) {
   const data = await response.json();
   planAcciones = data.acciones;
   planRecursos = data.recursos;
+  planTiempos = data.tiempos
   planIndicadores = data.indicadoresYmetas;
 }
 
@@ -120,6 +122,7 @@ async function agregarAreadeEnfoque() {
     idFormPlanEncargados = "formPlanEncargados" + cantPlanes;
     idTodasAcciones = "todasAcciones" + cantPlanes;
     idTodosRecursos = "todosRecursos" + cantPlanes;
+    idTodosTiempos = "todosTiempos" +cantPlanes;
     idIndicadores = "indicadores" + cantPlanes;
 
     /*En este apartado inicia para agregar AREAS DE ENFOQUE con el botón */
@@ -148,7 +151,7 @@ async function agregarAreadeEnfoque() {
       <button style="display:inline-block" class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
       <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCAreaDeEnfoque) + `>
         `+ form.innerHTML + `
-        <p style = "text-align:center" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
+        <p style = "text-align:center" class="claseAreaEnfoque" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
         <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>     
         <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idDivAreaDeEnfoque) + `,` + JSON.stringify(idDivObjetivo) + `,` + JSON.stringify(idDivPlanes) + `)>Eliminar</button>
       </div>
@@ -189,8 +192,8 @@ async function agregarAreadeEnfoque() {
               <td>Porcentaje completado</td>
             </tr>
             <tr contenteditable=true>
-              <td id=`+ JSON.stringify(idPObjetivo) + `> --- </td>
-              <td> --- </td>
+              <td class="claseObjetivos" id=`+ JSON.stringify(idPObjetivo) + `> --- </td>
+              <td class="clasePorcentaje"> --- </td>
             </tr>
           </table>
           <br><br>
@@ -220,7 +223,7 @@ async function agregarAreadeEnfoque() {
               `+ opcionesPlanAccionTitulo + `    
             </optgroup>
           </select>
-          <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
+          <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) +`,` + JSON.stringify(idTodosTiempos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
           <br><br>       
         `;
 
@@ -239,6 +242,10 @@ async function agregarAreadeEnfoque() {
           <label for="recursos">Recursos:</label>
           <div id=`+ JSON.stringify(idTodosRecursos) + `></div>
           <br>
+
+          <label for="tiempo">Tiempo:</label>
+          <p style = "text-align:center;" contenteditable="true" id=`+ JSON.stringify(idTodosTiempos) + `></p>
+          <br>
         
           <label for="indicadores">Indicadores:</label>
           <p style = "text-align:center;" contenteditable="true" id=`+ JSON.stringify(idIndicadores) + `></p>
@@ -255,7 +262,6 @@ async function agregarAreadeEnfoque() {
           <div id="contenidoPlanesAcciones">
             <p style = "text-align:center;display:inline-block" contenteditable="true" id=`+ JSON.stringify(idPPlanes) + `>` + div4.innerHTML + `</p>
           </div>
-          <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPPlanes) + `)> Agregar nuevo plan de acción </button>
           <br><br>
           </div>
         `;
@@ -338,7 +344,7 @@ async function eliminarAreaDeEnfoque(idArea, idObjetivo, idPlan) {
 
 //Funcion que se encarga de asiganar el valor al elemento idSelectPlan que tiene en 
 //ese momento al elemento idDivPlan
-async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idIndicadores, idContenido) {
+async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idTodosTiempos, idIndicadores, idContenido) {
   var planseleccionado = document.getElementById(idSelectPlanes).value;
   await getPlanesAccion(planseleccionado)
 
@@ -347,30 +353,34 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
   //manejan usuarios aun
   let encargadosTodos = "<select name=encargados id=encargados><optgroup label=Encargados>";
   for (let i = 0; i < 1; i++) {
-    encargadosTodos += "<option value=luis>Luis</option><option value=mario>Mario</option>";
+    encargadosTodos += "<option class=claseEncargados value=luis>Luis</option><option value=mario>Mario</option>";
   }
   encargadosTodos += "</optgroup></select><br><br>"
 
   // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
   let accionesTodas = "<table class=center style =  contenteditable:true ><tr class=cabecera style = contenteditable:false><td>Acciones</td> <td>Porcentaje completado</td></tr>";
-  for (let i = 0; i < planAcciones.length; i++) {
-    accionesTodas += "<tr><td contenteditable=true>" + planAcciones[i] + "</td> <td contenteditable=true>0%</td></tr>";
+  for (let i = 0; i < planAcciones.length; i++) { 
+    accionesTodas += "<tr><td contenteditable=true class=claseAcciones>" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones>0%</td></tr>";
   }
   accionesTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
   let recursosTodas = "<table class=center style = contenteditable:true><tr class=cabecera style = contenteditable:false><td>Recursos</td></tr>";
   for (let i = 0; i < planRecursos.length; i++) {
-    recursosTodas += "<tr><td contenteditable=true>" + planRecursos[i] + "</td></tr>";
+    recursosTodas += "<tr><td contenteditable=true class=claseRecursos>" + planRecursos[i] + "</td></tr>";
   }
   recursosTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let indicadores = "<p>" + planIndicadores + "</p>"
+  let tiempos = "<p class=claseTiempos>" + planTiempos + "</p>"
+
+  // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
+  let indicadores = "<p class=claseIndicadores>" + planIndicadores + "</p>"
 
   //Se cambia el contenido de los elementos acciones, recursos, encargados e indicadores
   document.getElementById(idTodasAcciones).innerHTML = accionesTodas;
   document.getElementById(idTodosRecursos).innerHTML = recursosTodas;
+  document.getElementById(idTodosTiempos).innerHTML = tiempos;
   document.getElementById(idFormPlanEncargados).innerHTML = encargadosTodos;
   document.getElementById(idIndicadores).innerHTML = indicadores;
 
@@ -378,10 +388,6 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
   var div = document.getElementById(idContenido);
   div.style.maxHeight = div.scrollHeight + "px";
   console.log()
-
-}
-
-async function guardarCambios(email) {
 
 }
 
@@ -396,7 +402,7 @@ async function obtenerPlanEmpresa(email) {
 
   const data = await response.json();
   const lts = data;
-  lts.forEach(lt => {
+  await lts.forEach(async lt => {
 
     const email = lt.email;
     const mision = lt.mision;
@@ -404,9 +410,9 @@ async function obtenerPlanEmpresa(email) {
     const valores = lt.valores;
     const areasEnfoque = lt.areasEnfoque;
     const objetivos = lt.objetivos;
-    const planesAccion = lt.planesAccion;
+    const porcentaje = lt.porcentaje;
 
-    planEmpresa.push(email, mision, vision, valores, areasEnfoque, objetivos, planesAccion);
+    planEmpresa.push(email, mision, vision, valores, areasEnfoque, objetivos, porcentaje);
   });
   console.log("Plan empresa "+planEmpresa)
 }
@@ -422,11 +428,26 @@ async function crearPlanEmpresa() {
     document.getElementById("idValores").textContent = planEmpresa[3];
     
     let areasEnfoqueEmpresa=planEmpresa[4]
+    // variable numPlanesAccion que sirve para saber el numero de areas de enfoque, 
+    //lo cual ayudará para agregar la cantidad de botones de planes de acción de acuerdo a la cantidad de areas de enfoque.
+    let numPlanesAccion = areasEnfoqueEmpresa.length;
 
-    console.log("Contenido "+areasEnfoqueEmpresa)
+
     areasEnfoqueEmpresa.forEach(async lt => {
         await agregarAreaDeEnfoqueEmpresa(lt)
     })
+
+    let objetivosEmpresa=planEmpresa[5]
+    let porcentaje = planEmpresa[6]
+
+    console.log("Contenido nombres objetivos123 "+objetivosEmpresa)
+    objetivosEmpresa.forEach(async lt =>{
+      porcentaje.forEach(async lt2 =>{
+        await agregarNombresObjetivosEmpresa(lt, lt2)
+      })
+    })
+
+    
   
   }
 
@@ -475,8 +496,68 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa){
       `;
 
   document.getElementById('ejemploAreadeEnfoque').appendChild(div);
+
 }
 
+/*En este apartado inicia para agregar OBJETIVOS con el mismo botón */
+async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjetivo){
+  let idRandom = generateRandomInteger(100000000000);
 
+  const form2 = document.createElement('form');
+  opcionesObjetivos = [];
+  for (let i = 0; i < nombresObjetivos.length; i++) {
+    opcion = "<option value=" + JSON.stringify(nombresObjetivos[i]) + ">" + nombresObjetivos[i] + "</option>";
+    opcionesObjetivos.push(opcion);
+  }
+  form2.innerHTML = `      
+        <label for="AreasDeEnfoque">Objetivo:</label>
+        <select name="Objetivo" id=`+ JSON.stringify(idRandom+"SelectObjetivos") + `>
+          <optgroup label="Objetivos">
+            `+ opcionesObjetivos + `              
+          </optgroup>
+        </select>
+        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectObjetivos") + `,` + JSON.stringify(idRandom+"PObjetivo") + `)> Seleccionar </button>
+        <br><br>         
+      `;
 
-this.onload = agregarColapsable(), getData();
+  const div2 = document.createElement('div');
+  div2.className = 'agregado';
+  div2.id = idRandom+"DivObjetivo";
+  div2.innerHTML = `
+      <button class="collapsible" id=`+ JSON.stringify(idRandom+"Objetivo") + ` onclick="hacerColapsable(this.id)">Objetivo</button>
+      <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CObjetivo") + `>
+        `+ form2.innerHTML + `
+        <table class="center">
+          <tr class=cabecera contenteditable:false>
+            <td>Objetivo</td> 
+            <td>Porcentaje completado</td>
+          </tr>
+          <tr contenteditable=true>
+            <td id=`+ JSON.stringify(idRandom+"PObjetivo") + `> `+objetivosEmpresa+` </td>
+            <td id=`+ JSON.stringify(idRandom+"PPorcentaje") + `> `+porcentajeObjetivo+ `</td>
+          </tr>
+        </table>
+        <br><br>
+        <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idRandom+"PObjetivo") + `)> Agregar nuevo objetivo </button>
+        <br><br>
+        </div>
+      `;
+
+  document.getElementById('ejemploObjetivo').appendChild(div2);
+}
+
+async function guardarCambios(email) {
+  let nuevoMision = document.getElementById("idMision").textContent
+  let nuevoVision = document.getElementById("idVision").textContent
+  let nuevoValores = document.getElementById("idValores").textContent
+  let nuevoAcciones = document.getElementsByClassName("claseAcciones")
+
+  let guardar = {
+    email: email,
+    mision: nuevoMision,
+    vision: nuevoVision,
+    valores: nuevoValores
+  }
+}
+
+this.onload = getData();

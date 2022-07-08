@@ -32,10 +32,22 @@ module.exports = (app, passport) => {
 	}));
 
 	//profile view
+	const modelPlanAccion = require("../aplicacionWeb/Modelos/planAccion");
 	app.get('/profile', isLoggedIn, (req, res) => {
+		modelPlanAccion.find({user: req.user}, (err, planesAcciones)=>{
+			if(err) throw err;
+			model.find({}, (err, trabajadores)=>{
+				if(err) throw err;
+				res.render('profile', {
+					user: req.user, //Este user o variable es de la empresa que cuenta con el email de la empresa.
+					planesAcciones: planesAcciones,
+					trabajadores: trabajadores
+				});
+			})
+		})
+		/*    ///////////////////////// Esto iba principalmente
 		res.render('profile', {
-			user: req.user
-		});
+			user: req.user});*/
 	});
 	
 	//Áreas de enfoque view
@@ -56,6 +68,17 @@ module.exports = (app, passport) => {
 			});
 		})
 	});
+
+	// ruteador para registrar plan de accion de una empresa
+	app.post('/registrarPlanAccionEmpresa', (req, res) =>{
+		let body = req.body;
+		body.status = false;
+
+		modelPlanAccion.create(body, (err, planAccionEmpresa) =>{
+			if(err) throw err;
+			res.redirect('/profile');
+		})
+	})
 
 	app.post('/registrarTrabajador', (req, res) =>{
 		let body = req.body;

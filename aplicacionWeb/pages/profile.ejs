@@ -27,16 +27,15 @@
   <script type="text/javascript" src="/aplicacionWeb/jquery360"></script>
   <script type="text/javascript" src="/aplicacionWeb/scriptVisuales"></script>
   <script type="text/javascript" src="/aplicacionWeb/script"></script>
-  
+
   <p style="display:none">
-    <strong >Usuario</strong> : <p id="idEmail"  style="display:none"><%= user.local.email %></p> <br>
-  </p>
+    <strong>Usuario</strong> :<p id="idEmail" style="display:none"><%=user.local.email%></p><br>
 
   <!--
   <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="js/funciones.js"></script>
   -->
-  
+
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -107,12 +106,12 @@
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="/personal">
-              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">person</i>
-              </div>
-              <span class="nav-link-text ms-1">Personal/trabajadores</span>
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <span class="nav-link-text ms-1">Personal/trabajadores</span>
           </a>
-      </li>
+        </li>
       </ul>
     </div>
 
@@ -125,7 +124,15 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <p>
-              <strong >Usuario</strong> : <p id="idEmail"><%= user.local.email %></p> <br>
+              <strong>Usuario</strong> :
+            <p id="idEmail"><%=user.local.email%></p> <br>
+            <br>
+            <p>
+              <strong><br>trabajadores</strong> :
+            <p id="idEmail"><%=trabajadores[1].emailTrabajador%></p> <br>
+            </p>
+            <p>
+              <strong><br>planes Accion</strong> :<p id="idEmail"><%=planesAcciones[0].titulo%></p> <br>
             </p>
           </ol>
         </nav>
@@ -140,15 +147,6 @@
                 <span class="d-sm-inline d-none">Salir</span>
               </a>
             </li>
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                </div>
-              </a>
-            </li>
           </ul>
         </div>
       </div>
@@ -159,7 +157,7 @@
       <h2 style="text-align:center;font-size:48px">Planeación por objetivos</h2>
 
       <p style="text-align:center;font-size:24px">Misión:</p>
-      <button class="collapsible">Abrir</button>
+      <button class="collapsible" id="btnMision" onclick="hacerColapsable(this.id)">Abrir</button>
 
       <div class="content">
         <p contenteditable="true" id="idMision">Refrescar al mundo en cuerpo, mente y espíritu.
@@ -168,13 +166,13 @@
       </div>
 
       <p style="text-align:center;font-size:24px">Visión:</p>
-      <button class="collapsible">Abrir</button>
+      <button class="collapsible" id="btnVision" onclick="hacerColapsable(this.id)">Abrir</button>
       <div class="content">
         <p contenteditable="true" id="idVision">Ser una empresa altamente efectiva que reacciona rápido ante cualquier imprevisto.</p>
       </div>
 
       <p style="text-align:center;font-size:24px">Valores:</p>
-      <button class="collapsible">Abrir</button>
+      <button class="collapsible" id="btnValores" onclick="hacerColapsable(this.id)">Abrir</button>
       <div class="content">
         <p contenteditable="true" id="idValores">Coca Cola para llegar a ser una de las empresas más
           importantes y grandes del mundo baso cada una de sus acciones en los siguientes
@@ -186,7 +184,7 @@
         <button class="btnAgregarElemento" id="agregarAreaEnfoque" onclick="agregarAreadeEnfoque()">Agregar</button>
       </div>
       <div id="ejemploAreadeEnfoque">
-        <button class="collapsible">Ejemplo de área de enfoque</button>
+        <button class="collapsible" id="btnAreasEnfoque" onclick="hacerColapsable(this.id)">Ejemplo de área de enfoque</button>
         <div class="content">
           <p contenteditable="false">Crear una red de ventas</p>
         </div>
@@ -197,10 +195,10 @@
         <!--
       Boton eliminado
       <button class="btnAgregarElemento" id="agregarObjetivo" onclick="agregarObjetivo()">Agregar</button>
-    -->
+      -->
       </div>
       <div id="ejemploObjetivo">
-        <button class="collapsible">Ejemplo de objetivo</button>
+        <button class="collapsible" id="btnObjetivos" onclick="hacerColapsable(this.id)">Ejemplo de objetivo</button>
         <div class="content">
           <p contenteditable="true">Aumentar en un 50% el porcentaje de recompra de los clientes
             actuales, en los productos más vendidos de la librería durante el año 2022</p>
@@ -212,19 +210,19 @@
       <div style="text-align:center;">
         <p style="text-align:center;font-size:24px;display:inline-block">Planes de acción:</p>
         <!--
-      Boton eliminado
-    <button class="btnAgregarElemento">Agregar</button>
-    -->
+          Boton eliminado
+        <button class="btnAgregarElemento">Agregar</button>
+        -->
       </div>
       <div id="ejemploPlanesAccion">
-        <button class="collapsible">Ejemplo de plan de acción</button>
+        <button class="collapsible" id="btnPlanAccion" onclick="hacerColapsable(this.id)">Ejemplo de plan de acción</button>
         <div class="content">
           <form>
             <label for="encargados">Encargado:</label>
             <select name="encargados" id="encargados">
               <optgroup label="Encargados">
                 <option value="luis">Luis</option>
-                <option value="mario">Mario</option>
+                <option value="mario">Alexis</option>
               </optgroup>
             </select>
             <br><br>
@@ -241,52 +239,145 @@
           <p contenteditable="false">Indicadores:</p>
           <p contenteditable="false">Porcentaje de ventas de libros del 2021</p>
         </div>
-      </div>
-
-      <br><br>
-      
-        <div style="text-align:center;" id="jeje">
-          <button type="submit" onclick=guardarCambios() class="btnGuardarCambios">Guardar cambios</button>
-        </div>
-
-      <script>
-        this.onload = agregarColapsable();
-      </script>
-      <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                realizado con <i class="fa fa-heart"></i> por
-                <a href="https://www.itson.mx/Paginas/index.aspx" class="font-weight-bold" target="_blank">ITSON</a>
-
+          <!--Inicio de planes de acciones-->
+          <% for(var i=0; i < planesAcciones.length; i++) {%>
+            <div class="agregado" id="idDivPlanes">
+              <button class="collapsible active" id="idPlan<%=i%>" onclick="hacerColapsable(this.id)">Plan de acción</button>
+              <div class="content" style="text-align: center; max-height: 938px;" id="idCPlanes<%=i%>">
+                <!--
+                <label for="PlanesDeAccion">Planes de acción:</label>
+                <select name="plandeaccion" id="idSelectPlanes2">
+                  <optgroup label="Planes de acciones">
+                    <option value="Proyecto capacitación total">Proyecto capacitación total</option>
+                  </optgroup>
+                </select>
+                -->
+                <br>
+                
+                <div id="contenidoPlanesAcciones">
+                  <p style="text-align:center;display:inline-block" id="idPPlanes<%=i%>">
+                    <label for="encargados">Encargado:</label>
+                  </p>
+  
+                  <form id="formPlanEncargados<%=i%>"><select name="encargados" id="encargados">
+                      <optgroup label="Encargados">
+                        <% for(var t=0; t < trabajadores.length; t++) {%>
+                          <% if(user.local.email == trabajadores[t].emailEmpresa) {%>
+                            <option value="luis">
+                              <%= trabajadores[t].nombreTrabajador%>
+                            </option>
+                          <% } %>
+                        <% } %>
+                      </optgroup>
+                    </select><br>
+                  </form>
+  
+                  <br>
+  
+                  <label for="acciones">Acciones:</label>
+                  <div id="todasAcciones<%=i%>">
+                    <table class="center" style="contenteditable:true">
+                      <tbody>
+                        <tr class="cabecera" style="contenteditable:false">
+                          <td>Acciones</td>
+                          <td>Porcentaje completado</td>
+                        </tr>
+                        
+                        <tr>
+                          <% for(var p=0; p < planesAcciones[i].acciones.length; p++) {%>
+                          
+                          <td contenteditable="true"><%= planesAcciones[i].acciones[p] %></td>
+                          <td contenteditable="true"><%= planesAcciones[i].porcentajeAcciones[p] %></td>
+                          
+                        <% } %>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+  
+                  <label for="recursos">Recursos:</label>
+                  <div id="todosRecursos<%=i%>">
+                    <table class="center" style="contenteditable:true">
+                      <tbody>
+                        <tr class="cabecera" style="contenteditable:false">
+                          <td>Recursos</td>
+                        </tr>
+                        <tr>
+                          <% for(var r=0; r < planesAcciones[i].recursos.length; r++) {%>
+                          
+                          <td contenteditable="true"><%= planesAcciones[i].recursos[r] %></td>                          
+                          
+                        <% } %>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+  
+                  <label for="tiempo">Tiempo:</label>
+                  <p style="text-align:center;" contenteditable="true" id="todosTiempos<%=i%>"><%=planesAcciones[i].tiempo%></p>
+                  <br>
+  
+                  <label for="indicadores">Indicadores:</label>
+                  <p style="text-align:center;" contenteditable="true" id="indicadores<%=i%>"><%=planesAcciones[i].indicadores%></p>
+                  <br>
+                  
+                </div>
+                <br><br>
+                
               </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
-                    Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                    target="_blank">License</a>
-                </li>
-              </ul>
+              
+              <% } %>
+          <!--Fin de planes de acciones-->
+      </div>
+      
+    </div>
+    
+    <br><br>
+
+    <div style="text-align:center;" id="jeje">
+      <button type="submit" onclick=guardarCambios() class="btnGuardarCambios">Guardar cambios</button>
+    </div>
+
+    <script>
+      this.onload = agregarColapsable();
+    </script>
+    <footer class="footer py-4  ">
+      <div class="container-fluid">
+        <div class="row align-items-center justify-content-lg-between">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="copyright text-center text-sm text-muted text-lg-start">
+              ©
+              <script>
+                document.write(new Date().getFullYear())
+              </script>,
+              realizado con <i class="fa fa-heart"></i> por
+              <a href="https://www.itson.mx/Paginas/index.aspx" class="font-weight-bold" target="_blank">ITSON</a>
+
             </div>
           </div>
+          <div class="col-lg-6">
+            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+              <li class="nav-item">
+                <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
+              </li>
+              <li class="nav-item">
+                <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </footer>
+      </div>
+    </footer>
     </div>
     <!--Final del todo-->
   </main>
@@ -557,9 +648,9 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/aplicacionWeb/material-dashboard_min_js"></script>
-  
+
   <script defer>
-    crearPlanEmpresa()
+    crearPlanEmpresa(), agregarColapsable()
   </script>
 </body>
 
