@@ -48,7 +48,7 @@ client.connect(async function (err, db) {
     router.post("/planDeAccion", async (req, res, next) => {
         try {
             const data = req.body;
-            console.log(data);
+            console.log("plan de acción: "+data);
 
             //Almacena en Json
             info = await gestorPlanes.registrarPlaneDeAccion(db, data);

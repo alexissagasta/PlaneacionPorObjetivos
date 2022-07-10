@@ -7,7 +7,7 @@ class gestionarPlanes {
     registrarPlaneDeAccion = async (db, planDeAccion) => {
         try {
             var dbo = db.db("PlanesPorObjetivos");
-            const res = await dbo.collection("Planes").insertOne(planDeAccion);
+            const res = await dbo.collection("planesacciones").insertOne(planDeAccion);
             console.log("Un plan de acción ha sido agregado");
             return res;
 

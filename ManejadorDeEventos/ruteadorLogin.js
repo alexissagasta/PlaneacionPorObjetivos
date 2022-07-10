@@ -76,7 +76,7 @@ module.exports = (app, passport) => {
 
 		modelPlanAccion.create(body, (err, planAccionEmpresa) =>{
 			if(err) throw err;
-			res.redirect('/profile');
+			//res.redirect('/profile');
 		})
 	})
 

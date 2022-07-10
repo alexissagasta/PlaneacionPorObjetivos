@@ -127,13 +127,6 @@
               <strong>Usuario</strong> :
             <p id="idEmail"><%=user.local.email%></p> <br>
             <br>
-            <p>
-              <strong><br>trabajadores</strong> :
-            <p id="idEmail"><%=trabajadores[1].emailTrabajador%></p> <br>
-            </p>
-            <p>
-              <strong><br>planes Accion</strong> :<p id="idEmail"><%=planesAcciones[0].titulo%></p> <br>
-            </p>
           </ol>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -239,101 +232,114 @@
           <p contenteditable="false">Indicadores:</p>
           <p contenteditable="false">Porcentaje de ventas de libros del 2021</p>
         </div>
-          <!--Inicio de planes de acciones-->
-          <% for(var i=0; i < planesAcciones.length; i++) {%>
-            <div class="agregado" id="idDivPlanes">
-              <button class="collapsible active" id="idPlan<%=i%>" onclick="hacerColapsable(this.id)">Plan de acción</button>
-              <div class="content" style="text-align: center; max-height: 938px;" id="idCPlanes<%=i%>">
-                <!--
-                <label for="PlanesDeAccion">Planes de acción:</label>
-                <select name="plandeaccion" id="idSelectPlanes2">
-                  <optgroup label="Planes de acciones">
-                    <option value="Proyecto capacitación total">Proyecto capacitación total</option>
+          
+          
+          
+      </div>
+      <!--Inicio de planes de acciones-->
+      <% for(var i=0; i < planesAcciones.length; i++) {%>
+        <% if(user.local.email == planesAcciones[i].email) {%>
+        <div class="agregado" id="idDivPlanes">
+          <button class="collapsible active" id="idPlan<%=i%>" onclick="hacerColapsable(this.id)">Plan de acción</button>
+          <div class="content" style="text-align: center; max-height: 938px;" id="idCPlanes<%=i%>">
+            <!--
+            <label for="PlanesDeAccion">Planes de acción:</label>
+            <select name="plandeaccion" id="idSelectPlanes2">
+              <optgroup label="Planes de acciones">
+                <option value="Proyecto capacitación total">Proyecto capacitación total</option>
+              </optgroup>
+            </select>
+            -->
+            <br>
+            
+            <div id="contenidoPlanesAcciones">
+              <p style="text-align:center;display:inline-block">
+                <label for="encargados">Titulo:</label>
+              </p><br>
+              <p style="text-align:center;display:inline-block" class="claseTitulos<%=i%>"><%=planesAcciones[i].titulo%></p><br>             
+
+
+              <p style="text-align:center;display:inline-block">
+                <label for="encargados">Encargado:</label>
+              </p>
+
+              <form id="formPlanEncargados<%=i%>" style="display:inline-block">
+                <select name="encargados" id="encargados<%=i%>">
+                  <optgroup label="Encargados">
+                    <% for(var t=0; t < trabajadores.length; t++) {%>
+                      <% if(user.local.email == trabajadores[t].emailEmpresa) {%>
+                        <option value="<%=trabajadores[t].nombreTrabajador%>"><%=trabajadores[t].nombreTrabajador%></option>
+                      <% } %>
+                    <% } %>
+
                   </optgroup>
                 </select>
-                -->
-                <br>
                 
-                <div id="contenidoPlanesAcciones">
-                  <p style="text-align:center;display:inline-block" id="idPPlanes<%=i%>">
-                    <label for="encargados">Encargado:</label>
-                  </p>
-  
-                  <form id="formPlanEncargados<%=i%>"><select name="encargados" id="encargados">
-                      <optgroup label="Encargados">
-                        <% for(var t=0; t < trabajadores.length; t++) {%>
-                          <% if(user.local.email == trabajadores[t].emailEmpresa) {%>
-                            <option value="luis">
-                              <%= trabajadores[t].nombreTrabajador%>
-                            </option>
-                          <% } %>
-                        <% } %>
-                      </optgroup>
-                    </select><br>
-                  </form>
-  
-                  <br>
-  
-                  <label for="acciones">Acciones:</label>
-                  <div id="todasAcciones<%=i%>">
-                    <table class="center" style="contenteditable:true">
-                      <tbody>
-                        <tr class="cabecera" style="contenteditable:false">
-                          <td>Acciones</td>
-                          <td>Porcentaje completado</td>
-                        </tr>
-                        
-                        <tr>
-                          <% for(var p=0; p < planesAcciones[i].acciones.length; p++) {%>
-                          
-                          <td contenteditable="true"><%= planesAcciones[i].acciones[p] %></td>
-                          <td contenteditable="true"><%= planesAcciones[i].porcentajeAcciones[p] %></td>
-                          
-                        <% } %>
-                        </tr>
-                        
-                      </tbody>
-                    </table>
-                  </div>
-                  <br>
-  
-                  <label for="recursos">Recursos:</label>
-                  <div id="todosRecursos<%=i%>">
-                    <table class="center" style="contenteditable:true">
-                      <tbody>
-                        <tr class="cabecera" style="contenteditable:false">
-                          <td>Recursos</td>
-                        </tr>
-                        <tr>
-                          <% for(var r=0; r < planesAcciones[i].recursos.length; r++) {%>
-                          
-                          <td contenteditable="true"><%= planesAcciones[i].recursos[r] %></td>                          
-                          
-                        <% } %>
-                        </tr>
-                        
-                      </tbody>
-                    </table>
-                  </div>
-                  <br>
-  
-                  <label for="tiempo">Tiempo:</label>
-                  <p style="text-align:center;" contenteditable="true" id="todosTiempos<%=i%>"><%=planesAcciones[i].tiempo%></p>
-                  <br>
-  
-                  <label for="indicadores">Indicadores:</label>
-                  <p style="text-align:center;" contenteditable="true" id="indicadores<%=i%>"><%=planesAcciones[i].indicadores%></p>
-                  <br>
-                  
-                </div>
-                <br><br>
-                
-              </div>
+              </form>
+              <button onClick = seleccionAreaEnfoque("encargados<%=i%>","encargado<%=i%>")> Seleccionar </button><br>
+
+              <p style = "text-align:center" class="claseEncargados<%=i%>" id="encargado<%=i%>"> <%=planesAcciones[i].encargado%> </p>
               
-              <% } %>
-          <!--Fin de planes de acciones-->
-      </div>
-      
+              <br>
+
+              <label for="acciones">Acciones:</label>
+              <div id="todasAcciones<%=i%>">
+                <table class="center" style="contenteditable:true">
+                  <tbody>
+                    <tr class="cabecera" style="contenteditable:false">
+                      <td>Acciones</td>
+                      <td>Porcentaje completado</td>
+                    </tr>
+                    
+                    <tr>
+                      <% for(var p=0; p < planesAcciones[i].acciones.length; p++) {%>
+                      
+                      <td contenteditable="true" class="claseAcciones<%=i%>"><%= planesAcciones[i].acciones[p] %></td>
+                      <td contenteditable="true" class="clasePorcentajeAcciones<%=i%>"><%= planesAcciones[i].porcentajeAcciones[p] %></td>
+                      
+                    <% } %>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+              <br>
+
+              <label for="recursos">Recursos:</label>
+              <div id="todosRecursos<%=i%>">
+                <table class="center" style="contenteditable:true">
+                  <tbody>
+                    <tr class="cabecera" style="contenteditable:false">
+                      <td>Recursos</td>
+                    </tr>
+                    <tr>
+                      <% for(var r=0; r < planesAcciones[i].recursos.length; r++) {%>
+                      
+                      <td contenteditable="true" class="claseRecursos<%=i%>"><%= planesAcciones[i].recursos[r] %></td>                          
+                      
+                    <% } %>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+              <br>
+
+              <label for="tiempo">Tiempo:</label>
+              <p style="text-align:center;" class="claseTiempos<%=i%>" contenteditable="true" id="todosTiempos<%=i%>"><%=planesAcciones[i].tiempo%></p>
+              <br>
+
+              <label for="indicadores">Indicadores:</label>
+              <p style="text-align:center;" class="claseIndicadores<%=i%>" contenteditable="true" id="indicadores<%=i%>"><%=planesAcciones[i].indicadores%></p>
+              <br>
+              
+            </div>
+            <br><br>
+            
+          </div>
+          <% } %>
+        <% } %>
+      <!--Fin de planes de acciones-->
     </div>
     
     <br><br>
