@@ -279,11 +279,13 @@ async function agregarAreadeEnfoque() {
 //Función que sirve para actualizar el numero de planes en la base de datos que se 
 //encuentra en ese momento
 async function updateCantPlanes(numero) {
-
+  console.log("Cant planes accion "+numero)
+  
   cantPlanes = {
     cantPlanes: numero
   }
 
+  console.log("Cant planes "+cantPlanes)
   var nombEmpresa = "todas";
   const response = await fetch("/configuracion/todas", {
     method: 'PUT',

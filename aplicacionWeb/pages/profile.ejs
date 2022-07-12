@@ -656,7 +656,7 @@
   <script src="/aplicacionWeb/material-dashboard_min_js"></script>
 
   <script defer>
-    crearPlanEmpresa(), agregarColapsable()
+    crearPlanEmpresa(), agregarColapsable(), this.onload = updateCantPlanes("<%=planesAcciones.length%>")
   </script>
 </body>
 
