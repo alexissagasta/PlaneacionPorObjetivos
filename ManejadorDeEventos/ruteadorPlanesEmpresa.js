@@ -48,6 +48,27 @@ client.connect(async function (err, db) {
             next(err)
         }
     });
+
+    router.get("/trabajadores/:email", async (req, res, next) => {
+        var email = req.params.email;
+        try {
+
+            //Busca en la BD
+
+            let trabajadores = await gestorPlanes.obtenerTrabajadores(db, email);
+            if (trabajadores.length == 0) {
+
+                mensaje = { msj: "no hay trabajadores!" }
+
+                res.status(206).send(mensaje);
+            } else {
+                res.status(200).send(trabajadores);
+            }
+
+        } catch (err) {
+            next(err)
+        }
+    });
 });
 client.close();
 module.exports = router

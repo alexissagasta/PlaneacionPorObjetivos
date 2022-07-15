@@ -64,6 +64,7 @@ client.connect(async function (err, db) {
             var nomEmpresa = req.params.nombreEmpresa;
             const data = req.body;
             console.log(data);
+            console.log("email Empresa configuracion "+nomEmpresa)
 
             //Se asignan los valores a partir del body
             cantPlanes = {

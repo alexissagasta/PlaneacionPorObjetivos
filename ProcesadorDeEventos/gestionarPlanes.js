@@ -31,6 +31,20 @@ class gestionarPlanes {
 
     }
 
+    obtenerTrabajadores = async (client, user) => {
+        try {
+            // specify the DB's name
+            const db = client.db('PlanesPorObjetivos');
+            // execute find query
+            const items = await db.collection('trabajadores').find({ "emailEmpresa": user }).toArray();
+            console.log("trabajadores= "+JSON.stringify(items));
+            return items;
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
     registrarPlanEmpresa = async (db, planEmpresa, email) => {
         var dbo = db.db("PlanesPorObjetivos");
         const items = await dbo.collection('planesEmpresa').find({ "email": email }).toArray();

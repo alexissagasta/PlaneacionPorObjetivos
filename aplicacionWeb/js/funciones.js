@@ -7,6 +7,7 @@ planTiempos = [];
 planIndicadores = [];
 planAccionTitulo = [];
 planEmpresa = [];
+let trabajadoresEmpresa=[];
 var cantPlanes;
 
 //Función que sirve para traer las areas de enfoque
@@ -30,6 +31,21 @@ async function getData() {
     objetivos.forEach(lt => { nombresObjetivos.push(lt) });
 
   });
+}
+
+async function obtenerTrabajadores(){
+  var email = document.getElementById("idEmail").textContent;
+  const response = await fetch("/trabajadores/" + email, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  })
+
+  const data = await response.json();
+  trabajadoresEmpresa=data;
+  console.log("todos los trabajadores: "+trabajadoresEmpresa)
 }
 
 //Función que sirve para traer los planes de acción.
@@ -67,8 +83,9 @@ async function getPlanesTitulo() {
 
 async function getConfig() {
   //
-  var nombEmpresa = "todas";
-  const response = await fetch("/configuracion/todas", {
+  var nombEmpresa = document.getElementById("idEmail").textContent;
+  //console.log("email getConfig "+nombEmpresa);
+  const response = await fetch("/configuracion/"+nombEmpresa, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -77,9 +94,9 @@ async function getConfig() {
   })
 
   const data = await response.json();
-  planActual = data[0]
-  cantPlanes = planActual.cantPlanes;
-
+  usuarioActual = data[0];
+  cantPlanes = usuarioActual.cantPlanes;
+  console.log("cantidad planes getConfig "+cantPlanes)
   return cantPlanes
 }
 
@@ -232,7 +249,7 @@ async function agregarAreadeEnfoque() {
     div4.id = 'div4';
     div4.innerHTML = `
           <label for="encargados">Encargado:</label>
-          <form id=`+ JSON.stringify(idFormPlanEncargados) + `></form>
+          <div id=`+ JSON.stringify(idFormPlanEncargados) + `></div>
           <br>
 
           <label for="acciones">Acciones:</label>
@@ -268,8 +285,9 @@ async function agregarAreadeEnfoque() {
 
     document.getElementById('ejemploPlanesAccion').appendChild(div3);
 
-    numero--;
-    await updateCantPlanes(JSON.stringify(numero));
+    let nuevoEmailCantPlanes = document.getElementById('idEmail').textContent;
+    numero++;
+    await updateCantPlanes(JSON.stringify(numero), nuevoEmailCantPlanes);
 
   } else {
     alert("Ya creo el maximo de planes, puede incrementar la cantidad en configuraciónes.")
@@ -278,16 +296,16 @@ async function agregarAreadeEnfoque() {
 
 //Función que sirve para actualizar el numero de planes en la base de datos que se 
 //encuentra en ese momento
-async function updateCantPlanes(numero) {
-  console.log("Cant planes accion "+numero)
+async function updateCantPlanes(numero, email) {
+  //console.log("Cant planes accion "+numero)
   
   cantPlanes = {
     cantPlanes: numero
   }
 
-  console.log("Cant planes "+cantPlanes)
-  var nombEmpresa = "todas";
-  const response = await fetch("/configuracion/todas", {
+  //console.log("Cant planes "+cantPlanes.numero)
+
+  const response = await fetch("/configuracion/"+email, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -339,8 +357,9 @@ async function eliminarAreaDeEnfoque(idArea, idObjetivo, idPlan) {
   plan.remove();
 
   //Se aumenta y actualiza la cantidad de planes en la base de datos
-  numero++;
-  await updateCantPlanes(JSON.stringify(numero));
+  let nuevoEmailCantPlanes = document.getElementById('idEmail').textContent;
+  numero--;
+  await updateCantPlanes(JSON.stringify(numero), nuevoEmailCantPlanes);
 
 }
 
@@ -349,35 +368,37 @@ async function eliminarAreaDeEnfoque(idArea, idObjetivo, idPlan) {
 async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idTodosTiempos, idIndicadores, idContenido) {
   var planseleccionado = document.getElementById(idSelectPlanes).value;
   await getPlanesAccion(planseleccionado)
+  await obtenerTrabajadores()
+  console.log(cantPlanes);
 
   // Se crea el formulario para seleccionar en elcargado del plan 
   //por ahora se establece un valor pre establecido ya que no se
   //manejan usuarios aun
-  let encargadosTodos = "<select name=encargados id=encargados><optgroup label=Encargados>";
-  for (let i = 0; i < 1; i++) {
-    encargadosTodos += "<option class=claseEncargados value=luis>Luis</option><option value=mario>Mario</option>";
+  let encargadosTodos = "<form><select name=encargados id=encargados"+cantPlanes.cantPlanes+"><optgroup label=Encargados>";
+  for (let i = 0; i < trabajadoresEmpresa.length; i++) {
+    encargadosTodos += "<option value ="+trabajadoresEmpresa[i].nombreTrabajador+">"+trabajadoresEmpresa[i].nombreTrabajador+"</option>";
   }
-  encargadosTodos += "</optgroup></select><br><br>"
+  encargadosTodos += "</optgroup></select> </form> <button onClick = seleccionAreaEnfoque('encargados"+cantPlanes.cantPlanes+"','encargado"+cantPlanes.cantPlanes+"')> Seleccionar </button><br> <p style=text-align:center;display:inline-block class=claseEncargados"+cantPlanes.cantPlanes+" id=encargado"+cantPlanes.cantPlanes+"> --- </p> <br><br>"
 
   // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
   let accionesTodas = "<table class=center style =  contenteditable:true ><tr class=cabecera style = contenteditable:false><td>Acciones</td> <td>Porcentaje completado</td></tr>";
   for (let i = 0; i < planAcciones.length; i++) { 
-    accionesTodas += "<tr><td contenteditable=true class=claseAcciones>" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones>0%</td></tr>";
+    accionesTodas += "<tr><td contenteditable=true class=claseAcciones"+(cantPlanes+1)+">" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones>0%</td></tr>";
   }
   accionesTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
   let recursosTodas = "<table class=center style = contenteditable:true><tr class=cabecera style = contenteditable:false><td>Recursos</td></tr>";
   for (let i = 0; i < planRecursos.length; i++) {
-    recursosTodas += "<tr><td contenteditable=true class=claseRecursos>" + planRecursos[i] + "</td></tr>";
+    recursosTodas += "<tr><td contenteditable=true class=claseRecursos"+(cantPlanes+1)+">" + planRecursos[i] + "</td></tr>";
   }
   recursosTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let tiempos = "<p class=claseTiempos>" + planTiempos + "</p>"
+  let tiempos = "<p class=claseTiempos"+(cantPlanes+1)+">" + planTiempos + "</p>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let indicadores = "<p class=claseIndicadores>" + planIndicadores + "</p>"
+  let indicadores = "<p class=claseIndicadores"+(cantPlanes+1)+">" + planIndicadores + "</p>"
 
   //Se cambia el contenido de los elementos acciones, recursos, encargados e indicadores
   document.getElementById(idTodasAcciones).innerHTML = accionesTodas;
@@ -389,7 +410,6 @@ async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAccion
   //se cambia el tamaño del elemento divPlan
   var div = document.getElementById(idContenido);
   div.style.maxHeight = div.scrollHeight + "px";
-  console.log()
 
 }
 
@@ -416,13 +436,13 @@ async function obtenerPlanEmpresa(email) {
 
     planEmpresa.push(email, mision, vision, valores, areasEnfoque, objetivos, porcentaje);
   });
-  console.log("Plan empresa "+planEmpresa)
+  //console.log("Plan empresa "+planEmpresa)
 }
 
 
 async function crearPlanEmpresa() {
   let email = document.getElementById("idEmail").textContent;
-  console.log(email);
+  //console.log(email);
   await obtenerPlanEmpresa(email)
   if (planEmpresa.length > 0) {
     document.getElementById("idMision").textContent = planEmpresa[1];
@@ -442,7 +462,7 @@ async function crearPlanEmpresa() {
     let objetivosEmpresa=planEmpresa[5]
     let porcentaje = planEmpresa[6]
 
-    console.log("Contenido nombres objetivos123 "+objetivosEmpresa)
+    //console.log("Contenido nombres objetivos123 "+objetivosEmpresa)
     objetivosEmpresa.forEach(async lt =>{
       porcentaje.forEach(async lt2 =>{
         await agregarNombresObjetivosEmpresa(lt, lt2)
@@ -733,9 +753,9 @@ async function guardarCambios() {
     "indicadores": nuevoIndicadores2
   }
   //console.log(guardar);
-  console.log(guardarPlanAccion0);
-  console.log(guardarPlanAccion1);
-  console.log(guardarPlanAccion2);
+  //console.log(guardarPlanAccion0);
+  //console.log(guardarPlanAccion1);
+  //console.log(guardarPlanAccion2);
   
   try {
     await guardarPlanEmpresa(guardar);

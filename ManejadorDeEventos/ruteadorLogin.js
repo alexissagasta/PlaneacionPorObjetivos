@@ -34,13 +34,21 @@ module.exports = (app, passport) => {
 	//profile view
 	const modelPlanAccion = require("../aplicacionWeb/Modelos/planAccion");
 	app.get('/profile', isLoggedIn, (req, res) => {
-		modelPlanAccion.find({user: req.user}, (err, planesAcciones)=>{
+		modelPlanAccion.find({}, (err, planesAcciones)=>{
+			console.log("validacion correo: "+req.user.local.email);
 			if(err) throw err;
+			let planesAccionesUsuario = []
+			planesAcciones.forEach(tl => {
+				console.log("correo dentro foreach: "+tl.email);
+				if(tl.email == req.user.local.email){
+					planesAccionesUsuario.push(tl)
+				}
+			})
 			model.find({}, (err, trabajadores)=>{
 				if(err) throw err;
 				res.render('profile', {
 					user: req.user, //Este user o variable es de la empresa que cuenta con el email de la empresa.
-					planesAcciones: planesAcciones,
+					planesAcciones: planesAccionesUsuario,
 					trabajadores: trabajadores
 				});
 			})
@@ -59,6 +67,16 @@ module.exports = (app, passport) => {
 
 	//ruteador para la obtención del personal desde la bd
 	const model = require("../aplicacionWeb/Modelos/trabajador")
+	app.get('/personal', isLoggedIn, (req, res) => {
+		model.find({}, (err, trabajadores)=>{
+			if(err) throw err;
+			res.render('personal', {
+				user: req.user, //Este user o variable es de la empresa que cuenta con el email de la empresa.
+				trabajadores: trabajadores
+			});
+		})
+	});
+	
 	app.get('/personal', isLoggedIn, (req, res) => {
 		model.find({}, (err, trabajadores)=>{
 			if(err) throw err;

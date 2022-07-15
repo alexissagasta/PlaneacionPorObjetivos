@@ -32,20 +32,39 @@ class gestionarConfiguraciones {
     }
 
     modificarConfiguracion = async (db, nomEmpresa, cantPlanes) => {
-        try {
-            var dbo = db.db("PlanesPorObjetivos");
-            const res = await dbo.collection("configuraciones").updateOne({ empresa: nomEmpresa }, {
-                $set:
-                {
-                    "cantPlanes": cantPlanes
+        var dbo = db.db("PlanesPorObjetivos");
+        const items = await dbo.collection('configuraciones').find({ "empresa": nomEmpresa }).toArray();
+        if(items.length == 0){
+            try {
+                let configuracion = {
+                    "cantPlanes": cantPlanes, 
+                    "empresa": nomEmpresa
                 }
-            });
-            console.log("Una configuracion se modifico");
-            console.log({ configuracion: res });
-            return res;
-
-        } catch (e) {
-            console.error(e);
+                var dbo = db.db("PlanesPorObjetivos");
+                const res = await dbo.collection("configuraciones").insertOne(configuracion);
+                console.log("Se registro nueva configuración");
+                return res;
+    
+            } catch (e) {
+                console.error(e);
+            }
+        }else{
+            try {
+                var dbo = db.db("PlanesPorObjetivos");
+                const res = await dbo.collection("configuraciones").updateOne({ "empresa": nomEmpresa }, {
+                    $set:
+                    {
+                        "cantPlanes": cantPlanes, 
+                        "empresa": nomEmpresa
+                    }
+                });
+                console.log("Configuración se modifico");
+                console.log({ configuracion: res });
+                return res;
+    
+            } catch (e) {
+                console.error(e);
+            }
         }
 
     }
