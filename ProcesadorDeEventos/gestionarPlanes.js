@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 class gestionarPlanes {
 
     registrarPlaneDeAccion = async (db, planDeAccion) => {
-        try {
+        /*try {
             var dbo = db.db("PlanesPorObjetivos");
             const res = await dbo.collection("planesacciones").insertOne(planDeAccion);
             console.log("Un plan de acción ha sido agregado");
@@ -14,6 +14,44 @@ class gestionarPlanes {
         } catch (e) {
             console.error(e);
         }
+        //////////////////////////////////////////////////////////////////////////*/
+        var dbo = db.db("PlanesPorObjetivos");
+        const items = await dbo.collection('planesacciones').find( {"titulo": planDeAccion.titulo, "email": planDeAccion.email}).toArray()
+        console.log("Plan Acción Gestor "+items.length);
+        if(items.length == 0){
+            try {
+                var dbo = db.db("PlanesPorObjetivos");
+                const res = await dbo.collection("planesacciones").insertOne(planDeAccion);
+                console.log("El plan de acción de la empresa se registro con exito");
+                return res;
+    
+            } catch (e) {
+                console.error(e);
+            }
+        }else{
+            try {
+                var dbo = db.db("PlanesPorObjetivos");
+                const res = await dbo.collection("planesacciones").findOneAndUpdate({"email": planDeAccion.email, "titulo": planDeAccion.titulo}, {
+                    $set:
+                    {
+                        "titulo": planDeAccion.titulo,
+                        "encargado": planDeAccion.encargado,
+                        "acciones": planDeAccion.acciones,
+                        "porcentajeAcciones": planDeAccion.porcentajeAcciones,
+                        "recursos": planDeAccion.recursos,
+                        "tiempo": planDeAccion.tiempo,
+                        "indicadores": planDeAccion.indicadores
+                    }
+                });
+                console.log("Plan se modifico");
+                console.log({ configuracion: res });
+                return res;
+    
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        
 
     }
 
@@ -61,9 +99,11 @@ class gestionarPlanes {
         }else{
             try {
                 var dbo = db.db("PlanesPorObjetivos");
-                const res = await dbo.collection("planesEmpresa").updateOne({ email: email }, {
+                //const res = await dbo.collection("planesEmpresa").updateOne({ email: email }, {
+                const res = await dbo.collection("planesEmpresa").findOneAndUpdate({ "email": email }, {
                     $set:
                     {
+                        "email": planEmpresa.email,
                         "mision": planEmpresa.mision,
                         "vision": planEmpresa.vision,
                         "valores": planEmpresa.valores,
@@ -106,8 +146,8 @@ class gestionarPlanes {
             const db = client.db('PlanesPorObjetivos');
             // execute find query
             const items = await db.collection('Planes').find({ "titulo": titulo }).toArray();
-            console.log("titulo= "+titulo);
-            console.log("contenido= "+JSON.stringify(items[0]));
+            //console.log("titulo= "+titulo);
+            //console.log("contenido= "+JSON.stringify(items[0]));
             return items[0];
         } catch (e) {
             console.error(e);

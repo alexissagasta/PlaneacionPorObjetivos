@@ -65,6 +65,20 @@ module.exports = (app, passport) => {
 		});
 	});
 
+	//Objetivos view
+	app.get('/objetivos', isLoggedIn, (req, res) => {
+		res.render('objetivos', {
+			user: req.user
+		});
+	});
+
+	//Planes de acciones view
+	app.get('/planesDeAcciones', isLoggedIn, (req, res) => {
+		res.render('planesAcciones', {
+			user: req.user
+		});
+	});
+
 	//ruteador para la obtención del personal desde la bd
 	const model = require("../aplicacionWeb/Modelos/trabajador")
 	app.get('/personal', isLoggedIn, (req, res) => {

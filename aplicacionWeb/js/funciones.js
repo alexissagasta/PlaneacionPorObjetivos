@@ -45,7 +45,7 @@ async function obtenerTrabajadores(){
 
   const data = await response.json();
   trabajadoresEmpresa=data;
-  console.log("todos los trabajadores: "+trabajadoresEmpresa)
+  //console.log("todos los trabajadores: "+trabajadoresEmpresa)
 }
 
 //Función que sirve para traer los planes de acción.
@@ -113,7 +113,7 @@ async function agregarAreadeEnfoque() {
   //de cantPlanes
   numero = parseInt(cantPlanes, 10);
 
-  if (1 <= numero && numero <= 3) {
+  if (0 <= numero && numero < 2) {
 
     //Se crean las ids de los nuevos elementos a crear; esto al concatenar el tipo de elemento 
     //y la cantPlanes disponibles
@@ -136,6 +136,7 @@ async function agregarAreadeEnfoque() {
 
     idObjetivo = "idObjetivo" + cantPlanes;
     idPlan = "idPlan" + cantPlanes;
+    idTodosTitulos = "todosTitulos" +cantPlanes;
     idFormPlanEncargados = "formPlanEncargados" + cantPlanes;
     idTodasAcciones = "todasAcciones" + cantPlanes;
     idTodosRecursos = "todosRecursos" + cantPlanes;
@@ -168,7 +169,7 @@ async function agregarAreadeEnfoque() {
       <button style="display:inline-block" class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
       <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCAreaDeEnfoque) + `>
         `+ form.innerHTML + `
-        <p style = "text-align:center" class="claseAreaEnfoque" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `> --- </p>
+        <p style = "text-align:center" class="claseAreaEnfoque" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `>---</p>
         <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>     
         <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idDivAreaDeEnfoque) + `,` + JSON.stringify(idDivObjetivo) + `,` + JSON.stringify(idDivPlanes) + `)>Eliminar</button>
       </div>
@@ -188,9 +189,7 @@ async function agregarAreadeEnfoque() {
     form2.innerHTML = `      
           <label for="AreasDeEnfoque">Objetivo:</label>
           <select name="Objetivo" id=`+ JSON.stringify(idSelectObjetivos) + `>
-            <optgroup label="Objetivos">
-              `+ opcionesObjetivos + `              
-            </optgroup>
+            <optgroup label="Objetivos">`+opcionesObjetivos+`</optgroup>
           </select>
           <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idSelectObjetivos) + `,` + JSON.stringify(idPObjetivo) + `)> Seleccionar </button>
           <br><br>         
@@ -209,8 +208,8 @@ async function agregarAreadeEnfoque() {
               <td>Porcentaje completado</td>
             </tr>
             <tr contenteditable=true>
-              <td class="claseObjetivos" id=`+ JSON.stringify(idPObjetivo) + `> --- </td>
-              <td class="clasePorcentaje"> --- </td>
+              <td class="claseObjetivos" id=`+ JSON.stringify(idPObjetivo) + `>---</td>
+              <td class="clasePorcentaje">---</td>
             </tr>
           </table>
           <br><br>
@@ -236,11 +235,9 @@ async function agregarAreadeEnfoque() {
     form3.innerHTML = ` 
           <label for="PlanesDeAccion">Planes de acción:</label>
           <select name="plandeaccion" id=`+ JSON.stringify(idSelectPlanes) + `>
-            <optgroup label="Planes de acciones">
-              `+ opcionesPlanAccionTitulo + `    
-            </optgroup>
+            <optgroup label="Planes de acciones">`+ opcionesPlanAccionTitulo + `</optgroup>
           </select>
-          <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) +`,` + JSON.stringify(idTodosTiempos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
+          <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idTodosTitulos) + `,`+ JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) +`,` + JSON.stringify(idTodosTiempos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
           <br><br>       
         `;
 
@@ -248,6 +245,11 @@ async function agregarAreadeEnfoque() {
     div4.className = 'agregado';
     div4.id = 'div4';
     div4.innerHTML = `
+          
+          <label for="tiempo">Titulo:</label>
+          <p style = "text-align:center;" contenteditable="true" id=`+ JSON.stringify(idTodosTitulos) + `></p>
+          <br>
+
           <label for="encargados">Encargado:</label>
           <div id=`+ JSON.stringify(idFormPlanEncargados) + `></div>
           <br>
@@ -365,44 +367,48 @@ async function eliminarAreaDeEnfoque(idArea, idObjetivo, idPlan) {
 
 //Funcion que se encarga de asiganar el valor al elemento idSelectPlan que tiene en 
 //ese momento al elemento idDivPlan
-async function seleccionPlan(idSelectPlanes, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idTodosTiempos, idIndicadores, idContenido) {
+async function seleccionPlan(idSelectPlanes, idTodosTitulos, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idTodosTiempos, idIndicadores, idContenido) {
   var planseleccionado = document.getElementById(idSelectPlanes).value;
   await getPlanesAccion(planseleccionado)
   await obtenerTrabajadores()
   console.log(cantPlanes);
 
+  // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
+  let titulos = "<p class=claseTitulos"+(cantPlanes.cantPlanes-1)+">" + planseleccionado + "</p>"
+
   // Se crea el formulario para seleccionar en elcargado del plan 
   //por ahora se establece un valor pre establecido ya que no se
   //manejan usuarios aun
-  let encargadosTodos = "<form><select name=encargados id=encargados"+cantPlanes.cantPlanes+"><optgroup label=Encargados>";
+  let encargadosTodos = "<form><select name=encargados id=encargados"+(cantPlanes.cantPlanes-1)+"><optgroup label=Encargados>";
   for (let i = 0; i < trabajadoresEmpresa.length; i++) {
     encargadosTodos += "<option value ="+trabajadoresEmpresa[i].nombreTrabajador+">"+trabajadoresEmpresa[i].nombreTrabajador+"</option>";
   }
-  encargadosTodos += "</optgroup></select> </form> <button onClick = seleccionAreaEnfoque('encargados"+cantPlanes.cantPlanes+"','encargado"+cantPlanes.cantPlanes+"')> Seleccionar </button><br> <p style=text-align:center;display:inline-block class=claseEncargados"+cantPlanes.cantPlanes+" id=encargado"+cantPlanes.cantPlanes+"> --- </p> <br><br>"
+  encargadosTodos += "</optgroup></select> </form> <button onClick = seleccionAreaEnfoque('encargados"+(cantPlanes.cantPlanes-1)+"','encargado"+(cantPlanes.cantPlanes-1)+"')> Seleccionar </button><br> <p style=text-align:center;display:inline-block class=claseEncargados"+(cantPlanes.cantPlanes-1)+" id=encargado"+(cantPlanes.cantPlanes-1)+">---</p> <br><br>"
 
   // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
   let accionesTodas = "<table class=center style =  contenteditable:true ><tr class=cabecera style = contenteditable:false><td>Acciones</td> <td>Porcentaje completado</td></tr>";
   for (let i = 0; i < planAcciones.length; i++) { 
-    accionesTodas += "<tr><td contenteditable=true class=claseAcciones"+(cantPlanes+1)+">" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones>0%</td></tr>";
+    accionesTodas += "<tr><td contenteditable=true class=claseAcciones"+(cantPlanes.cantPlanes-1)+">" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones"+(cantPlanes.cantPlanes-1)+">0%</td><br></tr>";
   }
   accionesTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
   let recursosTodas = "<table class=center style = contenteditable:true><tr class=cabecera style = contenteditable:false><td>Recursos</td></tr>";
   for (let i = 0; i < planRecursos.length; i++) {
-    recursosTodas += "<tr><td contenteditable=true class=claseRecursos"+(cantPlanes+1)+">" + planRecursos[i] + "</td></tr>";
+    recursosTodas += "<tr><td contenteditable=true class=claseRecursos"+(cantPlanes.cantPlanes-1)+">" + planRecursos[i] + "</td></tr>";
   }
   recursosTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let tiempos = "<p class=claseTiempos"+(cantPlanes+1)+">" + planTiempos + "</p>"
+  let tiempos = "<p class=claseTiempos"+(cantPlanes.cantPlanes-1)+">" + planTiempos + "</p>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let indicadores = "<p class=claseIndicadores"+(cantPlanes+1)+">" + planIndicadores + "</p>"
+  let indicadores = "<p class=claseIndicadores"+(cantPlanes.cantPlanes-1)+">" + planIndicadores + "</p>"
 
   //Se cambia el contenido de los elementos acciones, recursos, encargados e indicadores
   document.getElementById(idTodasAcciones).innerHTML = accionesTodas;
   document.getElementById(idTodosRecursos).innerHTML = recursosTodas;
+  document.getElementById(idTodosTitulos).innerHTML = titulos;
   document.getElementById(idTodosTiempos).innerHTML = tiempos;
   document.getElementById(idFormPlanEncargados).innerHTML = encargadosTodos;
   document.getElementById(idIndicadores).innerHTML = indicadores;
@@ -423,6 +429,9 @@ async function obtenerPlanEmpresa(email) {
   })
 
   const data = await response.json();
+  if(data.msj == "no hay planes!"){
+    return 0;
+  }
   const lts = data;
   await lts.forEach(async lt => {
 
@@ -450,9 +459,6 @@ async function crearPlanEmpresa() {
     document.getElementById("idValores").textContent = planEmpresa[3];
     
     let areasEnfoqueEmpresa=planEmpresa[4]
-    // variable numPlanesAccion que sirve para saber el numero de areas de enfoque, 
-    //lo cual ayudará para agregar la cantidad de botones de planes de acción de acuerdo a la cantidad de areas de enfoque.
-    let numPlanesAccion = areasEnfoqueEmpresa.length;
 
 
     areasEnfoqueEmpresa.forEach(async lt => {
@@ -463,11 +469,9 @@ async function crearPlanEmpresa() {
     let porcentaje = planEmpresa[6]
 
     //console.log("Contenido nombres objetivos123 "+objetivosEmpresa)
-    objetivosEmpresa.forEach(async lt =>{
-      porcentaje.forEach(async lt2 =>{
-        await agregarNombresObjetivosEmpresa(lt, lt2)
-      })
-    })
+    for (let i = 0; i < objetivosEmpresa.length; i++) {
+      await agregarNombresObjetivosEmpresa(objetivosEmpresa[i], porcentaje[i])
+    }
 
     
   
@@ -487,15 +491,13 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa){
   const form = document.createElement('form');
   opcionesAreasDeEnfoque = [];
   for (let i = 0; i < nombresAreasEnfoque.length; i++) {
-    opcion = "<option value=" + JSON.stringify(nombresAreasEnfoque[i]) + ">" + nombresAreasEnfoque[i] + "</option>";
+    opcion = "<option value=" + JSON.stringify(nombresAreasEnfoque[i]) + ">"+nombresAreasEnfoque[i]+"</option>";
     opcionesAreasDeEnfoque.push(opcion);
   }
   form.innerHTML = `    
         <label for="AreasDeEnfoque">Áreas De Enfoque:</label>
         <select name="AreasDeEnfoque" id=`+ JSON.stringify(idRandom+"SelectAreas") + `>
-          <optgroup label="AreasDeEnfoque">
-            `+ opcionesAreasDeEnfoque + `       
-          </optgroup>
+          <optgroup label="AreasDeEnfoque">`+opcionesAreasDeEnfoque+`</optgroup>
         </select>
         <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectAreas") + `,` + JSON.stringify(idRandom+"PAreaDeEnfoque") + `)> Seleccionar </button>
         <br><br>    
@@ -509,7 +511,7 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa){
     <button style="display:inline-block" class="collapsible" id=`+ idRandom + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
     <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CAreaDeEnfoque") + `>
       `+ form.innerHTML + `
-      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque" id=`+ JSON.stringify(idRandom+"PAreaDeEnfoque") + `> `+areasEnfoqueEmpresa+` </p>
+      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque" id=`+ JSON.stringify(idRandom+"PAreaDeEnfoque")+`>`+areasEnfoqueEmpresa+`</p>
       <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idRandom+"PAreaDeEnfoque") + `)> Agregar nuevo </button>     
       <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idRandom+"DivAreaDeEnfoque") + `,` + JSON.stringify(idRandom+"DivObjetivo") + `,` + JSON.stringify(idRandom+"DivPlanes") + `)>Eliminar</button>
     </div>
@@ -528,15 +530,13 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
   const form2 = document.createElement('form');
   opcionesObjetivos = [];
   for (let i = 0; i < nombresObjetivos.length; i++) {
-    opcion = "<option value=" + JSON.stringify(nombresObjetivos[i]) + ">" + nombresObjetivos[i] + "</option>";
+    opcion = "<option value="+JSON.stringify(nombresObjetivos[i])+">"+nombresObjetivos[i]+"</option>";
     opcionesObjetivos.push(opcion);
   }
   form2.innerHTML = `      
         <label for="AreasDeEnfoque">Objetivo:</label>
         <select name="Objetivo" id=`+ JSON.stringify(idRandom+"SelectObjetivos") + `>
-          <optgroup label="Objetivos">
-            `+ opcionesObjetivos + `              
-          </optgroup>
+          <optgroup label="Objetivos">`+opcionesObjetivos+`</optgroup>
         </select>
         <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectObjetivos") + `,` + JSON.stringify(idRandom+"PObjetivo") + `)> Seleccionar </button>
         <br><br>         
@@ -555,8 +555,8 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
             <td>Porcentaje completado</td>
           </tr>
           <tr contenteditable=true>
-            <td class ="claseObjetivos" id=`+ JSON.stringify(idRandom+"PObjetivo") + `> `+objetivosEmpresa+` </td>
-            <td class="clasePorcentaje" id=`+ JSON.stringify(idRandom+"PPorcentaje") + `> `+porcentajeObjetivo+ `</td>
+            <td class ="claseObjetivos" id=`+ JSON.stringify(idRandom+"PObjetivo") + `>`+objetivosEmpresa+`</td>
+            <td class="clasePorcentaje" id=`+ JSON.stringify(idRandom+"PPorcentaje") + `>`+porcentajeObjetivo+`</td>
           </tr>
         </table>
         <br><br>
@@ -722,46 +722,58 @@ async function guardarCambios() {
 
   let guardarPlanAccion0 = {
     "email": email,
-    "titulo": nuevoTitulos0,
-    "encargado": nuevoEncargados0,
+    "titulo": nuevoTitulos0[0],
+    "encargado": nuevoEncargados0[0],
     "acciones": nuevoAcciones0,
     "porcentajeAcciones": nuevoPorcentajesAcciones0,
     "recursos": nuevoRecursos0,
-    "tiempo": nuevoTiempos0,
-    "indicadores": nuevoIndicadores0
+    "tiempo": nuevoTiempos0[0],
+    "indicadores": nuevoIndicadores0[0]
   }
 
   let guardarPlanAccion1 = {
     "email": email,
-    "titulo": nuevoTitulos1,
-    "encargado": nuevoEncargados1,
+    "titulo": nuevoTitulos1[0],
+    "encargado": nuevoEncargados1[0],
     "acciones": nuevoAcciones1,
     "porcentajeAcciones": nuevoPorcentajesAcciones1,
     "recursos": nuevoRecursos1,
-    "tiempo": nuevoTiempos1,
-    "indicadores": nuevoIndicadores1
+    "tiempo": nuevoTiempos1[0],
+    "indicadores": nuevoIndicadores1[0]
   }
 
   let guardarPlanAccion2 = {
     "email": email,
-    "titulo": nuevoTitulos2,
-    "encargado": nuevoEncargados2,
+    "titulo": nuevoTitulos2[0],
+    "encargado": nuevoEncargados2[0],
     "acciones": nuevoAcciones2,
     "porcentajeAcciones": nuevoPorcentajesAcciones2,
     "recursos": nuevoRecursos2,
-    "tiempo": nuevoTiempos2,
-    "indicadores": nuevoIndicadores2
+    "tiempo": nuevoTiempos2[0],
+    "indicadores": nuevoIndicadores2[0]
   }
   //console.log(guardar);
-  //console.log(guardarPlanAccion0);
-  //console.log(guardarPlanAccion1);
-  //console.log(guardarPlanAccion2);
+
   
   try {
     await guardarPlanEmpresa(guardar);
-    /*await guardarPlanAccionEmpresa(guardarPlanAccion0)
-    await guardarPlanAccionEmpresa(guardarPlanAccion1)
-    await guardarPlanAccionEmpresa(guardarPlanAccion2)*/
+    console.log(guardar);
+    /*
+    if(!guardarPlanAccion0.acciones.length == 0){
+      await guardarPlanAccionEmpresa(guardarPlanAccion0)
+      console.log(guardarPlanAccion0);
+    }
+
+    if(!guardarPlanAccion1.acciones.length == 0){
+      await guardarPlanAccionEmpresa(guardarPlanAccion1)
+      console.log(guardarPlanAccion1);
+    }
+
+    if(!guardarPlanAccion2.acciones.length == 0){
+      await guardarPlanAccionEmpresa(guardarPlanAccion2)
+      console.log(guardarPlanAccion2);
+    }*/
+
     alert("Plan guardado");
   } catch (error) {
     console.error(error);
@@ -775,7 +787,7 @@ async function guardarPlanEmpresa(planEmpresa) {
   const response = await fetch("/registrarPlanEmpresa", {
     method: 'POST',
     headers: {
-      //'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify(planEmpresa)
@@ -788,12 +800,13 @@ async function guardarPlanAccionEmpresa(planAccionEmpresa) {
   const response = await fetch("/planDeAccion", {
     method: 'POST',
     headers: {
-      //'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: planAccionEmpresa
+    body: JSON.stringify(planAccionEmpresa)
   
   })
+  console.log(JSON.stringify(planAccionEmpresa));
 }
 
 this.onload = getData();

@@ -17,7 +17,7 @@ async function obtenerAreas() {
       const nombre = lt.nombre;
       const objetivos = lt.objetivos;
       nombresAreasEnfoque.push(nombre);
-      objetivos.forEach(lt => { nombresObjetivos.push(lt) });
+      nombresObjetivos.push(objetivos);
   
     });
 }
@@ -43,5 +43,26 @@ async function crearTablaAreas(idAreas) {
     
   }
 
+  async function crearTablaObjetivos(idAreas) {
+    await obtenerAreas()
+  
+    // Se crea el formulario para seleccionar en elcargado del plan 
+    //por ahora se establece un valor pre establecido ya que no se
+    //manejan usuarios aun
+    
+  
+    // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
+   let objetivosTodas = "<table class=center style =  background-color:#FFFFFF ><tr class=cabecera style = contenteditable:false ><td></td></tr>";
+   for (let i = 0; i < nombresObjetivos.length; i++) {
+    objetivosTodas += "<tr><td contenteditable=false style=text-align:center >" + nombresObjetivos[i] + "</td></tr>";
+   }
+   objetivosTodas += "</table>"
+ 
+   //Se cambia el contenido de los elementos acciones, recursos, encargados e indicadores
+   document.getElementById(idAreas).innerHTML = objetivosTodas;
+    
+  }
+  
   this.onload = crearTablaAreas("tablaAreas");
+  this.onload = crearTablaObjetivos("tablaObjetivos");
 

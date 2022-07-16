@@ -37,7 +37,7 @@ client.connect(async function (err, db) {
     router.post("/registrarPlanEmpresa", async (req, res, next) => {
         try {
             const planEmpresa = req.body;
-            console.log(req.body);
+            console.log("plan empresa Ruteador "+req.body);
 
             //Almacena en Json
             //Se agrega el plan de la empresa

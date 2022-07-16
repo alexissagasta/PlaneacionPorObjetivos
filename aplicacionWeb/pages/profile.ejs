@@ -62,7 +62,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/aplicacionWeb/billing_html">
+          <a class="nav-link text-white " href="/objetivos">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -70,7 +70,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/aplicacionWeb/notifications_html">
+          <a class="nav-link text-white " href="/planesDeAcciones">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -285,21 +285,24 @@
               <label for="acciones">Acciones:</label>
               <div id="todasAcciones<%=i%>">
                 <table class="center" style="contenteditable:true">
-                  <tbody>
+                  <thead>
                     <tr class="cabecera" style="contenteditable:false">
                       <td>Acciones</td>
                       <td>Porcentaje completado</td>
                     </tr>
-                    
+                </thead>
+                  <tbody>
+
+                    <% for(var p=0; p < planesAcciones[i].acciones.length; p++) {%>
                     <tr>
-                      <% for(var p=0; p < planesAcciones[i].acciones.length; p++) {%>
+                      
                       
                       <td contenteditable="true" class="claseAcciones<%=i%>"><%= planesAcciones[i].acciones[p] %></td>
                       <td contenteditable="true" class="clasePorcentajeAcciones<%=i%>"><%= planesAcciones[i].porcentajeAcciones[p] %></td>
                       
-                    <% } %>
-                    </tr>
                     
+                    </tr>
+                    <% } %>
                   </tbody>
                 </table>
               </div>
@@ -312,13 +315,14 @@
                     <tr class="cabecera" style="contenteditable:false">
                       <td>Recursos</td>
                     </tr>
+                    <% for(var r=0; r < planesAcciones[i].recursos.length; r++) {%>
                     <tr>
-                      <% for(var r=0; r < planesAcciones[i].recursos.length; r++) {%>
+                      
                       
                       <td contenteditable="true" class="claseRecursos<%=i%>"><%= planesAcciones[i].recursos[r] %></td>                          
                       
-                    <% } %>
                     </tr>
+                    <% } %>
                     
                   </tbody>
                 </table>
