@@ -16,18 +16,19 @@ class gestionarPlanes {
         }
         //////////////////////////////////////////////////////////////////////////*/
         var dbo = db.db("PlanesPorObjetivos");
-        const items = await dbo.collection('planesacciones').find( {"titulo": planDeAccion.titulo, "email": planDeAccion.email}).toArray()
+        const items = await dbo.collection('planesacciones').find( { "email": planDeAccion.email,"titulo": planDeAccion.titulo}).toArray()
         console.log("Plan Acción Gestor "+items.length);
-        if(items.length == 0){
-            try {
-                var dbo = db.db("PlanesPorObjetivos");
-                const res = await dbo.collection("planesacciones").insertOne(planDeAccion);
-                console.log("El plan de acción de la empresa se registro con exito");
-                return res;
-    
-            } catch (e) {
-                console.error(e);
-            }
+        try {
+            var dbo = db.db("PlanesPorObjetivos");
+            const res = await dbo.collection("planesacciones").insertOne(planDeAccion);
+            console.log("El plan de acción de la empresa se registro con exito");
+            return res;
+
+        } catch (e) {
+            console.error(e);
+        }
+        /*if(items.length == 0){
+            
         }else{
             try {
                 var dbo = db.db("PlanesPorObjetivos");
@@ -50,7 +51,7 @@ class gestionarPlanes {
             } catch (e) {
                 console.error(e);
             }
-        }
+        }*/
         
 
     }
@@ -78,6 +79,46 @@ class gestionarPlanes {
             console.log("trabajadores= "+JSON.stringify(items));
             return items;
         } catch (e) {
+            console.error(e);
+        }
+
+    }
+
+     eliminarPlanes = async (db, email) => {
+        try {
+            var dbo = db.db("PlanesPorObjetivos");
+            var myquery = { "email": email };
+            const res = await dbo.collection("planesEmpresa").deleteOne(myquery);
+            console.log("El plan empresa ha sido eliminado");
+            console.log({ rifa: res });
+            return res;
+
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+    eliminarPlanesAcciones = async (db, correo) => {
+        /*try {
+            var dbo = db.db("PlanesPorObjetivos");
+            //var myquery = { email: correo };
+            const res = await dbo.collection("planesacciones").deleteMany({ email: correo });
+            console.log("El plan acción de empresa ha sido eliminado");
+            console.log({ rifa: res });
+            return res;
+
+        } catch (e) {
+            console.error(e);
+        }*/
+        console.log(correo);
+        try {
+            const database = db.db("PlanesPorObjetivos");
+            const planAccion = database.collection("planesacciones");
+            // Query for all movies with a title containing the string "Santa"
+            const query = { email: { $regex: correo } };
+            const result = await planAccion.deleteMany(query);
+            console.log("Deleted " + result.deletedCount + " documents");
+          }catch (e) {
             console.error(e);
         }
 

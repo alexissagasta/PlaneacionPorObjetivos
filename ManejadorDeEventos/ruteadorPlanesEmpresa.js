@@ -69,6 +69,41 @@ client.connect(async function (err, db) {
             next(err)
         }
     });
+
+    router.delete("/eliminarTodo/:email", async (req, res, next) => {
+        var email = req.params.email;
+        try {
+
+            //Busca en la BD
+
+            let planEliminar = await gestorPlanes.eliminarPlanes(db, email);
+            if (planEliminar.length == 0) {
+
+                mensaje = { msj: "no hay planes!" }
+
+                res.status(206).send(mensaje);
+            } else {
+                res.status(200).send(planEliminar);
+            }
+
+        } catch (err) {
+            next(err)
+        }
+    });
+
+    router.delete("/eliminarPlanesAcciones/:email", async (req, res, next) => {
+        var email = req.params.email;
+        try {
+
+            //Busca en la BD
+
+            let planAccionEliminar = await gestorPlanes.eliminarPlanesAcciones(db, email);
+                res.status(200).send(planAccionEliminar);
+
+        } catch (err) {
+            next(err)
+        }
+    });
 });
 client.close();
 module.exports = router

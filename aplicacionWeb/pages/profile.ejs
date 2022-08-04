@@ -22,7 +22,8 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="/aplicacionWeb/material-dashboard" rel="stylesheet" />
   <!--Todo lo de arriba es nuevo-->
-
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+  <!--<script src="html2pdf.bundle.min.js"></script>-->
   <link rel="stylesheet" href="/aplicacionWeb/estilos">
   <script type="text/javascript" src="/aplicacionWeb/jquery360"></script>
   <script type="text/javascript" src="/aplicacionWeb/scriptVisuales"></script>
@@ -239,7 +240,8 @@
       <!--Inicio de planes de acciones-->
       <% for(var i=0; i < planesAcciones.length; i++) {%>
         <% if(user.local.email == planesAcciones[i].email) {%>
-        <div class="agregado" id="idDivPlanes">
+        <div class="agregado" id="DivPlanes">
+          <div class="agregado" id="<%=i%>DivPlanes">
           <button class="collapsible active" id="idPlan<%=i%>" onclick="hacerColapsable(this.id)">Plan de acción</button>
           <div class="content" style="text-align: center; max-height: 938px;" id="idCPlanes<%=i%>">
             <!--
@@ -339,7 +341,7 @@
               
             </div>
             <br><br>
-            
+          </div>
           </div>
           <% } %>
         <% } %>
@@ -350,6 +352,7 @@
 
     <div style="text-align:center;" id="jeje">
       <button type="submit" onclick=guardarCambios() class="btnGuardarCambios">Guardar cambios</button>
+      <button id="exportPDF" onclick=generatePDF() class="btnConvertirPdf">Descargar como PDF</button>
     </div>
 
     <script>
@@ -661,6 +664,232 @@
 
   <script defer>
     crearPlanEmpresa(), agregarColapsable(), this.onload = updateCantPlanes("<%=planesAcciones.length%>", "<%=user.local.email%>")
+  </script>
+
+  <!--<script>
+    let htmlPDF = document.body;
+    let exportPDF = document.getElementById("exportPDF");
+    exportPDF.onclick= (e) => html2pdf(htmlPDF);
+  </script>-->
+  <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+  <script>
+    async function generatePDF(){
+    let pdfNuevoAreasEnfoques=[];
+    let pdfNuevoObjetivos=[];
+    let pdfNuevoPorcentajeObjetivos=[];
+    let pdfAcciones=[];
+    let pdfPorcentajeAcciones=[];
+    let pdfRecursos=[];
+    let pdfTiempo=[];
+    //var pdfObject = jsPDFInvoiceTemplate.default(props);
+
+    let pMision = document.getElementById("idMision").textContent
+    let pVision = document.getElementById("idVision").textContent
+    let pValores = document.getElementById("idValores").textContent
+    let pdfOpcionesAreasEnfoque = document.getElementsByClassName("pdfAreaEnfoque2");
+    for (i = 0; i < pdfOpcionesAreasEnfoque.length; i++) {
+      pdfNuevoAreasEnfoques.push(pdfOpcionesAreasEnfoque[i].textContent) //variable que sirve para traer la info
+    }
+
+    let pdfOpcionesObjetivos = document.getElementsByClassName("pdfObjetivos2");
+    for (i = 0; i < pdfOpcionesObjetivos.length; i++) {
+      pdfNuevoObjetivos.push(pdfOpcionesObjetivos[i].textContent)
+    }
+
+    let pdfOpcionesPorcentajeObjetivos = document.getElementsByClassName("pdfPorcentajeObjetivos2");
+    for (i = 0; i < pdfOpcionesPorcentajeObjetivos.length; i++) {
+      pdfNuevoPorcentajeObjetivos.push(pdfOpcionesPorcentajeObjetivos[i].textContent)
+    }
+
+    let titulo0 = document.getElementsByClassName("claseTitulos0");
+    let encargado0 = document.getElementsByClassName("claseEncargados0");
+    let pdfOpcionesAcciones0 = document.getElementsByClassName("claseAcciones0");
+    for (i = 0; i < pdfOpcionesAcciones0.length; i++) {
+      pdfAcciones.push(pdfOpcionesAcciones0[i].textContent)
+    }
+
+    let pdfOpcionesporcentajeAcciones0 = document.getElementsByClassName("clasePorcentajeAcciones0");
+    for (i = 0; i < pdfOpcionesporcentajeAcciones0.length; i++) {
+      pdfPorcentajeAcciones.push(pdfOpcionesporcentajeAcciones0[i].textContent)
+    }
+
+    let pdfRecursos0 = document.getElementsByClassName("claseRecursos0");
+    for (i = 0; i < pdfRecursos0.length; i++) {
+      pdfRecursos.push(pdfRecursos0[i].textContent)
+    }
+
+    let pdfTiempos0 = document.getElementsByClassName("claseTiempos0");
+    for (i = 0; i < pdfTiempos0.length; i++) {
+      pdfTiempo.push(pdfTiempos0[i].textContent)
+    }
+    //let pdfTiempo = document.getElementsByClassName("claseTiempos0");
+
+    //let pplanAccion0 = document.getElementById("idCPlanes0").textContent
+    
+    const jsPDF = jsPDFInvoiceTemplate.jsPDF();
+    try {
+      jsPDF.text("Misión:", 10, 10);
+      jsPDF.text(" "+pMision, 10, 20);
+      jsPDF.text("Visión:", 10, 30);
+      jsPDF.text(" "+pVision, 10, 40);
+      jsPDF.text("Valores:", 10, 50);
+      jsPDF.text(" "+pValores, 10, 60);
+      jsPDF.text("Area de enfoque 1:", 10, 70);
+      jsPDF.text(" "+pdfNuevoAreasEnfoques[0], 10, 80);
+      jsPDF.text("Objetivo 1:", 10, 90);
+      jsPDF.text(" "+pdfNuevoObjetivos[0]+" - "+ pdfNuevoPorcentajeObjetivos[0]+"%", 10, 100);
+      jsPDF.text("Plan de acción 1:", 10, 110);
+      jsPDF.text(" Título:", 10, 120);
+      jsPDF.text(" "+titulo0[0].textContent, 10, 130);
+      jsPDF.text(" Encargado:", 10, 140);
+      jsPDF.text(" "+encargado0[0].textContent, 10, 150);
+      jsPDF.text(" Acciones y porcentajes: ", 10, 160);
+      jsPDF.text(" "+pdfAcciones[0]+" - "+ pdfPorcentajeAcciones[0]+"%", 10, 170);
+      jsPDF.text(" "+pdfAcciones[1]+" - "+ pdfPorcentajeAcciones[1]+"%", 10, 180);
+      jsPDF.text(" "+pdfAcciones[2]+" - "+ pdfPorcentajeAcciones[2]+"%", 10, 190);
+      jsPDF.text(" "+pdfAcciones[3]+" - "+ pdfPorcentajeAcciones[3]+"%", 10, 200);
+      jsPDF.text(" "+pdfAcciones[4]+" - "+ pdfPorcentajeAcciones[4]+"%", 10, 210);
+      jsPDF.text(" "+pdfAcciones[5]+" - "+ pdfPorcentajeAcciones[5]+"%", 10, 220);
+      jsPDF.text(" Recursos:", 10, 230);
+      jsPDF.text(" "+pdfRecursos[0]+", "+pdfRecursos[1], 10, 240);
+      jsPDF.text(" Tiempo:", 10, 250);
+      jsPDF.text(" "+pdfTiempo[0], 10, 260);
+      //jsPDF.text(" "+pdfTiempo[0].textContent, 10, 260);
+      
+      jsPDF.addPage("a4", "portrait");
+      jsPDF.save('planEmpresa.pdf');
+      console.log("Object created: ", jsPDF);
+    } catch (e) {
+      console.log(e)
+    }
+    
+    //pdfObject.jsPDFDocObject.addPage();
+    //pdfObject.jsPDFDocObject.text("Test text prueba", 10, 50);
+    //pdfCreated.jsPDFDocObject.addPage();
+    //pdfCreated.jsPDFDocObject.text("nueva cosa", 10, 50);
+    /*pdfCreated.jsPDFDocObject.save();*/
+    //pdfObject.text("nueva cosa", 10, 50);
+   //console.log("Object created: ", pdfObject);
+   
+}
+var props = {
+  outputType: jsPDFInvoiceTemplate.OutputType.Save,
+  returnJsPDFDocObject: true,
+  fileName: "PlanEmpresa",
+  orientationLandscape: false,
+  compress: true
+
+  /*logo: {
+      src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
+      type: 'PNG', //optional, when src= data:uri (nodejs case)
+      width: 53.33, //aspect ratio = width/height
+      height: 26.66,
+      margin: {
+          top: 0, //negative or positive num, from the current position
+          left: 0 //negative or positive num, from the current position
+      }
+  },
+  stamp: {
+      inAllPages: true, //by default = false, just in the last page
+      src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/qr_code.jpg",
+      type: 'JPG', //optional, when src= data:uri (nodejs case)
+      width: 20, //aspect ratio = width/height
+      height: 20,
+      margin: {
+          top: 0, //negative or positive num, from the current position
+          left: 0 //negative or positive num, from the current position
+      }
+  },
+  business: {
+      name: "<%=user.local.email%>",
+      address: "Albania, Tirane ish-Dogana, Durres 2001",
+      phone: "(+355) 069 11 11 111",
+      email: "email@example.com",
+      email_1: "info@example.al",
+      website: "www.example.al",
+  },
+  contact: {
+      label: "Invoice issued for:",
+      name: "Client Name",
+      address: "Albania, Tirane, Astir",
+      phone: "(+355) 069 22 22 222",
+      email: "client@website.al",
+      otherInfo: "www.website.al",
+  },
+  invoice: {
+      label: "Invoice #: ",
+      num: 19,
+      invDate: "Payment Date: 01/01/2021 18:12",
+      invGenDate: "Invoice Date: 02/02/2021 10:17",
+      headerBorder: false,
+      tableBodyBorder: false,
+      header: [
+        {
+          title: "#", 
+          style: { 
+            width: 10 
+          } 
+        }, 
+        { 
+          title: "Title",
+          style: {
+            width: 30
+          } 
+        }, 
+        { 
+          title: "Description",
+          style: {
+            width: 80
+          } 
+        }, 
+        { title: "Price"},
+        { title: "Quantity"},
+        { title: "Unit"},
+        { title: "Total"}
+      ],
+      table: Array.from(Array(10), (item, index)=>([
+          index + 1,
+          "There are many variations ",
+          "Lorem Ipsum is simply dummy text dummy text ",
+          200.5,
+          4.5,
+          "m2",
+          400.5
+      ])),
+      additionalRows: [{
+          col1: 'Total:',
+          col2: '145,250.50',
+          col3: 'ALL',
+          style: {
+              fontSize: 14 //optional, default 12
+          }
+      },
+      {
+          col1: 'VAT:',
+          col2: '20',
+          col3: '%',
+          style: {
+              fontSize: 10 //optional, default 12
+          }
+      },
+      {
+          col1: 'SubTotal:',
+          col2: '116,199.90',
+          col3: 'ALL',
+          style: {
+              fontSize: 10 //optional, default 12
+          }
+      }],
+      invDescLabel: "Invoice Note",
+      invDesc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
+  },
+  footer: {
+      text: "The invoice is created on a computer and is valid without the signature and stamp.",
+  },
+  pageEnable: true,
+  pageLabel: "Page ",*/
+};
   </script>
 </body>
 

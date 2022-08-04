@@ -59,6 +59,20 @@ p, form {
   display:inline-block;
 }
 
+.btnConvertirPdf {
+  background-color: rgb(146, 149, 145);
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 13%;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 15px;
+  display:inline-block;
+}
+
 .active, .collapsible:hover {
   background-color: #555;
 }

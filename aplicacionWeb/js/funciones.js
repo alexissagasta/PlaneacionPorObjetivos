@@ -113,7 +113,7 @@ async function agregarAreadeEnfoque() {
   //de cantPlanes
   numero = parseInt(cantPlanes, 10);
 
-  if (0 <= numero && numero < 2) {
+  if (0 <= numero && numero < 3) {
 
     //Se crean las ids de los nuevos elementos a crear; esto al concatenar el tipo de elemento 
     //y la cantPlanes disponibles
@@ -128,6 +128,7 @@ async function agregarAreadeEnfoque() {
 
     idPAreaDeEnfoque = "idPAreaDeEnfoque" + cantPlanes;
     idPObjetivo = "idPObjetivo" + cantPlanes;
+    idPPorcentajeObjetivo = "idPPorcentajeObjetivo" + cantPlanes;
     idPPlanes = "idPPlanes" + cantPlanes;
 
     idCAreaDeEnfoque = "idCAreaDeEnfoque" + cantPlanes;
@@ -142,6 +143,13 @@ async function agregarAreadeEnfoque() {
     idTodosRecursos = "todosRecursos" + cantPlanes;
     idTodosTiempos = "todosTiempos" +cantPlanes;
     idIndicadores = "indicadores" + cantPlanes;
+
+    /*
+    pdfAreaEnfoques = "pdfAreaEnfoque" + cantPlanes;
+    pdfObjetivos = "pdfObjetivos" + cantPlanes;
+    pdfPorcentajeObjetivos = "pdfPorcentajeObjetivos" + cantPlanes;
+    */
+
 
     /*En este apartado inicia para agregar AREAS DE ENFOQUE con el botón */
     const form = document.createElement('form');
@@ -169,7 +177,7 @@ async function agregarAreadeEnfoque() {
       <button style="display:inline-block" class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
       <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCAreaDeEnfoque) + `>
         `+ form.innerHTML + `
-        <p style = "text-align:center" class="claseAreaEnfoque" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `>---</p>
+        <p style = "text-align:center" class="claseAreaEnfoque pdfAreaEnfoque`+(cantPlanes)+`" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `>---</p>
         <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>     
         <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idDivAreaDeEnfoque) + `,` + JSON.stringify(idDivObjetivo) + `,` + JSON.stringify(idDivPlanes) + `)>Eliminar</button>
       </div>
@@ -208,8 +216,8 @@ async function agregarAreadeEnfoque() {
               <td>Porcentaje completado</td>
             </tr>
             <tr contenteditable=true>
-              <td class="claseObjetivos" id=`+ JSON.stringify(idPObjetivo) + `>---</td>
-              <td class="clasePorcentaje">---</td>
+              <td class="claseObjetivos pdfObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idPObjetivo) + `>---</td>
+              <td class="clasePorcentaje pdfPorcentajeObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idPPorcentajeObjetivo) + `>---</td>
             </tr>
           </table>
           <br><br>
@@ -237,7 +245,7 @@ async function agregarAreadeEnfoque() {
           <select name="plandeaccion" id=`+ JSON.stringify(idSelectPlanes) + `>
             <optgroup label="Planes de acciones">`+ opcionesPlanAccionTitulo + `</optgroup>
           </select>
-          <button onClick = seleccionPlan(`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idTodosTitulos) + `,`+ JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) +`,` + JSON.stringify(idTodosTiempos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
+          <button onClick = seleccionPlan(`+ JSON.stringify(cantPlanes) + `,`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idTodosTitulos) + `,`+ JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) +`,` + JSON.stringify(idTodosTiempos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
           <br><br>       
         `;
 
@@ -367,43 +375,43 @@ async function eliminarAreaDeEnfoque(idArea, idObjetivo, idPlan) {
 
 //Funcion que se encarga de asiganar el valor al elemento idSelectPlan que tiene en 
 //ese momento al elemento idDivPlan
-async function seleccionPlan(idSelectPlanes, idTodosTitulos, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idTodosTiempos, idIndicadores, idContenido) {
+async function seleccionPlan(idPlanes, idSelectPlanes, idTodosTitulos, idFormPlanEncargados, idTodasAcciones, idTodosRecursos, idTodosTiempos, idIndicadores, idContenido) {
   var planseleccionado = document.getElementById(idSelectPlanes).value;
   await getPlanesAccion(planseleccionado)
   await obtenerTrabajadores()
   console.log(cantPlanes);
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let titulos = "<p class=claseTitulos"+(cantPlanes.cantPlanes-1)+">" + planseleccionado + "</p>"
+  let titulos = "<p class=claseTitulos"+idPlanes+">" + planseleccionado + "</p>"
 
   // Se crea el formulario para seleccionar en elcargado del plan 
   //por ahora se establece un valor pre establecido ya que no se
   //manejan usuarios aun
-  let encargadosTodos = "<form><select name=encargados id=encargados"+(cantPlanes.cantPlanes-1)+"><optgroup label=Encargados>";
+  let encargadosTodos = "<form><select name=encargados id=encargados"+idPlanes+"><optgroup label=Encargados>";
   for (let i = 0; i < trabajadoresEmpresa.length; i++) {
     encargadosTodos += "<option value ="+trabajadoresEmpresa[i].nombreTrabajador+">"+trabajadoresEmpresa[i].nombreTrabajador+"</option>";
   }
-  encargadosTodos += "</optgroup></select> </form> <button onClick = seleccionAreaEnfoque('encargados"+(cantPlanes.cantPlanes-1)+"','encargado"+(cantPlanes.cantPlanes-1)+"')> Seleccionar </button><br> <p style=text-align:center;display:inline-block class=claseEncargados"+(cantPlanes.cantPlanes-1)+" id=encargado"+(cantPlanes.cantPlanes-1)+">---</p> <br><br>"
+  encargadosTodos += "</optgroup></select> </form> <button onClick = seleccionAreaEnfoque('encargados"+idPlanes+"','encargado"+idPlanes+"')> Seleccionar </button><br> <p style=text-align:center;display:inline-block class=claseEncargados"+idPlanes+" id=encargado"+idPlanes+">---</p> <br><br>"
 
   // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
   let accionesTodas = "<table class=center style =  contenteditable:true ><tr class=cabecera style = contenteditable:false><td>Acciones</td> <td>Porcentaje completado</td></tr>";
   for (let i = 0; i < planAcciones.length; i++) { 
-    accionesTodas += "<tr><td contenteditable=true class=claseAcciones"+(cantPlanes.cantPlanes-1)+">" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones"+(cantPlanes.cantPlanes-1)+">0%</td><br></tr>";
+    accionesTodas += "<tr><td contenteditable=true class=claseAcciones"+idPlanes+">" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones"+idPlanes+">0%</td><br></tr>";
   }
   accionesTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
   let recursosTodas = "<table class=center style = contenteditable:true><tr class=cabecera style = contenteditable:false><td>Recursos</td></tr>";
   for (let i = 0; i < planRecursos.length; i++) {
-    recursosTodas += "<tr><td contenteditable=true class=claseRecursos"+(cantPlanes.cantPlanes-1)+">" + planRecursos[i] + "</td></tr>";
+    recursosTodas += "<tr><td contenteditable=true class=claseRecursos"+idPlanes+">" + planRecursos[i] + "</td></tr>";
   }
   recursosTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let tiempos = "<p class=claseTiempos"+(cantPlanes.cantPlanes-1)+">" + planTiempos + "</p>"
+  let tiempos = "<p class=claseTiempos"+idPlanes+">" + planTiempos + "</p>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let indicadores = "<p class=claseIndicadores"+(cantPlanes.cantPlanes-1)+">" + planIndicadores + "</p>"
+  let indicadores = "<p class=claseIndicadores"+idPlanes+">" + planIndicadores + "</p>"
 
   //Se cambia el contenido de los elementos acciones, recursos, encargados e indicadores
   document.getElementById(idTodasAcciones).innerHTML = accionesTodas;
@@ -459,18 +467,17 @@ async function crearPlanEmpresa() {
     document.getElementById("idValores").textContent = planEmpresa[3];
     
     let areasEnfoqueEmpresa=planEmpresa[4]
-
-
-    areasEnfoqueEmpresa.forEach(async lt => {
-        await agregarAreaDeEnfoqueEmpresa(lt)
-    })
+    
+    for (let i = 0; i < areasEnfoqueEmpresa.length; i++) {
+      await agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa[i], i)
+    }
 
     let objetivosEmpresa=planEmpresa[5]
     let porcentaje = planEmpresa[6]
 
     //console.log("Contenido nombres objetivos123 "+objetivosEmpresa)
     for (let i = 0; i < objetivosEmpresa.length; i++) {
-      await agregarNombresObjetivosEmpresa(objetivosEmpresa[i], porcentaje[i])
+      await agregarNombresObjetivosEmpresa(objetivosEmpresa[i], porcentaje[i], i)
     }
 
     
@@ -484,7 +491,8 @@ function generateRandomInteger(max) {
 }
 
 
-async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa){
+async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa, idRandomBoton){
+  await getConfig();
   let idRandom = generateRandomInteger(100000000000);
 
   /*En este apartado inicia para agregar AREAS DE ENFOQUE con el botón */
@@ -506,14 +514,14 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa){
   //aqui se crea la divicion que incluye el boton(collapsible) y el contenido(content)      
   const div = document.createElement('div');
   div.className = 'agregado';
-  div.id = idRandom+"DivAreaDeEnfoque";
+  div.id = idRandomBoton+"DivAreaDeEnfoque";
   div.innerHTML = `
-    <button style="display:inline-block" class="collapsible" id=`+ idRandom + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
+    <button style="display:inline-block" class="collapsible" id=`+ idRandomBoton + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
     <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CAreaDeEnfoque") + `>
       `+ form.innerHTML + `
-      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque" id=`+ JSON.stringify(idRandom+"PAreaDeEnfoque")+`>`+areasEnfoqueEmpresa+`</p>
+      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque pdfAreaEnfoque`+(cantPlanes)+`" id=`+ JSON.stringify(idRandom+"PAreaDeEnfoque")+`>`+areasEnfoqueEmpresa+`</p>
       <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idRandom+"PAreaDeEnfoque") + `)> Agregar nuevo </button>     
-      <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idRandom+"DivAreaDeEnfoque") + `,` + JSON.stringify(idRandom+"DivObjetivo") + `,` + JSON.stringify(idRandom+"DivPlanes") + `)>Eliminar</button>
+      <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idRandomBoton+"DivAreaDeEnfoque") + `,` + JSON.stringify(idRandomBoton+"DivObjetivo") + `,` + JSON.stringify(idRandomBoton+"DivPlanes") + `)>Eliminar</button>
     </div>
     
       
@@ -524,7 +532,8 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa){
 }
 
 /*En este apartado inicia para agregar OBJETIVOS con el mismo botón */
-async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjetivo){
+async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjetivo, idRandomBoton){
+  await getConfig();
   let idRandom = generateRandomInteger(100000000000);
 
   const form2 = document.createElement('form');
@@ -544,9 +553,9 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
 
   const div2 = document.createElement('div');
   div2.className = 'agregado';
-  div2.id = idRandom+"DivObjetivo";
+  div2.id = idRandomBoton+"DivObjetivo";
   div2.innerHTML = `
-      <button class="collapsible" id=`+ JSON.stringify(idRandom+"Objetivo") + ` onclick="hacerColapsable(this.id)">Objetivo</button>
+      <button class="collapsible" id=`+ JSON.stringify(idRandomBoton+"Objetivo") + ` onclick="hacerColapsable(this.id)">Objetivo</button>
       <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CObjetivo") + `>
         `+ form2.innerHTML + `
         <table class="center">
@@ -555,8 +564,8 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
             <td>Porcentaje completado</td>
           </tr>
           <tr contenteditable=true>
-            <td class ="claseObjetivos" id=`+ JSON.stringify(idRandom+"PObjetivo") + `>`+objetivosEmpresa+`</td>
-            <td class="clasePorcentaje" id=`+ JSON.stringify(idRandom+"PPorcentaje") + `>`+porcentajeObjetivo+`</td>
+            <td class ="claseObjetivos pdfObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idRandom+"PObjetivo") + `>`+objetivosEmpresa+`</td>
+            <td class="clasePorcentaje pdfPorcentajeObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idRandom+"PPorcentaje") + `>`+porcentajeObjetivo+`</td>
           </tr>
         </table>
         <br><br>
@@ -754,11 +763,12 @@ async function guardarCambios() {
   }
   //console.log(guardar);
 
-  
+  await eliminarTodo(email);
+  await eliminarPlanesAcciones(email);
   try {
     await guardarPlanEmpresa(guardar);
     console.log(guardar);
-    /*
+    
     if(!guardarPlanAccion0.acciones.length == 0){
       await guardarPlanAccionEmpresa(guardarPlanAccion0)
       console.log(guardarPlanAccion0);
@@ -772,7 +782,7 @@ async function guardarCambios() {
     if(!guardarPlanAccion2.acciones.length == 0){
       await guardarPlanAccionEmpresa(guardarPlanAccion2)
       console.log(guardarPlanAccion2);
-    }*/
+    }
 
     alert("Plan guardado");
   } catch (error) {
@@ -795,6 +805,7 @@ async function guardarPlanEmpresa(planEmpresa) {
   })
 }
 
+
 async function guardarPlanAccionEmpresa(planAccionEmpresa) {
   //
   const response = await fetch("/planDeAccion", {
@@ -808,5 +819,69 @@ async function guardarPlanAccionEmpresa(planAccionEmpresa) {
   })
   console.log(JSON.stringify(planAccionEmpresa));
 }
+
+async function eliminarTodo(email) {
+  const response = await fetch("/eliminarTodo/"+email, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  })
+}
+async function eliminarPlanesAcciones(email) {
+  const response = await fetch("/eliminarPlanesAcciones/"+email, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  })
+}
+
+/*async function pdfExport(){
+  //jspdf part
+  var doc = new jsPDF('p', 'pt', 'letter');
+  //variables
+  var vmision = document.getElementById("idMision").value
+
+  
+  //add info
+  doc.setFontSize(22);
+  doc.text("Misión", 10, 10);
+  doc.text(vmision, 10, 20);
+  //doc.save("planEmpresa.pdf");
+  doc.output('dataurlnewwindow', {filename:
+  'planEmpresa.pdf'});
+}*/
+  /*async function descargarPdf() {
+    const $elementoParaConvertir = document.getElementById("btnMision");
+
+    var opt = {
+      margin: 1,
+      filename: 'planEmpresa.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2,letterRendering: true, },
+      jsPDF: { unit: "in", format: "a3", orientation: 'portrait' }
+    }
+    html2pdf().set(opt).from($elementoParaConvertir).save();*/
+    /*html2pdf().set({
+        margin: 1,
+        filename: 'planEmpresa.pdf',
+        image: {
+          type: 'jpeg',
+          quality: 0.98
+        },
+        html2canvas: {
+          scale: 2,
+          letterRendering: true,
+        },
+        jsPDF: {
+          unit: "in",
+          format: "a3",
+          orientation: 'portrait'
+        }
+      }).from($elementoParaConvertir).save()*///.catch(err => console.log(err)).finally().then( ()=>{console.log("Guardado!")})
+  //}
 
 this.onload = getData();
