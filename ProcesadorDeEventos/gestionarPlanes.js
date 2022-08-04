@@ -16,7 +16,7 @@ class gestionarPlanes {
         }
         //////////////////////////////////////////////////////////////////////////*/
         var dbo = db.db("PlanesPorObjetivos");
-        const items = await dbo.collection('planesacciones').find( { "email": planDeAccion.email,"titulo": planDeAccion.titulo}).toArray()
+        //const items = await dbo.collection('planesacciones').find( { "email": planDeAccion.email,"titulo": planDeAccion.titulo}).toArray()
         console.log("Plan Acción Gestor "+items.length);
         try {
             var dbo = db.db("PlanesPorObjetivos");

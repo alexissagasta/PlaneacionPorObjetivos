@@ -687,15 +687,16 @@
     let pMision = document.getElementById("idMision").textContent
     let pVision = document.getElementById("idVision").textContent
     let pValores = document.getElementById("idValores").textContent
-    let pdfOpcionesAreasEnfoque = document.getElementsByClassName("pdfAreaEnfoque2");
-    for (i = 0; i < pdfOpcionesAreasEnfoque.length; i++) {
-      pdfNuevoAreasEnfoques.push(pdfOpcionesAreasEnfoque[i].textContent) //variable que sirve para traer la info
-    }
 
-    let pdfOpcionesObjetivos = document.getElementsByClassName("pdfObjetivos2");
-    for (i = 0; i < pdfOpcionesObjetivos.length; i++) {
-      pdfNuevoObjetivos.push(pdfOpcionesObjetivos[i].textContent)
-    }
+    let pdfAreaEnfoque0 = document.getElementById("idPAreaDeEnfoque0").textContent
+    let pdfAreaEnfoque1 = document.getElementById("idPAreaDeEnfoque1").textContent
+    let pdfAreaEnfoque2 = document.getElementById("idPAreaDeEnfoque2").textContent
+    
+    let idPObjetivo0 = document.getElementById("idPObjetivo0").textContent
+    let idPObjetivo1 = document.getElementById("idPObjetivo1").textContent
+    let idPObjetivo2 = document.getElementById("idPObjetivo2").textContent
+
+    
 
     let pdfOpcionesPorcentajeObjetivos = document.getElementsByClassName("pdfPorcentajeObjetivos2");
     for (i = 0; i < pdfOpcionesPorcentajeObjetivos.length; i++) {
