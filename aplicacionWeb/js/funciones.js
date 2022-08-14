@@ -382,7 +382,7 @@ async function seleccionPlan(idPlanes, idSelectPlanes, idTodosTitulos, idFormPla
   console.log(cantPlanes);
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let titulos = "<p class=claseTitulos"+idPlanes+">" + planseleccionado + "</p>"
+  let titulos = "<p id=titulo"+idPlanes+" class=claseTitulos"+idPlanes+">" + planseleccionado + "</p>"
 
   // Se crea el formulario para seleccionar en elcargado del plan 
   //por ahora se establece un valor pre establecido ya que no se
@@ -507,7 +507,7 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa, idRandomBoton){
         <select name="AreasDeEnfoque" id=`+ JSON.stringify(idRandom+"SelectAreas") + `>
           <optgroup label="AreasDeEnfoque">`+opcionesAreasDeEnfoque+`</optgroup>
         </select>
-        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectAreas") + `,` + JSON.stringify(idRandom+"PAreaDeEnfoque") + `)> Seleccionar </button>
+        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectAreas") + `,` + JSON.stringify("idPAreaDeEnfoque"+idRandomBoton) + `)> Seleccionar </button>
         <br><br>    
       `;
 
@@ -519,8 +519,8 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa, idRandomBoton){
     <button style="display:inline-block" class="collapsible" id=`+ idRandomBoton + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
     <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CAreaDeEnfoque") + `>
       `+ form.innerHTML + `
-      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque pdfAreaEnfoque`+(cantPlanes)+`" id=`+ JSON.stringify(idRandom+"PAreaDeEnfoque")+`>`+areasEnfoqueEmpresa+`</p>
-      <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idRandom+"PAreaDeEnfoque") + `)> Agregar nuevo </button>     
+      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque pdfAreaEnfoque`+(cantPlanes)+`" id=`+ JSON.stringify("idPAreaDeEnfoque"+idRandomBoton)+`>`+areasEnfoqueEmpresa+`</p>
+      <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify("idPAreaDeEnfoque"+idRandomBoton) + `)> Agregar nuevo </button>     
       <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idRandomBoton+"DivAreaDeEnfoque") + `,` + JSON.stringify(idRandomBoton+"DivObjetivo") + `,` + JSON.stringify(idRandomBoton+"DivPlanes") + `)>Eliminar</button>
     </div>
     
@@ -547,7 +547,7 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
         <select name="Objetivo" id=`+ JSON.stringify(idRandom+"SelectObjetivos") + `>
           <optgroup label="Objetivos">`+opcionesObjetivos+`</optgroup>
         </select>
-        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectObjetivos") + `,` + JSON.stringify(idRandom+"PObjetivo") + `)> Seleccionar </button>
+        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectObjetivos") + `,` + JSON.stringify("idPObjetivo"+idRandomBoton) + `)> Seleccionar </button>
         <br><br>         
       `;
 
@@ -564,12 +564,12 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
             <td>Porcentaje completado</td>
           </tr>
           <tr contenteditable=true>
-            <td class ="claseObjetivos pdfObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idRandom+"PObjetivo") + `>`+objetivosEmpresa+`</td>
-            <td class="clasePorcentaje pdfPorcentajeObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idRandom+"PPorcentaje") + `>`+porcentajeObjetivo+`</td>
+          <td class ="claseObjetivos pdfObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify("idPObjetivo"+idRandomBoton) + `>`+objetivosEmpresa+`</td>
+          <td class="clasePorcentaje pdfPorcentajeObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify("idPPorcentajeObjetivo"+idRandomBoton) + `>`+porcentajeObjetivo+`</td>
           </tr>
         </table>
         <br><br>
-        <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idRandom+"PObjetivo") + `)> Agregar nuevo objetivo </button>
+        <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify("idPObjetivo"+idRandomBoton) + `)> Agregar nuevo objetivo </button>
         <br><br>
         </div>
       `;
@@ -762,32 +762,44 @@ async function guardarCambios() {
     "indicadores": nuevoIndicadores2[0]
   }
   //console.log(guardar);
-
-  await eliminarTodo(email);
-  await eliminarPlanesAcciones(email);
-  try {
-    await guardarPlanEmpresa(guardar);
-    console.log(guardar);
+  
     
-    if(!guardarPlanAccion0.acciones.length == 0){
-      await guardarPlanAccionEmpresa(guardarPlanAccion0)
-      console.log(guardarPlanAccion0);
+    if(nuevoTitulos0[0] == nuevoTitulos1[0] || nuevoTitulos0[0] == nuevoTitulos2[0] || nuevoTitulos1[0] == nuevoTitulos2[0]){
+      if(nuevoTitulos0[0] == null){//nada
+        if(nuevoTitulos1[0] == null){//nada
+          await eliminarTodo(email);
+          await eliminarPlanesAcciones(email);
+          try {
+          await guardarPlanEmpresa(guardar);
+          console.log(guardar);
+          
+          if(!guardarPlanAccion0.acciones.length == 0){
+            await guardarPlanAccionEmpresa(guardarPlanAccion0)
+            console.log(guardarPlanAccion0);
+          }
+      
+          if(!guardarPlanAccion1.acciones.length == 0){
+            await guardarPlanAccionEmpresa(guardarPlanAccion1)
+            console.log(guardarPlanAccion1);
+          }
+      
+          if(!guardarPlanAccion2.acciones.length == 0){
+            await guardarPlanAccionEmpresa(guardarPlanAccion2)
+            console.log(guardarPlanAccion2);
+          }
+      
+          alert("Plan guardado");
+        } catch (error) {
+          console.error(error);
+          }
+        }else{
+          alert("Los titulos de los planes de acción no pueden ser iguales");
+        }
+      }  
     }
-
-    if(!guardarPlanAccion1.acciones.length == 0){
-      await guardarPlanAccionEmpresa(guardarPlanAccion1)
-      console.log(guardarPlanAccion1);
-    }
-
-    if(!guardarPlanAccion2.acciones.length == 0){
-      await guardarPlanAccionEmpresa(guardarPlanAccion2)
-      console.log(guardarPlanAccion2);
-    }
-
-    alert("Plan guardado");
-  } catch (error) {
-    console.error(error);
-  }
+    
+  
+  
   
   
 }
@@ -839,49 +851,5 @@ async function eliminarPlanesAcciones(email) {
   })
 }
 
-/*async function pdfExport(){
-  //jspdf part
-  var doc = new jsPDF('p', 'pt', 'letter');
-  //variables
-  var vmision = document.getElementById("idMision").value
-
-  
-  //add info
-  doc.setFontSize(22);
-  doc.text("Misión", 10, 10);
-  doc.text(vmision, 10, 20);
-  //doc.save("planEmpresa.pdf");
-  doc.output('dataurlnewwindow', {filename:
-  'planEmpresa.pdf'});
-}*/
-  /*async function descargarPdf() {
-    const $elementoParaConvertir = document.getElementById("btnMision");
-
-    var opt = {
-      margin: 1,
-      filename: 'planEmpresa.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2,letterRendering: true, },
-      jsPDF: { unit: "in", format: "a3", orientation: 'portrait' }
-    }
-    html2pdf().set(opt).from($elementoParaConvertir).save();*/
-    /*html2pdf().set({
-        margin: 1,
-        filename: 'planEmpresa.pdf',
-        image: {
-          type: 'jpeg',
-          quality: 0.98
-        },
-        html2canvas: {
-          scale: 2,
-          letterRendering: true,
-        },
-        jsPDF: {
-          unit: "in",
-          format: "a3",
-          orientation: 'portrait'
-        }
-      }).from($elementoParaConvertir).save()*///.catch(err => console.log(err)).finally().then( ()=>{console.log("Guardado!")})
-  //}
 
 this.onload = getData();
