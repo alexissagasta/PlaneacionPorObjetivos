@@ -7,7 +7,7 @@ planTiempos = [];
 planIndicadores = [];
 planAccionTitulo = [];
 planEmpresa = [];
-let trabajadoresEmpresa=[];
+let trabajadoresEmpresa = [];
 var cantPlanes;
 
 //Función que sirve para traer las areas de enfoque
@@ -33,7 +33,7 @@ async function getData() {
   });
 }
 
-async function obtenerTrabajadores(){
+async function obtenerTrabajadores() {
   var email = document.getElementById("idEmail").textContent;
   const response = await fetch("/trabajadores/" + email, {
     method: 'GET',
@@ -44,7 +44,7 @@ async function obtenerTrabajadores(){
   })
 
   const data = await response.json();
-  trabajadoresEmpresa=data;
+  trabajadoresEmpresa = data;
   //console.log("todos los trabajadores: "+trabajadoresEmpresa)
 }
 
@@ -85,7 +85,7 @@ async function getConfig() {
   //
   var nombEmpresa = document.getElementById("idEmail").textContent;
   //console.log("email getConfig "+nombEmpresa);
-  const response = await fetch("/configuracion/"+nombEmpresa, {
+  const response = await fetch("/configuracion/" + nombEmpresa, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ async function getConfig() {
   const data = await response.json();
   usuarioActual = data[0];
   cantPlanes = usuarioActual.cantPlanes;
-  console.log("cantidad planes getConfig "+cantPlanes)
+  console.log("cantidad planes getConfig " + cantPlanes)
   return cantPlanes
 }
 
@@ -137,11 +137,11 @@ async function agregarAreadeEnfoque() {
 
     idObjetivo = "idObjetivo" + cantPlanes;
     idPlan = "idPlan" + cantPlanes;
-    idTodosTitulos = "todosTitulos" +cantPlanes;
+    idTodosTitulos = "todosTitulos" + cantPlanes;
     idFormPlanEncargados = "formPlanEncargados" + cantPlanes;
     idTodasAcciones = "todasAcciones" + cantPlanes;
     idTodosRecursos = "todosRecursos" + cantPlanes;
-    idTodosTiempos = "todosTiempos" +cantPlanes;
+    idTodosTiempos = "todosTiempos" + cantPlanes;
     idIndicadores = "indicadores" + cantPlanes;
 
     /*
@@ -177,7 +177,7 @@ async function agregarAreadeEnfoque() {
       <button style="display:inline-block" class="collapsible" id=`+ id + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
       <div class="content" style = "text-align:center" id=`+ JSON.stringify(idCAreaDeEnfoque) + `>
         `+ form.innerHTML + `
-        <p style = "text-align:center" class="claseAreaEnfoque pdfAreaEnfoque`+(cantPlanes)+`" contenteditable="true" id=`+ JSON.stringify(idPAreaDeEnfoque) + `>---</p>
+        <p style = "text-align:center" class="claseAreaEnfoque pdfAreaEnfoque`+ (cantPlanes) + `" contenteditable="true" id=` + JSON.stringify(idPAreaDeEnfoque) + `>---</p>
         <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify(idPAreaDeEnfoque) + `)> Agregar nuevo </button>     
         <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idDivAreaDeEnfoque) + `,` + JSON.stringify(idDivObjetivo) + `,` + JSON.stringify(idDivPlanes) + `)>Eliminar</button>
       </div>
@@ -197,7 +197,7 @@ async function agregarAreadeEnfoque() {
     form2.innerHTML = `      
           <label for="AreasDeEnfoque">Objetivo:</label>
           <select name="Objetivo" id=`+ JSON.stringify(idSelectObjetivos) + `>
-            <optgroup label="Objetivos">`+opcionesObjetivos+`</optgroup>
+            <optgroup label="Objetivos">`+ opcionesObjetivos + `</optgroup>
           </select>
           <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idSelectObjetivos) + `,` + JSON.stringify(idPObjetivo) + `)> Seleccionar </button>
           <br><br>         
@@ -216,8 +216,8 @@ async function agregarAreadeEnfoque() {
               <td>Porcentaje completado</td>
             </tr>
             <tr contenteditable=true>
-              <td class="claseObjetivos pdfObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idPObjetivo) + `>---</td>
-              <td class="clasePorcentaje pdfPorcentajeObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify(idPPorcentajeObjetivo) + `>---</td>
+              <td class="claseObjetivos pdfObjetivos`+ (cantPlanes) + `" id=` + JSON.stringify(idPObjetivo) + `>---</td>
+              <td class="clasePorcentaje pdfPorcentajeObjetivos`+ (cantPlanes) + `" id=` + JSON.stringify(idPPorcentajeObjetivo) + `>---</td>
             </tr>
           </table>
           <br><br>
@@ -245,7 +245,7 @@ async function agregarAreadeEnfoque() {
           <select name="plandeaccion" id=`+ JSON.stringify(idSelectPlanes) + `>
             <optgroup label="Planes de acciones">`+ opcionesPlanAccionTitulo + `</optgroup>
           </select>
-          <button onClick = seleccionPlan(`+ JSON.stringify(cantPlanes) + `,`+ JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idTodosTitulos) + `,`+ JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) +`,` + JSON.stringify(idTodosTiempos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
+          <button onClick = seleccionPlan(`+ JSON.stringify(cantPlanes) + `,` + JSON.stringify(idSelectPlanes) + `,` + JSON.stringify(idTodosTitulos) + `,` + JSON.stringify(idFormPlanEncargados) + `,` + JSON.stringify(idTodasAcciones) + `,` + JSON.stringify(idTodosRecursos) + `,` + JSON.stringify(idTodosTiempos) + `,` + JSON.stringify(idIndicadores) + `,` + JSON.stringify(idCPlanes) + `)> Seleccionar </button>
           <br><br>       
         `;
 
@@ -308,14 +308,14 @@ async function agregarAreadeEnfoque() {
 //encuentra en ese momento
 async function updateCantPlanes(numero, email) {
   //console.log("Cant planes accion "+numero)
-  
+
   cantPlanes = {
     cantPlanes: numero
   }
 
   //console.log("Cant planes "+cantPlanes.numero)
 
-  const response = await fetch("/configuracion/"+email, {
+  const response = await fetch("/configuracion/" + email, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -382,36 +382,36 @@ async function seleccionPlan(idPlanes, idSelectPlanes, idTodosTitulos, idFormPla
   console.log(cantPlanes);
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let titulos = "<p id=titulo"+idPlanes+" class=claseTitulos"+idPlanes+">" + planseleccionado + "</p>"
+  let titulos = "<p id=titulo" + idPlanes + " class=claseTitulos" + idPlanes + ">" + planseleccionado + "</p>"
 
   // Se crea el formulario para seleccionar en elcargado del plan 
   //por ahora se establece un valor pre establecido ya que no se
   //manejan usuarios aun
-  let encargadosTodos = "<form><select name=encargados id=encargados"+idPlanes+"><optgroup label=Encargados>";
+  let encargadosTodos = "<form><select name=encargados id=encargados" + idPlanes + "><optgroup label=Encargados>";
   for (let i = 0; i < trabajadoresEmpresa.length; i++) {
-    encargadosTodos += "<option value ="+trabajadoresEmpresa[i].nombreTrabajador+">"+trabajadoresEmpresa[i].nombreTrabajador+"</option>";
+    encargadosTodos += "<option value =" + trabajadoresEmpresa[i].nombreTrabajador + ">" + trabajadoresEmpresa[i].nombreTrabajador + "</option>";
   }
-  encargadosTodos += "</optgroup></select> </form> <button onClick = seleccionAreaEnfoque('encargados"+idPlanes+"','encargado"+idPlanes+"')> Seleccionar </button><br> <p style=text-align:center;display:inline-block class=claseEncargados"+idPlanes+" id=encargado"+idPlanes+">---</p> <br><br>"
+  encargadosTodos += "</optgroup></select> </form> <button onClick = seleccionAreaEnfoque('encargados" + idPlanes + "','encargado" + idPlanes + "')> Seleccionar </button><br> <p style=text-align:center;display:inline-block class=claseEncargados" + idPlanes + " id=encargado" + idPlanes + ">---</p> <br><br>"
 
   // Tabla de contenido para llenar las acciones al momento de seleccionar un plan de acción
   let accionesTodas = "<table class=center style =  contenteditable:true ><tr class=cabecera style = contenteditable:false><td>Acciones</td> <td>Porcentaje completado</td></tr>";
-  for (let i = 0; i < planAcciones.length; i++) { 
-    accionesTodas += "<tr><td contenteditable=true class=claseAcciones"+idPlanes+">" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones"+idPlanes+">0%</td><br></tr>";
+  for (let i = 0; i < planAcciones.length; i++) {
+    accionesTodas += "<tr><td contenteditable=true class=claseAcciones" + idPlanes + ">" + planAcciones[i] + "</td> <td contenteditable=true class=clasePorcentajeAcciones" + idPlanes + ">0%</td><br></tr>";
   }
   accionesTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
   let recursosTodas = "<table class=center style = contenteditable:true><tr class=cabecera style = contenteditable:false><td>Recursos</td></tr>";
   for (let i = 0; i < planRecursos.length; i++) {
-    recursosTodas += "<tr><td contenteditable=true class=claseRecursos"+idPlanes+">" + planRecursos[i] + "</td></tr>";
+    recursosTodas += "<tr><td contenteditable=true class=claseRecursos" + idPlanes + ">" + planRecursos[i] + "</td></tr>";
   }
   recursosTodas += "</table>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let tiempos = "<p class=claseTiempos"+idPlanes+">" + planTiempos + "</p>"
+  let tiempos = "<p class=claseTiempos" + idPlanes + ">" + planTiempos + "</p>"
 
   // Tabla de contenido para llenar los recursos al momento de seleccionar un plan de acción
-  let indicadores = "<p class=claseIndicadores"+idPlanes+">" + planIndicadores + "</p>"
+  let indicadores = "<p class=claseIndicadores" + idPlanes + ">" + planIndicadores + "</p>"
 
   //Se cambia el contenido de los elementos acciones, recursos, encargados e indicadores
   document.getElementById(idTodasAcciones).innerHTML = accionesTodas;
@@ -437,7 +437,7 @@ async function obtenerPlanEmpresa(email) {
   })
 
   const data = await response.json();
-  if(data.msj == "no hay planes!"){
+  if (data.msj == "no hay planes!") {
     return 0;
   }
   const lts = data;
@@ -465,14 +465,14 @@ async function crearPlanEmpresa() {
     document.getElementById("idMision").textContent = planEmpresa[1];
     document.getElementById("idVision").textContent = planEmpresa[2];
     document.getElementById("idValores").textContent = planEmpresa[3];
-    
-    let areasEnfoqueEmpresa=planEmpresa[4]
-    
+
+    let areasEnfoqueEmpresa = planEmpresa[4]
+
     for (let i = 0; i < areasEnfoqueEmpresa.length; i++) {
       await agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa[i], i)
     }
 
-    let objetivosEmpresa=planEmpresa[5]
+    let objetivosEmpresa = planEmpresa[5]
     let porcentaje = planEmpresa[6]
 
     //console.log("Contenido nombres objetivos123 "+objetivosEmpresa)
@@ -480,8 +480,8 @@ async function crearPlanEmpresa() {
       await agregarNombresObjetivosEmpresa(objetivosEmpresa[i], porcentaje[i], i)
     }
 
-    
-  
+
+
   }
 
 }
@@ -491,7 +491,7 @@ function generateRandomInteger(max) {
 }
 
 
-async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa, idRandomBoton){
+async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa, idRandomBoton) {
   await getConfig();
   let idRandom = generateRandomInteger(100000000000);
 
@@ -499,29 +499,29 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa, idRandomBoton){
   const form = document.createElement('form');
   opcionesAreasDeEnfoque = [];
   for (let i = 0; i < nombresAreasEnfoque.length; i++) {
-    opcion = "<option value=" + JSON.stringify(nombresAreasEnfoque[i]) + ">"+nombresAreasEnfoque[i]+"</option>";
+    opcion = "<option value=" + JSON.stringify(nombresAreasEnfoque[i]) + ">" + nombresAreasEnfoque[i] + "</option>";
     opcionesAreasDeEnfoque.push(opcion);
   }
   form.innerHTML = `    
         <label for="AreasDeEnfoque">Áreas De Enfoque:</label>
-        <select name="AreasDeEnfoque" id=`+ JSON.stringify(idRandom+"SelectAreas") + `>
-          <optgroup label="AreasDeEnfoque">`+opcionesAreasDeEnfoque+`</optgroup>
+        <select name="AreasDeEnfoque" id=`+ JSON.stringify(idRandom + "SelectAreas") + `>
+          <optgroup label="AreasDeEnfoque">`+ opcionesAreasDeEnfoque + `</optgroup>
         </select>
-        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectAreas") + `,` + JSON.stringify("idPAreaDeEnfoque"+idRandomBoton) + `)> Seleccionar </button>
+        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom + "SelectAreas") + `,` + JSON.stringify("idPAreaDeEnfoque" + idRandomBoton) + `)> Seleccionar </button>
         <br><br>    
       `;
 
   //aqui se crea la divicion que incluye el boton(collapsible) y el contenido(content)      
   const div = document.createElement('div');
   div.className = 'agregado';
-  div.id = idRandomBoton+"DivAreaDeEnfoque";
+  div.id = idRandomBoton + "DivAreaDeEnfoque";
   div.innerHTML = `
     <button style="display:inline-block" class="collapsible" id=`+ idRandomBoton + ` onclick="hacerColapsable(this.id)">Área de enfoque</button>     
-    <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CAreaDeEnfoque") + `>
+    <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom + "CAreaDeEnfoque") + `>
       `+ form.innerHTML + `
-      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque pdfAreaEnfoque`+(cantPlanes)+`" id=`+ JSON.stringify("idPAreaDeEnfoque"+idRandomBoton)+`>`+areasEnfoqueEmpresa+`</p>
-      <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify("idPAreaDeEnfoque"+idRandomBoton) + `)> Agregar nuevo </button>     
-      <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idRandomBoton+"DivAreaDeEnfoque") + `,` + JSON.stringify(idRandomBoton+"DivObjetivo") + `,` + JSON.stringify(idRandomBoton+"DivPlanes") + `)>Eliminar</button>
+      <p style = "text-align:center" contenteditable="true" class="claseAreaEnfoque pdfAreaEnfoque`+ (cantPlanes) + `" id=` + JSON.stringify("idPAreaDeEnfoque" + idRandomBoton) + `>` + areasEnfoqueEmpresa + `</p>
+      <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify("idPAreaDeEnfoque" + idRandomBoton) + `)> Agregar nuevo </button>     
+      <button class="btnEliminarElemento" onclick=eliminarAreaDeEnfoque(`+ JSON.stringify(idRandomBoton + "DivAreaDeEnfoque") + `,` + JSON.stringify(idRandomBoton + "DivObjetivo") + `,` + JSON.stringify(idRandomBoton + "DivPlanes") + `)>Eliminar</button>
     </div>
     
       
@@ -532,31 +532,31 @@ async function agregarAreaDeEnfoqueEmpresa(areasEnfoqueEmpresa, idRandomBoton){
 }
 
 /*En este apartado inicia para agregar OBJETIVOS con el mismo botón */
-async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjetivo, idRandomBoton){
+async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjetivo, idRandomBoton) {
   await getConfig();
   let idRandom = generateRandomInteger(100000000000);
 
   const form2 = document.createElement('form');
   opcionesObjetivos = [];
   for (let i = 0; i < nombresObjetivos.length; i++) {
-    opcion = "<option value="+JSON.stringify(nombresObjetivos[i])+">"+nombresObjetivos[i]+"</option>";
+    opcion = "<option value=" + JSON.stringify(nombresObjetivos[i]) + ">" + nombresObjetivos[i] + "</option>";
     opcionesObjetivos.push(opcion);
   }
   form2.innerHTML = `      
         <label for="AreasDeEnfoque">Objetivo:</label>
-        <select name="Objetivo" id=`+ JSON.stringify(idRandom+"SelectObjetivos") + `>
-          <optgroup label="Objetivos">`+opcionesObjetivos+`</optgroup>
+        <select name="Objetivo" id=`+ JSON.stringify(idRandom + "SelectObjetivos") + `>
+          <optgroup label="Objetivos">`+ opcionesObjetivos + `</optgroup>
         </select>
-        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom+"SelectObjetivos") + `,` + JSON.stringify("idPObjetivo"+idRandomBoton) + `)> Seleccionar </button>
+        <button onClick = seleccionAreaEnfoque(`+ JSON.stringify(idRandom + "SelectObjetivos") + `,` + JSON.stringify("idPObjetivo" + idRandomBoton) + `)> Seleccionar </button>
         <br><br>         
       `;
 
   const div2 = document.createElement('div');
   div2.className = 'agregado';
-  div2.id = idRandomBoton+"DivObjetivo";
+  div2.id = idRandomBoton + "DivObjetivo";
   div2.innerHTML = `
-      <button class="collapsible" id=`+ JSON.stringify(idRandomBoton+"Objetivo") + ` onclick="hacerColapsable(this.id)">Objetivo</button>
-      <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom+"CObjetivo") + `>
+      <button class="collapsible" id=`+ JSON.stringify(idRandomBoton + "Objetivo") + ` onclick="hacerColapsable(this.id)">Objetivo</button>
+      <div class="content" style = "text-align:center" id=`+ JSON.stringify(idRandom + "CObjetivo") + `>
         `+ form2.innerHTML + `
         <table class="center">
           <tr class=cabecera contenteditable:false>
@@ -564,12 +564,12 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
             <td>Porcentaje completado</td>
           </tr>
           <tr contenteditable=true>
-          <td class ="claseObjetivos pdfObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify("idPObjetivo"+idRandomBoton) + `>`+objetivosEmpresa+`</td>
-          <td class="clasePorcentaje pdfPorcentajeObjetivos`+(cantPlanes)+`" id=`+ JSON.stringify("idPPorcentajeObjetivo"+idRandomBoton) + `>`+porcentajeObjetivo+`</td>
+          <td class ="claseObjetivos pdfObjetivos`+ (cantPlanes) + `" id=` + JSON.stringify("idPObjetivo" + idRandomBoton) + `>` + objetivosEmpresa + `</td>
+          <td class="clasePorcentaje pdfPorcentajeObjetivos`+ (cantPlanes) + `" id=` + JSON.stringify("idPPorcentajeObjetivo" + idRandomBoton) + `>` + porcentajeObjetivo + `</td>
           </tr>
         </table>
         <br><br>
-        <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify("idPObjetivo"+idRandomBoton) + `)> Agregar nuevo objetivo </button>
+        <button style = "text-align:center" onClick = agregarAreaDeEnfoque(`+ JSON.stringify("idPObjetivo" + idRandomBoton) + `)> Agregar nuevo objetivo </button>
         <br><br>
         </div>
       `;
@@ -580,37 +580,37 @@ async function agregarNombresObjetivosEmpresa(objetivosEmpresa, porcentajeObjeti
 //async function guardarCambios(email) {
 async function guardarCambios() {
   let email = document.getElementById("idEmail").textContent;
-  let nuevoAreasEnfoques= [];
-  let nuevoObjetivos= [];
-  let nuevoPorcentajes= [];
-  let nuevoTitulos0= [];
-  let nuevoTitulos1= [];
-  let nuevoTitulos2= [];
-  let nuevoEncargados0= [];
-  let nuevoEncargados1= [];
-  let nuevoEncargados2= [];
-  let nuevoAcciones0= [];
-  let nuevoAcciones1= [];
-  let nuevoAcciones2= [];
-  let nuevoPorcentajesAcciones0=[];
-  let nuevoPorcentajesAcciones1=[];
-  let nuevoPorcentajesAcciones2=[];
-  let nuevoRecursos0=[];
-  let nuevoRecursos1=[];
-  let nuevoRecursos2=[];
-  let nuevoTiempos0= [];
-  let nuevoTiempos1= [];
-  let nuevoTiempos2= [];
-  let nuevoIndicadores0= [];
-  let nuevoIndicadores1= [];
-  let nuevoIndicadores2= [];
-  
-  
+  let nuevoAreasEnfoques = [];
+  let nuevoObjetivos = [];
+  let nuevoPorcentajes = [];
+  let nuevoTitulos0 = [];
+  let nuevoTitulos1 = [];
+  let nuevoTitulos2 = [];
+  let nuevoEncargados0 = [];
+  let nuevoEncargados1 = [];
+  let nuevoEncargados2 = [];
+  let nuevoAcciones0 = [];
+  let nuevoAcciones1 = [];
+  let nuevoAcciones2 = [];
+  let nuevoPorcentajesAcciones0 = [];
+  let nuevoPorcentajesAcciones1 = [];
+  let nuevoPorcentajesAcciones2 = [];
+  let nuevoRecursos0 = [];
+  let nuevoRecursos1 = [];
+  let nuevoRecursos2 = [];
+  let nuevoTiempos0 = [];
+  let nuevoTiempos1 = [];
+  let nuevoTiempos2 = [];
+  let nuevoIndicadores0 = [];
+  let nuevoIndicadores1 = [];
+  let nuevoIndicadores2 = [];
+
+
   let nuevoOpcionesAreasEnfoque = document.getElementsByClassName("claseAreaEnfoque")
   for (i = 0; i < nuevoOpcionesAreasEnfoque.length; i++) {
     nuevoAreasEnfoques.push(nuevoOpcionesAreasEnfoque[i].textContent)
   }
-  
+
   let nuevoOpcionesObjetivos = document.getElementsByClassName("claseObjetivos")
   for (i = 0; i < nuevoOpcionesObjetivos.length; i++) {
     nuevoObjetivos.push(nuevoOpcionesObjetivos[i].textContent)
@@ -622,98 +622,98 @@ async function guardarCambios() {
   }
 
   // A partir de aquí empieza los planes de acción
-    let nuevoOpcionesTitulos0 = document.getElementsByClassName("claseTitulos0")
-    for (i = 0; i < nuevoOpcionesTitulos0.length; i++) {
-      nuevoTitulos0.push(nuevoOpcionesTitulos0[i].textContent)
-    }
+  let nuevoOpcionesTitulos0 = document.getElementsByClassName("claseTitulos0")
+  for (i = 0; i < nuevoOpcionesTitulos0.length; i++) {
+    nuevoTitulos0.push(nuevoOpcionesTitulos0[i].textContent)
+  }
   let nuevoOpcionesTitulos1 = document.getElementsByClassName("claseTitulos1")
-    for (i = 0; i < nuevoOpcionesTitulos1.length; i++) {
-      nuevoTitulos1.push(nuevoOpcionesTitulos1[i].textContent)
-    }
-    let nuevoOpcionesTitulos2 = document.getElementsByClassName("claseTitulos2")
-    for (i = 0; i < nuevoOpcionesTitulos2.length; i++) {
-      nuevoTitulos2.push(nuevoOpcionesTitulos2[i].textContent)
-    }
+  for (i = 0; i < nuevoOpcionesTitulos1.length; i++) {
+    nuevoTitulos1.push(nuevoOpcionesTitulos1[i].textContent)
+  }
+  let nuevoOpcionesTitulos2 = document.getElementsByClassName("claseTitulos2")
+  for (i = 0; i < nuevoOpcionesTitulos2.length; i++) {
+    nuevoTitulos2.push(nuevoOpcionesTitulos2[i].textContent)
+  }
 
-    let nuevoOpcionesEncargados0 = document.getElementsByClassName("claseEncargados0")
-    for (i = 0; i < nuevoOpcionesEncargados0.length; i++) {
-      nuevoEncargados0.push(nuevoOpcionesEncargados0[i].textContent)
-    }
-    
-    let nuevoOpcionesEncargados1 = document.getElementsByClassName("claseEncargados1")
-    for (i = 0; i < nuevoOpcionesEncargados1.length; i++) {
-      nuevoEncargados1.push(nuevoOpcionesEncargados1[i].textContent)
-    }
-    let nuevoOpcionesEncargados2 = document.getElementsByClassName("claseEncargados2")
-    for (i = 0; i < nuevoOpcionesEncargados2.length; i++) {
-      nuevoEncargados2.push(nuevoOpcionesEncargados2[i].textContent)
-    }
+  let nuevoOpcionesEncargados0 = document.getElementsByClassName("claseEncargados0")
+  for (i = 0; i < nuevoOpcionesEncargados0.length; i++) {
+    nuevoEncargados0.push(nuevoOpcionesEncargados0[i].textContent)
+  }
 
-    let nuevoOpcionesAcciones0 = document.getElementsByClassName("claseAcciones0")
-    for (i = 0; i < nuevoOpcionesAcciones0.length; i++) {
-      nuevoAcciones0.push(nuevoOpcionesAcciones0[i].textContent)
-    }
-    let nuevoOpcionesAcciones1 = document.getElementsByClassName("claseAcciones1")
-    for (i = 0; i < nuevoOpcionesAcciones1.length; i++) {
-      nuevoAcciones1.push(nuevoOpcionesAcciones1[i].textContent)
-    }
-    let nuevoOpcionesAcciones2 = document.getElementsByClassName("claseAcciones2")
-    for (i = 0; i < nuevoOpcionesAcciones2.length; i++) {
-      nuevoAcciones2.push(nuevoOpcionesAcciones2[i].textContent)
-    }
+  let nuevoOpcionesEncargados1 = document.getElementsByClassName("claseEncargados1")
+  for (i = 0; i < nuevoOpcionesEncargados1.length; i++) {
+    nuevoEncargados1.push(nuevoOpcionesEncargados1[i].textContent)
+  }
+  let nuevoOpcionesEncargados2 = document.getElementsByClassName("claseEncargados2")
+  for (i = 0; i < nuevoOpcionesEncargados2.length; i++) {
+    nuevoEncargados2.push(nuevoOpcionesEncargados2[i].textContent)
+  }
 
-    let nuevoOpcionesPorcentajeAcciones0 = document.getElementsByClassName("clasePorcentajeAcciones0")
-    for (i = 0; i < nuevoOpcionesPorcentajeAcciones0.length; i++) {
-      nuevoPorcentajesAcciones0.push(nuevoOpcionesPorcentajeAcciones0[i].textContent)
-    }
-    let nuevoOpcionesPorcentajeAcciones1 = document.getElementsByClassName("clasePorcentajeAcciones1")
-    for (i = 0; i < nuevoOpcionesPorcentajeAcciones1.length; i++) {
-      nuevoPorcentajesAcciones1.push(nuevoOpcionesPorcentajeAcciones1[i].textContent)
-    }
-    let nuevoOpcionesPorcentajeAcciones2 = document.getElementsByClassName("clasePorcentajeAcciones2")
-    for (i = 0; i < nuevoOpcionesPorcentajeAcciones2.length; i++) {
-      nuevoPorcentajesAcciones2.push(nuevoOpcionesPorcentajeAcciones2[i].textContent)
-    }
-  
-    let nuevoOpcionesRecursos0 = document.getElementsByClassName("claseRecursos0")
-    for (i = 0; i < nuevoOpcionesRecursos0.length; i++) {
-      nuevoRecursos0.push(nuevoOpcionesRecursos0[i].textContent)
-    }
-    let nuevoOpcionesRecursos1 = document.getElementsByClassName("claseRecursos1")
-    for (i = 0; i < nuevoOpcionesRecursos1.length; i++) {
-      nuevoRecursos1.push(nuevoOpcionesRecursos1[i].textContent)
-    }
-    let nuevoOpcionesRecursos2 = document.getElementsByClassName("claseRecursos2")
-    for (i = 0; i < nuevoOpcionesRecursos2.length; i++) {
-      nuevoRecursos2.push(nuevoOpcionesRecursos2[i].textContent)
-    }
+  let nuevoOpcionesAcciones0 = document.getElementsByClassName("claseAcciones0")
+  for (i = 0; i < nuevoOpcionesAcciones0.length; i++) {
+    nuevoAcciones0.push(nuevoOpcionesAcciones0[i].textContent)
+  }
+  let nuevoOpcionesAcciones1 = document.getElementsByClassName("claseAcciones1")
+  for (i = 0; i < nuevoOpcionesAcciones1.length; i++) {
+    nuevoAcciones1.push(nuevoOpcionesAcciones1[i].textContent)
+  }
+  let nuevoOpcionesAcciones2 = document.getElementsByClassName("claseAcciones2")
+  for (i = 0; i < nuevoOpcionesAcciones2.length; i++) {
+    nuevoAcciones2.push(nuevoOpcionesAcciones2[i].textContent)
+  }
 
-    let nuevoOpcionesTiempos0 = document.getElementsByClassName("claseTiempos0")
-    for (i = 0; i < nuevoOpcionesTiempos0.length; i++) {
-      nuevoTiempos0.push(nuevoOpcionesTiempos0[i].textContent)
-    }
-    let nuevoOpcionesTiempos1 = document.getElementsByClassName("claseTiempos1")
-    for (i = 0; i < nuevoOpcionesTiempos1.length; i++) {
-      nuevoTiempos1.push(nuevoOpcionesTiempos1[i].textContent)
-    }
-    let nuevoOpcionesTiempos2 = document.getElementsByClassName("claseTiempos2")
-    for (i = 0; i < nuevoOpcionesTiempos2.length; i++) {
-      nuevoTiempos2.push(nuevoOpcionesTiempos2[i].textContent)
-    }
+  let nuevoOpcionesPorcentajeAcciones0 = document.getElementsByClassName("clasePorcentajeAcciones0")
+  for (i = 0; i < nuevoOpcionesPorcentajeAcciones0.length; i++) {
+    nuevoPorcentajesAcciones0.push(nuevoOpcionesPorcentajeAcciones0[i].textContent)
+  }
+  let nuevoOpcionesPorcentajeAcciones1 = document.getElementsByClassName("clasePorcentajeAcciones1")
+  for (i = 0; i < nuevoOpcionesPorcentajeAcciones1.length; i++) {
+    nuevoPorcentajesAcciones1.push(nuevoOpcionesPorcentajeAcciones1[i].textContent)
+  }
+  let nuevoOpcionesPorcentajeAcciones2 = document.getElementsByClassName("clasePorcentajeAcciones2")
+  for (i = 0; i < nuevoOpcionesPorcentajeAcciones2.length; i++) {
+    nuevoPorcentajesAcciones2.push(nuevoOpcionesPorcentajeAcciones2[i].textContent)
+  }
 
-    let nuevoOpcionesIndicadores0 = document.getElementsByClassName("claseIndicadores0")
-    for (i = 0; i < nuevoOpcionesIndicadores0.length; i++) {
-      nuevoIndicadores0.push(nuevoOpcionesIndicadores0[i].textContent)
-    }
-    let nuevoOpcionesIndicadores1 = document.getElementsByClassName("claseIndicadores1")
-    for (i = 0; i < nuevoOpcionesIndicadores1.length; i++) {
-      nuevoIndicadores1.push(nuevoOpcionesIndicadores1[i].textContent)
-    }
-    let nuevoOpcionesIndicadores2 = document.getElementsByClassName("claseIndicadores2")
-    for (i = 0; i < nuevoOpcionesIndicadores2.length; i++) {
-      nuevoIndicadores2.push(nuevoOpcionesIndicadores2[i].textContent)
-    }
-  
+  let nuevoOpcionesRecursos0 = document.getElementsByClassName("claseRecursos0")
+  for (i = 0; i < nuevoOpcionesRecursos0.length; i++) {
+    nuevoRecursos0.push(nuevoOpcionesRecursos0[i].textContent)
+  }
+  let nuevoOpcionesRecursos1 = document.getElementsByClassName("claseRecursos1")
+  for (i = 0; i < nuevoOpcionesRecursos1.length; i++) {
+    nuevoRecursos1.push(nuevoOpcionesRecursos1[i].textContent)
+  }
+  let nuevoOpcionesRecursos2 = document.getElementsByClassName("claseRecursos2")
+  for (i = 0; i < nuevoOpcionesRecursos2.length; i++) {
+    nuevoRecursos2.push(nuevoOpcionesRecursos2[i].textContent)
+  }
+
+  let nuevoOpcionesTiempos0 = document.getElementsByClassName("claseTiempos0")
+  for (i = 0; i < nuevoOpcionesTiempos0.length; i++) {
+    nuevoTiempos0.push(nuevoOpcionesTiempos0[i].textContent)
+  }
+  let nuevoOpcionesTiempos1 = document.getElementsByClassName("claseTiempos1")
+  for (i = 0; i < nuevoOpcionesTiempos1.length; i++) {
+    nuevoTiempos1.push(nuevoOpcionesTiempos1[i].textContent)
+  }
+  let nuevoOpcionesTiempos2 = document.getElementsByClassName("claseTiempos2")
+  for (i = 0; i < nuevoOpcionesTiempos2.length; i++) {
+    nuevoTiempos2.push(nuevoOpcionesTiempos2[i].textContent)
+  }
+
+  let nuevoOpcionesIndicadores0 = document.getElementsByClassName("claseIndicadores0")
+  for (i = 0; i < nuevoOpcionesIndicadores0.length; i++) {
+    nuevoIndicadores0.push(nuevoOpcionesIndicadores0[i].textContent)
+  }
+  let nuevoOpcionesIndicadores1 = document.getElementsByClassName("claseIndicadores1")
+  for (i = 0; i < nuevoOpcionesIndicadores1.length; i++) {
+    nuevoIndicadores1.push(nuevoOpcionesIndicadores1[i].textContent)
+  }
+  let nuevoOpcionesIndicadores2 = document.getElementsByClassName("claseIndicadores2")
+  for (i = 0; i < nuevoOpcionesIndicadores2.length; i++) {
+    nuevoIndicadores2.push(nuevoOpcionesIndicadores2[i].textContent)
+  }
+
   let nuevoMision = document.getElementById("idMision").textContent
   let nuevoVision = document.getElementById("idVision").textContent
   let nuevoValores = document.getElementById("idValores").textContent
@@ -762,46 +762,42 @@ async function guardarCambios() {
     "indicadores": nuevoIndicadores2[0]
   }
   //console.log(guardar);
-  
-    
-    if(nuevoTitulos0[0] == nuevoTitulos1[0] || nuevoTitulos0[0] == nuevoTitulos2[0] || nuevoTitulos1[0] == nuevoTitulos2[0]){
-      if(nuevoTitulos0[0] == null){//nada
-        if(nuevoTitulos1[0] == null){//nada
-          await eliminarTodo(email);
-          await eliminarPlanesAcciones(email);
-          try {
-          await guardarPlanEmpresa(guardar);
-          console.log(guardar);
-          
-          if(!guardarPlanAccion0.acciones.length == 0){
-            await guardarPlanAccionEmpresa(guardarPlanAccion0)
-            console.log(guardarPlanAccion0);
-          }
-      
-          if(!guardarPlanAccion1.acciones.length == 0){
-            await guardarPlanAccionEmpresa(guardarPlanAccion1)
-            console.log(guardarPlanAccion1);
-          }
-      
-          if(!guardarPlanAccion2.acciones.length == 0){
-            await guardarPlanAccionEmpresa(guardarPlanAccion2)
-            console.log(guardarPlanAccion2);
-          }
-      
-          alert("Plan guardado");
-        } catch (error) {
-          console.error(error);
-          }
-        }else{
-          alert("Los titulos de los planes de acción no pueden ser iguales");
+
+  await eliminarTodo(email);
+  await guardarPlanEmpresa(guardar);
+  console.log(guardar);
+
+  if (nuevoTitulos0[0] != null && nuevoTitulos1[0] != null || nuevoTitulos0[0] != null && nuevoTitulos2[0] != null || nuevoTitulos1[0] != null && nuevoTitulos2[0] != null) {
+    if (nuevoTitulos0[0] == nuevoTitulos1[0] || nuevoTitulos0[0] == nuevoTitulos2[0] || nuevoTitulos1[0] == nuevoTitulos2[0]) {
+      alert("Los titulos de los planes de acción no pueden ser iguales");
+    } else {
+      await eliminarPlanesAcciones(email);
+      try {
+        if (!guardarPlanAccion0.acciones.length == 0) {
+          await guardarPlanAccionEmpresa(guardarPlanAccion0)
+          console.log(guardarPlanAccion0);
         }
-      }  
+        if (!guardarPlanAccion1.acciones.length == 0) {
+          await guardarPlanAccionEmpresa(guardarPlanAccion1)
+          console.log(guardarPlanAccion1);
+        }
+        if (!guardarPlanAccion2.acciones.length == 0) {
+          await guardarPlanAccionEmpresa(guardarPlanAccion2)
+          console.log(guardarPlanAccion2);
+        }
+        alert("Plan guardado");
+      } catch (error) {
+        console.error(error);
+      }
     }
-    
-  
-  
-  
-  
+  }else{
+    alert("Plan guardado");
+  }
+
+
+
+
+
 }
 
 async function guardarPlanEmpresa(planEmpresa) {
@@ -813,7 +809,7 @@ async function guardarPlanEmpresa(planEmpresa) {
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify(planEmpresa)
-    
+
   })
 }
 
@@ -827,13 +823,13 @@ async function guardarPlanAccionEmpresa(planAccionEmpresa) {
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify(planAccionEmpresa)
-  
+
   })
   console.log(JSON.stringify(planAccionEmpresa));
 }
 
 async function eliminarTodo(email) {
-  const response = await fetch("/eliminarTodo/"+email, {
+  const response = await fetch("/eliminarTodo/" + email, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -842,7 +838,7 @@ async function eliminarTodo(email) {
   })
 }
 async function eliminarPlanesAcciones(email) {
-  const response = await fetch("/eliminarPlanesAcciones/"+email, {
+  const response = await fetch("/eliminarPlanesAcciones/" + email, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
